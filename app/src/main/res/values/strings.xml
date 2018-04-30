@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">History</string>
+
+
+    <string name="personal_information">个人资料</string>
+    <string name="following">关注</string>
+    <string name="my_publish">我的瞬间</string>
+    <string name="night_mode">夜间模式</string>
+    <string name="qr_code">二维码</string>
+    <string name="setting">设置与隐私</string>
+    <string name="help_center">帮助中心</string>
+
+    <string name="create_new_account">创建新账号</string>
+    <string name="add_exist_account">添加已有账号</string>
 </resources>
