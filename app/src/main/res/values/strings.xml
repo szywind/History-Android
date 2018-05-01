@@ -12,4 +12,9 @@
 
     <string name="create_new_account">创建新账号</string>
     <string name="add_exist_account">添加已有账号</string>
+
+    <string name="encyclopedia">百科</string>
+    <string name="forum">论坛</string>
+    <string name="timeline">时间轴</string>
+    <string name="search">查找</string>
 </resources>
