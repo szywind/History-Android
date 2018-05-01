@@ -1,10 +1,18 @@
 package com.application.cool.history;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.application.cool.history.fragment.EncyclopediaFragment;
+import com.application.cool.history.fragment.ForumFragment;
+import com.application.cool.history.fragment.SearchFragment;
+import com.application.cool.history.fragment.TimelineFragment;
+import com.ashokvarma.bottomnavigation.BottomNavigationBar;
+import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -19,6 +27,15 @@ import com.mikepenz.materialdrawer.model.SecondaryToggleDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 public class MainActivity extends AppCompatActivity {
+
+
+    private BottomNavigationBar bottomNavigationBar;
+    private Drawer drawerMenu;
+
+    private EncyclopediaFragment encyclopediaFragment;
+    private ForumFragment forumFragment;
+    private SearchFragment searchFragment;
+    private TimelineFragment timelineFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         SecondaryDrawerItem item6 = new SecondaryDrawerItem().withName(R.string.setting);
         SecondaryDrawerItem item7 = new SecondaryDrawerItem().withName(R.string.help_center);
 
-        Drawer result = new DrawerBuilder().withActivity(this)
+        drawerMenu = new DrawerBuilder().withActivity(this)
                 .withAccountHeader(headerResult)
                 .withActionBarDrawerToggle(true)
                 .withTranslucentStatusBar(false)
@@ -72,5 +89,73 @@ public class MainActivity extends AppCompatActivity {
                 .withSelectedItem(-1)
                 .withDrawerWidthDp(300)
                 .build();
+
+        bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
+        bottomNavigationBar
+                .setMode(BottomNavigationBar.MODE_FIXED)
+                .setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC)
+                .setActiveColor("#FF107FFD")
+                .setInActiveColor("#e9e6e6");
+
+        bottomNavigationBar
+                .addItem(new BottomNavigationItem(R.drawable.ic_time_axis, R.string.timeline))
+                .addItem(new BottomNavigationItem(R.drawable.ic_forum, R.string.forum))
+                .addItem(new BottomNavigationItem(R.drawable.ic_encyclopdeic, R.string.encyclopedia))
+                .addItem(new BottomNavigationItem(R.drawable.ic_search, R.string.search))
+                .initialise();
+
+        setDefaultFragment();
+        bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener(){
+            @Override
+            public void onTabSelected(int position) {
+                android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+                android.support.v4.app.FragmentTransaction transaction = fm.beginTransaction();
+                switch (position) {
+                    case 0:
+                        if (timelineFragment == null) {
+                            timelineFragment = new TimelineFragment();
+                        }
+                        transaction.replace(R.id.fragment_container, timelineFragment);
+                        break;
+                    case 1:
+                        if (forumFragment == null) {
+                            forumFragment = new ForumFragment();
+                        }
+                        transaction.replace(R.id.fragment_container, forumFragment);
+                        break;
+                    case 2:
+                        if (encyclopediaFragment == null) {
+                            encyclopediaFragment = new EncyclopediaFragment();
+                        }
+                        transaction.replace(R.id.fragment_container, encyclopediaFragment);
+                        break;
+                    case 3:
+                        if (searchFragment == null) {
+                            searchFragment = new SearchFragment();
+                        }
+                        transaction.replace(R.id.fragment_container, searchFragment);
+                        break;
+                    default:
+                        break;
+                }
+                transaction.commit();
+
+            }
+            @Override
+            public void onTabUnselected(int position) {
+            }
+            @Override
+            public void onTabReselected(int position) {
+            }
+        });
+
+    }
+
+    private void setDefaultFragment() {
+        if (timelineFragment == null) {
+            timelineFragment = new TimelineFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, timelineFragment);
+            getSupportFragmentManager().beginTransaction().commit();
+        }
     }
 }
