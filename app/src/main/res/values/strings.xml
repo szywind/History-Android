@@ -33,4 +33,7 @@
     <string name="what_is_name">你好! 请问你叫什么名字？</string>
     <string name="username_hint">用户名</string>
 
+    <string name="verification_text">我们已经向你发送验证码。</string>
+    <string name="verification_declare">请在下方输入以验证</string>
+    <string name="not_receive_message">未收到短信？</string>
 </resources>
