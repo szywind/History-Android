@@ -7,5 +7,7 @@
     <color name="history">#B8860B</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="colorPrimary_alpha33">#EBEBEB</color>
+    <color name="gravy_light">#999999</color>
 
 </resources>

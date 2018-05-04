@@ -22,11 +22,14 @@
         <activity android:name=".Activity.WelcomeActivity" />
         <activity
             android:name=".Activity.RegisterNameActivity"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Activity.RegisterContactActivity"
-            android:windowSoftInputMode="adjustResize"
-        ></activity>
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".Activity.VerificationCodeActivity"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
     </application>
 
 </manifest>
