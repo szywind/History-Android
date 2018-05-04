@@ -1,10 +1,12 @@
 package com.application.cool.history;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.application.cool.history.Activity.RegisterNameActivity;
 import com.application.cool.history.fragment.EncyclopediaFragment;
 import com.application.cool.history.fragment.ForumFragment;
 import com.application.cool.history.fragment.SearchFragment;
@@ -25,6 +27,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 public class MainActivity extends AppCompatActivity {
 
+    static public  final int ACCOUNT_ADD = 10001;
 
     private BottomNavigationBar bottomNavigationBar;
     private Drawer drawerMenu;
@@ -51,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
                                 .withIcon(R.drawable.nav_con),
                         new ProfileSettingDrawerItem()
                                 .withName(R.string.create_new_account)
-                                .withIcon(R.drawable.ic_add_black_24dp),
+                                .withIcon(R.drawable.ic_add_black_24dp)
+                                .withIdentifier(ACCOUNT_ADD),
                         new ProfileSettingDrawerItem()
                                 .withName(R.string.add_exist_account)
                                 .withIcon(R.drawable.ic_person_add_black_24dp)
@@ -59,7 +63,11 @@ public class MainActivity extends AppCompatActivity {
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean current) {
-                        return false;
+                        if (profile instanceof ProfileSettingDrawerItem && profile.getIdentifier() == ACCOUNT_ADD) {
+                            Intent intent = new Intent(MainActivity.this, RegisterNameActivity.class);
+                            startActivity(intent);
+                        }
+                        return true;
                     }
                 })
                 .build();

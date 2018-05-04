@@ -19,4 +19,18 @@
     <string name="forum">论坛</string>
     <string name="timeline">时间轴</string>
     <string name="search">查找</string>
+
+
+    <string name="what_is_phone">你的手机号码是什么？</string>
+    <string name="what_is_email">你的邮箱地址是什么？</string>
+    <string name="phone_declare">不用担心，我们绝不会公开显示你的手机号码。</string>
+    <string name="email_declare">我们不会向你发送垃圾邮件。</string>
+    <string name="use_phone_num">使用手机号码注册</string>
+    <string name="use_email">使用邮箱注册</string>
+    <string name="email_hint">邮箱地址</string>
+    <string name="phone_hint">手机号码</string>
+    <string name="next_step">下一步</string>
+    <string name="what_is_name">你好! 请问你叫什么名字？</string>
+    <string name="username_hint">用户名</string>
+
 </resources>
