@@ -16,7 +16,9 @@
         android:layout_marginRight="10dp"
         android:text="@string/next_step"
         android:textSize="20sp"
-        android:background="@drawable/button_sign_up"/>
+        android:background="@drawable/button_sign_up"
+        android:textColor="@color/white"
+        android:clickable="false"/>
 
     <TextView
         android:id="@+id/name_text"

@@ -26,9 +26,13 @@
         <activity
             android:name=".Activity.RegisterContactActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".Activity.VerificationCodeActivity"
+        <activity
+            android:name=".Activity.VerificationCodeActivity"
             android:windowSoftInputMode="adjustResize">
-
+        </activity>
+        <activity
+            android:name=".Activity.PasswordSettingPage"
+            android:windowSoftInputMode="adjustResize">
         </activity>
     </application>
 

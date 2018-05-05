@@ -36,4 +36,8 @@
     <string name="verification_text">我们已经向你发送验证码。</string>
     <string name="verification_declare">请在下方输入以验证</string>
     <string name="not_receive_message">未收到短信？</string>
+    
+    <string name="password_text">你还需要设置一个密码。</string>
+    <string name="password_declare">请保证至少有8个字符。</string>
+    <string name="password_hint">密码</string>
 </resources>
