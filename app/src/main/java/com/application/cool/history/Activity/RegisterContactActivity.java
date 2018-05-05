@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.application.cool.history.R;
+import com.application.cool.history.util.ActivityCollector;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -64,6 +65,7 @@ public class RegisterContactActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_contact);
+        ActivityCollector.addActivity(this);
         ButterKnife.bind(this);
         contactEdit.setHint(R.string.phone_hint);
         if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(
@@ -104,6 +106,7 @@ public class RegisterContactActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(s1)) {
                     btnNext.setClickable(false);
                     btnNext.setTextColor(getResources().getColor(R.color.white));
+                    return;
                 }
 
 
@@ -126,7 +129,7 @@ public class RegisterContactActivity extends AppCompatActivity {
                         contactEdit.setError("请输入有效的邮箱地址。");
                     } else {
                         btnNext.setClickable(true);
-                        btnNext.setTextColor(getResources().getColor(R.color.white));
+                        btnNext.setTextColor(getResources().getColor(R.color.black));
                         contactEdit.setError(null);
                         curEmail = s1;
                     }
@@ -134,6 +137,12 @@ public class RegisterContactActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 
     @Override
@@ -199,17 +208,31 @@ public class RegisterContactActivity extends AppCompatActivity {
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    //Todo
+                                    final ProgressDialog progressDialog = new ProgressDialog(RegisterContactActivity.this);
+                                    progressDialog.setIndeterminate(true);
+                                    progressDialog.setMessage("请稍等...");
+                                    progressDialog.show();
+// TODO
+                                    new android.os.Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
 
-                                    Intent intent = new Intent(RegisterContactActivity.this, VerificationCodeActivity.class);
-                                    intent.putExtra(VerificationCodeActivity.PHONE_NUM, contactEdit.getText().toString());
-                                    startActivity(intent);
+                                            progressDialog.dismiss();
+                                            Intent intent = new Intent(RegisterContactActivity.this, VerificationCodeActivity.class);
+                                            intent.putExtra(VerificationCodeActivity.PHONE_NUM, contactEdit.getText().toString());
+                                            startActivity(intent);
+                                        }
+                                    }, 2000);
+
+
                                 }
                             })
                             .create().show();
                     break;
                 } else if (curContractType == EContactType.E_EMAIL) {
                     // Todo
+                    Intent intent = new Intent(this, PasswordSettingPage.class);
+                    startActivity(intent);
                 }
 
         }

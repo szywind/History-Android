@@ -1,6 +1,7 @@
 package com.application.cool.history.Activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.application.cool.history.R;
+import com.application.cool.history.util.ActivityCollector;
 import com.jkb.vcedittext.VerificationAction;
 import com.jkb.vcedittext.VerificationCodeEditText;
 
@@ -27,10 +29,12 @@ public class VerificationCodeActivity extends AppCompatActivity {
     Button btnNext;
 
     String[] alertDialogItems = {"重新发送短信", "使用邮件地址注册", "取消"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verification_code);
+        ActivityCollector.addActivity(this);
         ButterKnife.bind(this);
 
         declareText.setText(declareText.getText() + getIntent().getStringExtra(PHONE_NUM) + "。");
@@ -40,14 +44,24 @@ public class VerificationCodeActivity extends AppCompatActivity {
 
             @Override
             public void onVerCodeChanged(CharSequence s, int start, int before, int count) {
-
+                btnNext.setTextColor(getResources().getColor(R.color.white));
+                btnNext.setClickable(false);
             }
 
             @Override
             public void onInputCompleted(CharSequence s) {
-
+                btnNext.setTextColor(getResources().getColor(R.color.black));
+                btnNext.setClickable(true);
             }
         });
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 
     @OnClick({R.id.message_receive, R.id.btn_next})
@@ -82,6 +96,8 @@ public class VerificationCodeActivity extends AppCompatActivity {
                         .show();
                 break;
             case R.id.btn_next:
+                Intent intent  = new Intent(this, PasswordSettingPage.class);
+                startActivity(intent);
                 break;
         }
     }

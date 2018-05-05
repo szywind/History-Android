@@ -1,16 +1,15 @@
 package com.application.cool.history.Activity;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.application.cool.history.R;
@@ -20,23 +19,25 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegisterNameActivity extends AppCompatActivity {
+public class PasswordSettingPage extends AppCompatActivity {
 
-
-    @BindView(R.id.name_edit)
-    EditText nameEdit;
+    @BindView(R.id.password_edit)
+    TextInputEditText passwordEdit;
     @BindView(R.id.btn_next)
     Button btnNext;
+    @BindView(R.id.password_layout)
+    TextInputLayout passwordLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_name);
+        setContentView(R.layout.activity_password_setting_page);
         ActivityCollector.addActivity(this);
         ButterKnife.bind(this);
 
-        nameEdit.setHint(R.string.username_hint);
-        nameEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        passwordEdit.setHint(R.string.password_hint);
+
+        passwordEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_NULL) {
@@ -46,7 +47,7 @@ public class RegisterNameActivity extends AppCompatActivity {
             }
         });
 
-        nameEdit.addTextChangedListener(new TextWatcher() {
+        passwordEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -59,29 +60,26 @@ public class RegisterNameActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (nameEdit.getError() != null) {
-                    nameEdit.setError(null);
-                }
 
                 String s1 = s.toString();
-                if (s1.equals("")) {
+
+                if (TextUtils.isEmpty(s1)) {
                     btnNext.setClickable(false);
                     btnNext.setTextColor(getResources().getColor(R.color.white));
                     return;
                 }
 
-                if (!isUserNameValid(s1)) {
-                    nameEdit.setError("用户名不能超过20个字符");
+                if (!isPasswordValid(s1)) {
+                    passwordLayout.setError("密码至少要有8个字符");
                     btnNext.setClickable(false);
                     btnNext.setTextColor(getResources().getColor(R.color.white));
                 } else {
-                    nameEdit.setError(null);
+                    passwordLayout.setError(null);
                     btnNext.setClickable(true);
                     btnNext.setTextColor(getResources().getColor(R.color.black));
                 }
             }
         });
-
     }
 
     @Override
@@ -92,16 +90,10 @@ public class RegisterNameActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_next)
     public void onViewClicked() {
-        saveUserName();
-        Intent intent = new Intent(this, RegisterContactActivity.class);
-        startActivity(intent);
+        ActivityCollector.finishAll();
     }
 
-    private boolean isUserNameValid(String userName) {
-        return userName.length() <= 20;
-    }
-
-    private void saveUserName() {
-
+    private boolean isPasswordValid(String s) {
+        return s.length() >= 8;
     }
 }
