@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.application.cool.history.Activity.LoginActivity;
 import com.application.cool.history.Activity.RegisterNameActivity;
 import com.application.cool.history.fragment.EncyclopediaFragment;
 import com.application.cool.history.fragment.ForumFragment;
 import com.application.cool.history.fragment.SearchFragment;
 import com.application.cool.history.fragment.TimelineFragment;
+import com.application.cool.history.util.CommonData;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -27,7 +29,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 public class MainActivity extends AppCompatActivity {
 
-    static public  final int ACCOUNT_ADD = 10001;
+
 
     private BottomNavigationBar bottomNavigationBar;
     private Drawer drawerMenu;
@@ -48,23 +50,25 @@ public class MainActivity extends AppCompatActivity {
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.background)
                 .addProfiles(
-                        new ProfileDrawerItem()
-                                .withName("cool")
-                                .withEmail("niu199212cool@163.com")
-                                .withIcon(R.drawable.nav_con),
                         new ProfileSettingDrawerItem()
                                 .withName(R.string.create_new_account)
                                 .withIcon(R.drawable.ic_add_black_24dp)
-                                .withIdentifier(ACCOUNT_ADD),
+                                .withIdentifier(CommonData.MENU_ID_CREATE_ACCOUNT),
                         new ProfileSettingDrawerItem()
                                 .withName(R.string.add_exist_account)
                                 .withIcon(R.drawable.ic_person_add_black_24dp)
+                                .withIdentifier(CommonData.MENU_ID_ADD_ACCOUNT)
                 )
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean current) {
-                        if (profile instanceof ProfileSettingDrawerItem && profile.getIdentifier() == ACCOUNT_ADD) {
+                        if (profile instanceof ProfileSettingDrawerItem
+                                && profile.getIdentifier() == CommonData.MENU_ID_CREATE_ACCOUNT) {
                             Intent intent = new Intent(MainActivity.this, RegisterNameActivity.class);
+                            startActivity(intent);
+                         } else if (profile instanceof ProfileSettingDrawerItem
+                                && profile.getIdentifier() == CommonData.MENU_ID_ADD_ACCOUNT) {
+                            Intent intent =  new Intent(MainActivity.this, LoginActivity.class);
                             startActivity(intent);
                         }
                         return true;

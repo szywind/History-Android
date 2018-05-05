@@ -31,8 +31,12 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-            android:name=".Activity.PasswordSettingPage"
+            android:name=".Activity.PasswordSettingActivity"
             android:windowSoftInputMode="adjustResize">
+        </activity>
+        <activity android:name=".Activity.LoginActivity"
+            android:windowSoftInputMode="adjustResize">
+
         </activity>
     </application>
 

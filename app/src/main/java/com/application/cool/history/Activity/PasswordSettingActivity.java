@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PasswordSettingPage extends AppCompatActivity {
+public class PasswordSettingActivity extends AppCompatActivity {
 
     @BindView(R.id.password_edit)
     TextInputEditText passwordEdit;
