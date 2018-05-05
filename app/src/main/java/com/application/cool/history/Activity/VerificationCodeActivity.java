@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.application.cool.history.R;
 import com.application.cool.history.util.ActivityCollector;
-import com.jkb.vcedittext.VerificationAction;
 import com.jkb.vcedittext.VerificationCodeEditText;
 
 import butterknife.BindView;
@@ -96,7 +95,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
                         .show();
                 break;
             case R.id.btn_next:
-                Intent intent  = new Intent(this, PasswordSettingPage.class);
+                Intent intent  = new Intent(this, PasswordSettingActivity.class);
                 startActivity(intent);
                 break;
         }

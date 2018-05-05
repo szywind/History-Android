@@ -14,29 +14,46 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="50dp"
         android:fontFamily="serif"
-        android:text="@string/password_text"
+        android:text="@string/login_text"
         android:textSize="26dp"
         android:textStyle="bold"/>
 
+
     <TextView
-        android:id="@+id/declare_text"
+        android:id="@+id/sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="40dp"
+        android:text="@string/sign_up"
+        android:textSize="22sp"
+        android:textColor="@color/history"/>
+
+    <!-- Name Label -->
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/user_id_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="95dp"
         android:layout_marginLeft="10dp"
-        android:fontFamily="serif"
-        android:text="@string/password_declare"
-        android:textSize="16dp"/>
+        android:layout_marginTop="90dp"
+        app:passwordToggleEnabled="true">
 
-    <!-- Name Label -->
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/user_id_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+    </android.support.design.widget.TextInputLayout>
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/password_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="160dp"
         app:passwordToggleEnabled="true">
 
         <android.support.design.widget.TextInputEditText
@@ -46,8 +63,18 @@
             android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
 
+    <TextView
+        android:id="@+id/forget_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/forget_password"
+        android:textColor="@color/history"/>
+
     <Button
-        android:id="@+id/btn_next"
+        android:id="@+id/btn_login"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -55,11 +82,10 @@
         android:layout_margin="10dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/button_sign_up"
-        android:text="@string/next_step"
+        android:text="@string/login"
         android:textSize="20sp"
-        android:textColor="@color/white"
-        android:clickable="false"
         />
+
 
 
 </RelativeLayout>

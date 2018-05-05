@@ -11,25 +11,23 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.telecom.TelecomManager;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.application.cool.history.R;
 import com.application.cool.history.util.ActivityCollector;
+import com.application.cool.history.util.CommonData;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,7 +39,7 @@ import butterknife.OnClick;
 public class RegisterContactActivity extends AppCompatActivity {
 
 
-    private EContactType curContractType = EContactType.E_PHONE_NUM;
+    private CommonData.EContactType curContractType = CommonData.EContactType.E_PHONE;
     private String curPhone = null;
     private String curEmail = null;
 
@@ -56,9 +54,6 @@ public class RegisterContactActivity extends AppCompatActivity {
     @BindView(R.id.declare_text)
     TextView declareText;
 
-    public enum EContactType {
-        E_PHONE_NUM, E_EMAIL, E_WECHAT
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +105,7 @@ public class RegisterContactActivity extends AppCompatActivity {
                 }
 
 
-                if (curContractType == EContactType.E_PHONE_NUM) {
+                if (curContractType == CommonData.EContactType.E_PHONE) {
                     if (!isPhoneNumberValid(s1)) {
                         btnNext.setClickable(false);
                         btnNext.setTextColor(getResources().getColor(R.color.white));
@@ -122,7 +117,7 @@ public class RegisterContactActivity extends AppCompatActivity {
                         curPhone = s1;
                     }
 
-                } else if (curContractType == EContactType.E_EMAIL) {
+                } else if (curContractType == CommonData.EContactType.E_EMAIL) {
                     if (!isEmailValid(s1)) {
                         btnNext.setClickable(false);
                         btnNext.setTextColor(getResources().getColor(R.color.white));
@@ -173,7 +168,7 @@ public class RegisterContactActivity extends AppCompatActivity {
             case R.id.contact_edit:
                 break;
             case R.id.contact_text:
-                if (curContractType == EContactType.E_PHONE_NUM) {
+                if (curContractType == CommonData.EContactType.E_PHONE) {
                     contactEdit.setHint(R.string.email_hint);
                     contactEdit.setText("");
                     contactEdit.setError(null);
@@ -181,9 +176,9 @@ public class RegisterContactActivity extends AppCompatActivity {
                     contextTitle.setText(R.string.what_is_email);
                     declareText.setText(R.string.email_declare);
                     contactText.setText(R.string.use_phone_num);
-                    curContractType = EContactType.E_EMAIL;
+                    curContractType = CommonData.EContactType.E_EMAIL;
 
-                } else if (curContractType == EContactType.E_EMAIL) {
+                } else if (curContractType == CommonData.EContactType.E_EMAIL) {
                     contactEdit.setHint(R.string.phone_hint);
                     contactEdit.setText("");
                     contactEdit.setError(null);
@@ -191,11 +186,11 @@ public class RegisterContactActivity extends AppCompatActivity {
                     contextTitle.setText(R.string.what_is_phone);
                     declareText.setText(R.string.phone_declare);
                     contactText.setText(R.string.use_email);
-                    curContractType = EContactType.E_PHONE_NUM;
+                    curContractType = CommonData.EContactType.E_PHONE;
                 }
                 break;
             case R.id.btn_next:
-                if (curContractType == EContactType.E_PHONE_NUM) {
+                if (curContractType == CommonData.EContactType.E_PHONE) {
                     new AlertDialog.Builder(this)
                             .setTitle("验证手机")
                             .setMessage("我们会发送你的验证码到\n" + curPhone + "。可能收取短信费用")
@@ -229,9 +224,9 @@ public class RegisterContactActivity extends AppCompatActivity {
                             })
                             .create().show();
                     break;
-                } else if (curContractType == EContactType.E_EMAIL) {
+                } else if (curContractType == CommonData.EContactType.E_EMAIL) {
                     // Todo
-                    Intent intent = new Intent(this, PasswordSettingPage.class);
+                    Intent intent = new Intent(this, PasswordSettingActivity.class);
                     startActivity(intent);
                 }
 
@@ -240,9 +235,7 @@ public class RegisterContactActivity extends AppCompatActivity {
 
 
     private boolean isEmailValid(String email) {
-        Pattern p = Pattern.compile("^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$");
-        Matcher m = p.matcher(email);
-        return m.matches();
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private boolean isPhoneNumberValid(String num) {

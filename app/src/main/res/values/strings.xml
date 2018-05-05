@@ -36,8 +36,18 @@
     <string name="verification_text">我们已经向你发送验证码。</string>
     <string name="verification_declare">请在下方输入以验证</string>
     <string name="not_receive_message">未收到短信？</string>
-    
+
     <string name="password_text">你还需要设置一个密码。</string>
     <string name="password_declare">请保证至少有8个字符。</string>
     <string name="password_hint">密码</string>
+
+    <string name="login_text">登陆History。</string>
+    <string name="login_hint">手机号码、邮件地址或用户名</string>
+    <string name="forget_password">忘记密码？</string>
+    <string name="login">登陆</string>
+    <string name="sign_up">注册</string>
+    <string name="login_failed">登陆失败！请检查账号或密码是否正确。</string>
+
+    <string name="valid_id">请输入有效的手机号码或邮箱地址</string>
+    <string name="valid_password">请输入有效的密码</string>
 </resources>
