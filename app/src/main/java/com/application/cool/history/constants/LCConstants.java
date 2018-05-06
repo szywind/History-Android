@@ -1,4 +1,8 @@
-package com.application.cool.history.util;
+package com.application.cool.history.constants;
+
+/**
+ * Created by Zhenyuan Shen on 05/06/2018.
+ */
 
 public interface LCConstants {
 
@@ -20,11 +24,8 @@ public interface LCConstants {
      */
     interface UserKey {
         String gender = "gender";
-        String avatarFile = "avatarFile";
         String nickname = "nickname";
         String phone = "mobilePhoneNumber";
-        String blockUserIdList = "blockUserIdList";
-        String nicknameNorm = "nicknameNorm";
         String email = "email";
         String accountType = "accountType";
         String location = "geoPoint";
@@ -32,7 +33,7 @@ public interface LCConstants {
         String avatarURL = "avatarURL";
         String followers = "followers";
         String followees = "followees";
-        String followTopics = "followTopics";
+        String subscribeTopics = "subscribeTopics";
     }
 
     /**
@@ -44,8 +45,6 @@ public interface LCConstants {
         String className = "Person";
 
         String name = "name";
-        String avatarFile = "avatarFile";
-        String infoFile = "infoFile";
         String type = "type";
         String start = "start";
         String end = "end";
@@ -65,8 +64,6 @@ public interface LCConstants {
         String className = "Event";
 
         String name = "name";
-        String avatarFile = "avatarFile";
-        String infoFile = "infoFile";
         String type = "type";
         String start = "start";
         String end = "end";
@@ -105,12 +102,10 @@ public interface LCConstants {
 
         String authorId = "authorId";
         String dislikes = "dislikes";
-        String imageFile = "imageFile";
         String imageURL = "imageURL";
         String likes = "likes";
         String replies = "replies";
         String subscribers = "subscribers";
-        String textFile = "textFile";
         String textURL = "textURL";
         String title = "title";
         String dynasty = "dynasty";
