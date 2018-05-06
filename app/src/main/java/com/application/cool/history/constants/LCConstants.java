@@ -110,6 +110,7 @@ public interface LCConstants {
         String title = "title";
         String dynasty = "dynasty";
         String type = "type";
+        String topic = "topic";
         String subtopic = "subtopic";
         String reviews = "reviews";
     }

@@ -8,70 +8,73 @@ import org.greenrobot.greendao.annotation.*;
 // KEEP INCLUDES END
 
 /**
- * Entity mapped to table "PERSON".
+ * Entity mapped to table "EVENT_ENTITY".
  */
 @Entity
-public class Person {
+public class EventEntity {
 
     @Id
-    private int person_id;
-    private String avatar_url;
-    private String info_url;
+    @NotNull
+    private String eventId;
+    private String avatarURL;
+    private String infoURL;
     private String name;
     private String type;
     private Integer start;
     private Integer end;
     private String dynasty;
-    private String dynasty_detail;
+    private String dynastyDetail;
     private String pinyin;
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
 
-    @Generated(hash = 1024547259)
-    public Person() {
+    @Generated
+    public EventEntity() {
     }
 
-    public Person(int person_id) {
-        this.person_id = person_id;
+    public EventEntity(String eventId) {
+        this.eventId = eventId;
     }
 
-    @Generated(hash = 2060632992)
-    public Person(int person_id, String avatar_url, String info_url, String name, String type, Integer start, Integer end, String dynasty, String dynasty_detail, String pinyin) {
-        this.person_id = person_id;
-        this.avatar_url = avatar_url;
-        this.info_url = info_url;
+    @Generated
+    public EventEntity(String eventId, String avatarURL, String infoURL, String name, String type, Integer start, Integer end, String dynasty, String dynastyDetail, String pinyin) {
+        this.eventId = eventId;
+        this.avatarURL = avatarURL;
+        this.infoURL = infoURL;
         this.name = name;
         this.type = type;
         this.start = start;
         this.end = end;
         this.dynasty = dynasty;
-        this.dynasty_detail = dynasty_detail;
+        this.dynastyDetail = dynastyDetail;
         this.pinyin = pinyin;
     }
 
-    public int getPerson_id() {
-        return person_id;
+    @NotNull
+    public String getEventId() {
+        return eventId;
     }
 
-    public void setPerson_id(int person_id) {
-        this.person_id = person_id;
+    /** Not-null value; ensure this value is available before it is saved to the database. */
+    public void setEventId(@NotNull String eventId) {
+        this.eventId = eventId;
     }
 
-    public String getAvatar_url() {
-        return avatar_url;
+    public String getAvatarURL() {
+        return avatarURL;
     }
 
-    public void setAvatar_url(String avatar_url) {
-        this.avatar_url = avatar_url;
+    public void setAvatarURL(String avatarURL) {
+        this.avatarURL = avatarURL;
     }
 
-    public String getInfo_url() {
-        return info_url;
+    public String getInfoURL() {
+        return infoURL;
     }
 
-    public void setInfo_url(String info_url) {
-        this.info_url = info_url;
+    public void setInfoURL(String infoURL) {
+        this.infoURL = infoURL;
     }
 
     public String getName() {
@@ -114,12 +117,12 @@ public class Person {
         this.dynasty = dynasty;
     }
 
-    public String getDynasty_detail() {
-        return dynasty_detail;
+    public String getDynastyDetail() {
+        return dynastyDetail;
     }
 
-    public void setDynasty_detail(String dynasty_detail) {
-        this.dynasty_detail = dynasty_detail;
+    public void setDynastyDetail(String dynastyDetail) {
+        this.dynastyDetail = dynastyDetail;
     }
 
     public String getPinyin() {
