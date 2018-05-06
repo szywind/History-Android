@@ -36,7 +36,7 @@ public class EventManager {
         void processFinish(List<AVObject> list);
     }
 
-    private void fetchAllEventsFromLC(final EventResponse delegate) {
+    public void fetchAllEventsFromLC(final EventResponse delegate) {
         AVQuery<AVObject> query = new AVQuery<>(LCConstants.EventKey.className);
         query.findInBackground(new FindCallback<AVObject>() {
             @Override

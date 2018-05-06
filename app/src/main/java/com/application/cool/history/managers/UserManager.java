@@ -118,7 +118,7 @@ public class UserManager implements Constants {
     public String getPhone(AVUser user) {
         return user.getMobilePhoneNumber();
     }
-    public String getURL(AVUser user) {
+    public String getAvatarURL(AVUser user) {
         return user.getString(LCConstants.UserKey.avatarURL);
     }
     public List<String> getSubscribeTopics(AVUser user) {
