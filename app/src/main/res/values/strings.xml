@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">History</string>
 
-
     <string name="personal_information">个人资料</string>
     <string name="following">关注</string>
     <string name="book_mark">书签</string>
@@ -50,4 +49,6 @@
 
     <string name="valid_id">请输入有效的手机号码或邮箱地址</string>
     <string name="valid_password">请输入有效的密码</string>
+
+    <string name="save_success">保存成功</string>
 </resources>
