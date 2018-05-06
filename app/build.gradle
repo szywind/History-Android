@@ -17,7 +17,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions{
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+    lintOptions {
+        abortOnError false
+    }
 }
+
+
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -45,5 +57,16 @@ dependencies {
     implementation 'com.shizhefei:ViewPagerIndicator:1.1.6'
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
     implementation 'com.justkiddingbaby:vercodeedittext:1.0.5'
+
+    implementation ('cn.leancloud.android:avoscloud-sdk:v4.6.4')
+
+    // 推送与实时聊天需要的包
+    implementation ('cn.leancloud.android:avoscloud-push:v4.6.4@aar'){transitive = true}
+
+    // LeanCloud 统计包
+    implementation ('cn.leancloud.android:avoscloud-statistics:v4.6.4')
+
+    // LeanCloud 用户反馈包
+    implementation ('cn.leancloud.android:avoscloud-feedback:v4.6.4@aar')
 
 }

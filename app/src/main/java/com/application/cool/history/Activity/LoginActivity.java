@@ -1,19 +1,28 @@
 package com.application.cool.history.Activity;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.application.cool.history.MainActivity;
 import com.application.cool.history.R;
+import com.application.cool.history.util.ActivityCollector;
 import com.application.cool.history.util.CommonData;
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.LogInCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
         ButterKnife.bind(this);
+        ActivityCollector.addActivity(this);
 
         userIdEdit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -83,6 +93,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
+    }
+
     @OnClick({R.id.forget_password, R.id.btn_login, R.id.sign_up})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -92,6 +108,8 @@ public class LoginActivity extends AppCompatActivity {
                 login();
                 break;
             case R.id.sign_up:
+                Intent intent = new Intent(this, RegisterNameActivity.class);
+                startActivity(intent);
                 break;
         }
     }
@@ -101,6 +119,34 @@ public class LoginActivity extends AppCompatActivity {
             btnLogin.setEnabled(true);
             return;
         }
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Authenticating...");
+        progressDialog.show();
+
+        AVUser.logInInBackground(userIdEdit.getText().toString(), passwordEdit.getText().toString(), new LogInCallback<AVUser>() {
+            @Override
+            public void done(AVUser avUser, AVException e) {
+                if (e == null) {
+                    onLoginSuccess();
+                    finish();
+                } else {
+                    progressDialog.dismiss();
+                    onLoginFailed();
+                    Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        // On complete call either onLoginSuccess or onLoginFailed
+
+                        // onLoginFailed();
+
+                    }
+                }, 2000);
     }
 
     private void onLoginSuccess() {

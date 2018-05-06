@@ -1,5 +1,6 @@
 package com.application.cool.history;
 
+import android.app.Application;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,8 +14,13 @@ import com.application.cool.history.fragment.ForumFragment;
 import com.application.cool.history.fragment.SearchFragment;
 import com.application.cool.history.fragment.TimelineFragment;
 import com.application.cool.history.util.CommonData;
+import com.application.cool.history.util.LogUtil;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.SaveCallback;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -66,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                                 && profile.getIdentifier() == CommonData.MENU_ID_CREATE_ACCOUNT) {
                             Intent intent = new Intent(MainActivity.this, RegisterNameActivity.class);
                             startActivity(intent);
+
                          } else if (profile instanceof ProfileSettingDrawerItem
                                 && profile.getIdentifier() == CommonData.MENU_ID_ADD_ACCOUNT) {
                             Intent intent =  new Intent(MainActivity.this, LoginActivity.class);
