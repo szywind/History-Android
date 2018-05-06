@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'org.greenrobot.greendao'
+//apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 27
@@ -58,15 +58,30 @@ dependencies {
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
     implementation 'com.justkiddingbaby:vercodeedittext:1.0.5'
 
-    implementation ('cn.leancloud.android:avoscloud-sdk:v4.6.4')
+    compile ('com.android.support:support-v4:21.0.3')
+
+    // LeanCloud 基础包
+    compile ('cn.leancloud.android:avoscloud-sdk:v4.6.4')
 
     // 推送与实时聊天需要的包
-    implementation ('cn.leancloud.android:avoscloud-push:v4.6.4@aar'){transitive = true}
+    compile ('cn.leancloud.android:avoscloud-push:v4.6.4@aar'){transitive = true}
 
     // LeanCloud 统计包
-    implementation ('cn.leancloud.android:avoscloud-statistics:v4.6.4')
+    compile ('cn.leancloud.android:avoscloud-statistics:v4.6.4')
 
     // LeanCloud 用户反馈包
-    implementation ('cn.leancloud.android:avoscloud-feedback:v4.6.4@aar')
+    compile ('cn.leancloud.android:avoscloud-feedback:v4.6.4@aar')
+
+//    // avoscloud-sns：LeanCloud 第三方登录包
+//    compile ('cn.leancloud.android:avoscloud-sns:v4.6.4@aar')
+//    compile ('cn.leancloud.android:qq-sdk:1.6.1-leancloud')
+//    // 新浪微博 SDK
+//    compile('com.sina.weibo.sdk:core:4.1.4:openDefaultRelease@aar')
+
+    // LeanCloud 应用内搜索包
+    compile ('cn.leancloud.android:avoscloud-search:v4.6.4@aar')
+
+    // https://github.com/nostra13/Android-Universal-Image-Loader
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
 
 }
