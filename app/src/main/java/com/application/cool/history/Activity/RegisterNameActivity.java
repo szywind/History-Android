@@ -1,7 +1,9 @@
 package com.application.cool.history.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -102,6 +104,8 @@ public class RegisterNameActivity extends AppCompatActivity {
     }
 
     private void saveUserName() {
-
+        SharedPreferences.Editor editor = getSharedPreferences("user_data", MODE_PRIVATE).edit();
+        editor.putString("user_name", nameEdit.getText().toString());
+        editor.apply();
     }
 }

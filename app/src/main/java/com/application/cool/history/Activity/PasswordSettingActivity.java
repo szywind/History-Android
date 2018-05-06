@@ -1,6 +1,8 @@
 package com.application.cool.history.Activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +13,14 @@ import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.application.cool.history.R;
 import com.application.cool.history.util.ActivityCollector;
+import com.application.cool.history.util.CommonData;
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.SignUpCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -90,7 +97,35 @@ public class PasswordSettingActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_next)
     public void onViewClicked() {
-        ActivityCollector.finishAll();
+        AVUser user = new AVUser();
+        SharedPreferences pref = getSharedPreferences("user_data", MODE_PRIVATE);
+        String nickname = pref.getString("user_name", "");
+
+        if (RegisterContactActivity.getContractType() == CommonData.EContactType.E_EMAIL)
+        {
+            String email = pref.getString("email", "");
+            user.setEmail(email);
+            user.setUsername(email);
+
+
+        } else if (RegisterContactActivity.getContractType() == CommonData.EContactType.E_PHONE) {
+            String phone = pref.getString("phone", "");
+            user.setMobilePhoneNumber(phone);
+            user.setUsername(phone);
+        }
+
+        user.setPassword(passwordEdit.getText().toString());
+        user.put("nickname", nickname);
+        user.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null) {
+                    ActivityCollector.finishAll();
+                } else {
+                    Toast.makeText(PasswordSettingActivity.this, "注册失败", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     private boolean isPasswordValid(String s) {

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,14 @@ import android.widget.Toast;
 import com.application.cool.history.R;
 import com.application.cool.history.util.ActivityCollector;
 import com.application.cool.history.util.CommonData;
+import com.application.cool.history.util.LogUtil;
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.AVSMS;
+import com.avos.avoscloud.AVSMSOption;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.RequestMobileCodeCallback;
+import com.avos.avoscloud.SignUpCallback;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,9 +48,11 @@ import butterknife.OnClick;
 public class RegisterContactActivity extends AppCompatActivity {
 
 
-    private CommonData.EContactType curContractType = CommonData.EContactType.E_PHONE;
+    private  static CommonData.EContactType curContractType = CommonData.EContactType.E_PHONE;
     private String curPhone = null;
     private String curEmail = null;
+
+    private SharedPreferences.Editor editor;
 
     @BindView(R.id.contact_edit)
     TextInputEditText contactEdit;
@@ -73,7 +84,11 @@ public class RegisterContactActivity extends AppCompatActivity {
             TelephonyManager phoneMgr = (TelephonyManager) this.getSystemService(
                     Context.TELEPHONY_SERVICE);
             contactEdit.setText(phoneMgr.getLine1Number());
+            btnNext.setClickable(true);
+            btnNext.setTextColor(getResources().getColor(R.color.black));
         }
+
+        editor = getSharedPreferences("user_data", MODE_PRIVATE).edit();
 
         contactEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -111,8 +126,7 @@ public class RegisterContactActivity extends AppCompatActivity {
                         btnNext.setTextColor(getResources().getColor(R.color.white));
                         contactEdit.setError("请输入有效的电话号码。");
                     } else {
-                        btnNext.setClickable(true);
-                        btnNext.setTextColor(getResources().getColor(R.color.black));
+
                         contactEdit.setError(null);
                         curPhone = s1;
                     }
@@ -150,6 +164,8 @@ public class RegisterContactActivity extends AppCompatActivity {
                         TelephonyManager phoneMgr = (TelephonyManager) this.getSystemService(
                                 Context.TELEPHONY_SERVICE);
                         contactEdit.setText(phoneMgr.getLine1Number());
+                        btnNext.setClickable(true);
+                        btnNext.setTextColor(getResources().getColor(R.color.black));
                     } catch (SecurityException e) {
                         e.printStackTrace();
                     }
@@ -191,6 +207,7 @@ public class RegisterContactActivity extends AppCompatActivity {
                 break;
             case R.id.btn_next:
                 if (curContractType == CommonData.EContactType.E_PHONE) {
+
                     new AlertDialog.Builder(this)
                             .setTitle("验证手机")
                             .setMessage("我们会发送你的验证码到\n" + curPhone + "。可能收取短信费用")
@@ -207,25 +224,44 @@ public class RegisterContactActivity extends AppCompatActivity {
                                     progressDialog.setIndeterminate(true);
                                     progressDialog.setMessage("请稍等...");
                                     progressDialog.show();
-// TODO
-                                    new android.os.Handler().postDelayed(new Runnable() {
+
+                                    AVSMSOption option = new AVSMSOption();
+                                    option.setTtl(10);                     // 验证码有效时间为 10 分钟
+                                    option.setApplicationName("History");
+                                    option.setOperation("注册");
+                                    AVSMS.requestSMSCodeInBackground(contactEdit.getText().toString(), option, new RequestMobileCodeCallback() {
                                         @Override
-                                        public void run() {
+                                        public void done(AVException e) {
+                                            if (e == null) {
+                                                progressDialog.dismiss();
 
-                                            progressDialog.dismiss();
-                                            Intent intent = new Intent(RegisterContactActivity.this, VerificationCodeActivity.class);
-                                            intent.putExtra(VerificationCodeActivity.PHONE_NUM, contactEdit.getText().toString());
-                                            startActivity(intent);
+                                                String phone = contactEdit.getText().toString();
+                                                if (phone.startsWith("+86")) {
+                                                    editor.putString("phone", phone.substring(3));
+                                                } else {
+                                                    editor.putString("phone", phone);
+                                                }
+
+                                                editor.apply();
+
+                                                Intent intent = new Intent(RegisterContactActivity.this, VerificationCodeActivity.class);
+                                                startActivity(intent);
+                                            } else {
+                                                // failed
+                                                progressDialog.dismiss();
+                                                contactEdit.setError("此号码已经被注册");
+                                            }
                                         }
-                                    }, 2000);
-
-
+                                    });
                                 }
                             })
                             .create().show();
                     break;
                 } else if (curContractType == CommonData.EContactType.E_EMAIL) {
                     // Todo
+                    editor.putString("email", contactEdit.getText().toString());
+                    editor.apply();
+
                     Intent intent = new Intent(this, PasswordSettingActivity.class);
                     startActivity(intent);
                 }
@@ -248,12 +284,8 @@ public class RegisterContactActivity extends AppCompatActivity {
         return m.matches();
     }
 
-
-    private void savePhoneNumber() {
-        // Todo
+    public static CommonData.EContactType getContractType() {
+        return curContractType;
     }
-
-
-
 }
 
