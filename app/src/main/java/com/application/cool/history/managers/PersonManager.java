@@ -36,7 +36,7 @@ public class PersonManager {
         void processFinish(List<AVObject> list);
     }
 
-    private void fetchAllPeopleFromLC(final PersonResponse delegate) {
+    public void fetchAllPeopleFromLC(final PersonResponse delegate) {
         AVQuery<AVObject> query = new AVQuery<>(LCConstants.PersonKey.className);
         query.findInBackground(new FindCallback<AVObject>() {
             @Override
