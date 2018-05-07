@@ -62,7 +62,8 @@
             android:name=".activities.account.ResetPasswordActivity"
             android:windowSoftInputMode="adjustResize"></activity>
         <activity android:name=".activities.account.ResetWithEmailActivity"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize"
+            android:parentActivityName=".Activity.LoginActivity"></activity>
     </application>
 
 </manifest>

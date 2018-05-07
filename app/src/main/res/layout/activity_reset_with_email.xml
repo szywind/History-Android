@@ -30,7 +30,7 @@
         android:textSize="16dp"/>
 
     <TextView
-        android:id="@+id/message_receive"
+        android:id="@+id/email_receive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
