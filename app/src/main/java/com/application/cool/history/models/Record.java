@@ -79,19 +79,59 @@ public class Record {
         this.pinyin = person.getPinyin();
     }
 
-    public List<Record> getRecordsWithEvents(List<EventEntity> events) {
+    static public List<Record> getRecordsWithEvents(List<EventEntity> eventEntities) {
         List<Record> records = new ArrayList<Record>();
-        for (EventEntity event: events) {
-            records.add(new Record(event));
+        for (EventEntity eventEntity: eventEntities) {
+            records.add(new Record(eventEntity));
         }
         return records;
     }
 
-    public List<Record> getRecordsWithPeople(List<PersonEntity> people) {
+    static public List<Record> getRecordsWithPeople(List<PersonEntity> personEntities) {
         List<Record> records = new ArrayList<Record>();
-        for (PersonEntity person: people) {
-            records.add(new Record(person));
+        for (PersonEntity personEntity: personEntities) {
+            records.add(new Record(personEntity));
         }
         return records;
+    }
+
+    public String getDynastyDetail() {
+        return dynastyDetail;
+    }
+
+    public String getDynasty() {
+        return dynasty;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPinyin() {
+        return pinyin;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public String getAvatarURL() {
+        return avatarURL;
+    }
+
+    public String getInfoURL() {
+        return infoURL;
+    }
+
+    public String getObjectId() {
+        return objectId;
     }
 }
