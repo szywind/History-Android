@@ -42,10 +42,11 @@ public class WelcomeActivity extends AppCompatActivity {
                 startActivity(signupIntent);
                 break;
             case R.id.login:
-//                Intent loginIntent = new Intent(this, LoginActivity.class);
-//                startActivity(loginIntent);
+                Intent loginIntent = new Intent(this, LoginActivity.class);
+                startActivity(loginIntent);
                 break;
         }
+
     }
 
     @Override
