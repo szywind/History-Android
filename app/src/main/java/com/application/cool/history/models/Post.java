@@ -2,6 +2,9 @@ package com.application.cool.history.models;
 
 import com.application.cool.history.db.PostEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Zhenyuan Shen on 5/6/18.
  */
@@ -59,4 +62,69 @@ public class Post {
         this.textURL = post.getTextURL();
         this.reviews = post.getReviews();
     }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public String getAuthorId() {
+        return authorId;
+    }
+
+    public int getDislikes() {
+        return dislikes;
+    }
+
+    public int getSubscribers() {
+        return subscribers;
+    }
+
+    public String getDynasty() {
+        return dynasty;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public String getSubtopic() {
+        return subtopic;
+    }
+
+    public int getReplies() {
+        return replies;
+    }
+
+    public String getTextURL() {
+        return textURL;
+    }
+
+    public int getReviews() {
+        return reviews;
+    }
+
+    static public List<Post> getPostsWithPost(List<PostEntity> postEntities) {
+        List<Post> posts = new ArrayList<Post>();
+        for (PostEntity postEntity: postEntities) {
+            posts.add(new Post(postEntity));
+        }
+        return posts;
+    }
+
 }
