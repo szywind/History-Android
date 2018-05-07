@@ -2,7 +2,10 @@ package com.application.cool.history.managers;
 
 import android.content.Context;
 
+import com.application.cool.history.managers.DBManagers.EventStore;
+import com.application.cool.history.managers.DBManagers.PersonStore;
 import com.application.cool.history.models.Record;
+import com.application.cool.history.models.State;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,14 +75,41 @@ public class LocalDataManager {
         return sharedInstance;
     }
 
-
     public void setupEncyclopediaRecords() {
+        allPeople = PersonStore.getSharedInstance(context).fetchAllPeople();
+        allEvents = EventStore.getSharedInstance(context).fetchAllEvents();
+        allRecords.addAll(allPeople);
+        allRecords.addAll(allEvents);
 
+        for(Record event: allEvents) {
+            switch(event.getType()) {
+                case "event":
+                    events.add(event);
+                    break;
+                case "geography":
+                    geo.add(event);
+                    break;
+                case "art":
+                    art.add(event);
+                    break;
+                case "technology":
+                    tech.add(event);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
-    public void setupCommunityTopics() {
+    public List<Record> getFollowingTopics() {
+        List<Record> followingTopics = new ArrayList<>();
+        followingTopics.addAll(PersonStore.getSharedInstance(context).fetchFilteredPeople(State.currentSubscribeTopics));
+        followingTopics.addAll(EventStore.getSharedInstance(context).fetchFilteredEvents(State.currentSubscribeTopics));
 
+        return followingTopics;
     }
+
+
 }
 
 
