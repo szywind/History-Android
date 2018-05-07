@@ -1,33 +1,26 @@
 package com.application.cool.history;
 
-import android.app.Application;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.application.cool.history.Activity.LoginActivity;
-import com.application.cool.history.Activity.RegisterNameActivity;
+import com.application.cool.history.activities.account.LoginActivity;
+import com.application.cool.history.activities.account.RegisterNameActivity;
 import com.application.cool.history.fragment.EncyclopediaFragment;
 import com.application.cool.history.fragment.ForumFragment;
 import com.application.cool.history.fragment.SearchFragment;
 import com.application.cool.history.fragment.TimelineFragment;
 import com.application.cool.history.util.CommonData;
-import com.application.cool.history.util.LogUtil;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVOSCloud;
-import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.SaveCallback;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondarySwitchDrawerItem;

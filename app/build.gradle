@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -18,13 +19,16 @@ android {
         }
     }
 
-    packagingOptions{
+    packagingOptions {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
     }
 
     lintOptions {
         abortOnError false
+    }
+    aaptOptions {
+        cruncherEnabled = false
     }
 }
 
@@ -58,19 +62,19 @@ dependencies {
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
     implementation 'com.justkiddingbaby:vercodeedittext:1.0.5'
 
-    compile ('com.android.support:support-v4:21.0.3')
+    implementation('com.android.support:support-v4:21.0.3')
 
     // LeanCloud 基础包
-    compile ('cn.leancloud.android:avoscloud-sdk:v4.6.4')
+    implementation('cn.leancloud.android:avoscloud-sdk:v4.6.4')
 
     // 推送与实时聊天需要的包
-    compile ('cn.leancloud.android:avoscloud-push:v4.6.4@aar'){transitive = true}
+    implementation('cn.leancloud.android:avoscloud-push:v4.6.4@aar') { transitive = true }
 
     // LeanCloud 统计包
-    compile ('cn.leancloud.android:avoscloud-statistics:v4.6.4')
+    implementation('cn.leancloud.android:avoscloud-statistics:v4.6.4')
 
     // LeanCloud 用户反馈包
-    compile ('cn.leancloud.android:avoscloud-feedback:v4.6.4@aar')
+    implementation('cn.leancloud.android:avoscloud-feedback:v4.6.4@aar')
 
 //    // avoscloud-sns：LeanCloud 第三方登录包
 //    compile ('cn.leancloud.android:avoscloud-sns:v4.6.4@aar')
@@ -79,9 +83,10 @@ dependencies {
 //    compile('com.sina.weibo.sdk:core:4.1.4:openDefaultRelease@aar')
 
     // LeanCloud 应用内搜索包
-    compile ('cn.leancloud.android:avoscloud-search:v4.6.4@aar')
+    implementation('cn.leancloud.android:avoscloud-search:v4.6.4@aar')
 
     // https://github.com/nostra13/Android-Universal-Image-Loader
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
+    implementation 'com.android.support:multidex:1.0.3'
 
 }

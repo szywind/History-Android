@@ -1,11 +1,10 @@
-package com.application.cool.history.Activity;
+package com.application.cool.history.activities.account;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,7 +16,6 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVMobilePhoneVerifyCallback;
 import com.avos.avoscloud.AVSMS;
 import com.avos.avoscloud.AVSMSOption;
-import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.RequestMobileCodeCallback;
 import com.jkb.vcedittext.VerificationCodeEditText;
 

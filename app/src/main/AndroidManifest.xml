@@ -10,33 +10,31 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-
     <application
+        android:name=".util.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".util.App">
+        android:theme="@style/AppTheme">
 
         <!-- 实时通信模块、推送（均需要加入以下声明） START -->
         <!-- 实时通信模块、推送都要使用 PushService -->
-        <service android:name="com.avos.avoscloud.PushService"/>
+        <service android:name="com.avos.avoscloud.PushService" />
+
         <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
         <!-- 实时通信模块、推送 END -->
 
-        <!-- 反馈组件（需要加入以下声明）START -->
-        <activity
-            android:name="com.avos.avoscloud.feedback.ThreadActivity" >
-        </activity>
 
+        <!-- 反馈组件（需要加入以下声明）START -->
+        <activity android:name="com.avos.avoscloud.feedback.ThreadActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,25 +42,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.WelcomeActivity" />
+        <activity android:name=".activities.account.WelcomeActivity" />
         <activity
-            android:name=".Activity.RegisterNameActivity"
+            android:name=".activities.account.RegisterNameActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".Activity.RegisterContactActivity"
+            android:name=".activities.account.RegisterContactActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".Activity.VerificationCodeActivity"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
+            android:name=".activities.account.VerificationCodeActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".Activity.PasswordSettingActivity"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
-        <activity android:name=".Activity.LoginActivity"
-            android:windowSoftInputMode="adjustResize">
-
-        </activity>
+            android:name=".activities.account.PasswordSettingActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activities.account.LoginActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activities.account.ResetPasswordActivity"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".activities.account.ResetWithEmailActivity"
+            android:windowSoftInputMode="adjustResize"></activity>
     </application>
 
 </manifest>

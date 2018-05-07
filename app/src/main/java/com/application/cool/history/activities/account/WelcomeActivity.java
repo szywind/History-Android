@@ -1,4 +1,4 @@
-package com.application.cool.history.Activity;
+package com.application.cool.history.activities.account;
 
 import android.content.Intent;
 import android.graphics.Typeface;

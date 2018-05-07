@@ -41,7 +41,7 @@
     <string name="password_hint">密码</string>
 
     <string name="login_text">登陆History。</string>
-    <string name="login_hint">手机号码、邮件地址或用户名</string>
+    <string name="login_hint">手机号码或邮箱地址</string>
     <string name="forget_password">忘记密码？</string>
     <string name="login">登陆</string>
     <string name="sign_up">注册</string>
@@ -51,4 +51,11 @@
     <string name="valid_password">请输入有效的密码</string>
 
     <string name="save_success">保存成功</string>
+    <string name="find_account_text">找到你的History账号</string>
+    <string name="find_input_text">请输入你的手机号码或email</string>
+
+    <string name="check_email_text">检查你的邮箱</string>
+    <string name="check_email_information">我们已经向xxx发送了一封邮件。点击邮件中的连接以重置你的密码。
+    如果没有看到该邮件，请检查可能出现的其他位置，如垃圾邮件等。</string>
+    <string name="not_receive_email">未收到邮件？</string>
 </resources>

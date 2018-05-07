@@ -1,4 +1,4 @@
-package com.application.cool.history.Activity;
+package com.application.cool.history.activities.account;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -29,14 +29,11 @@ import android.widget.Toast;
 import com.application.cool.history.R;
 import com.application.cool.history.util.ActivityCollector;
 import com.application.cool.history.util.CommonData;
-import com.application.cool.history.util.LogUtil;
+import com.application.cool.history.managers.UserManager;
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVSMS;
 import com.avos.avoscloud.AVSMSOption;
-import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.RequestMobileCodeCallback;
-import com.avos.avoscloud.SignUpCallback;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -126,7 +123,8 @@ public class RegisterContactActivity extends AppCompatActivity {
                         btnNext.setTextColor(getResources().getColor(R.color.white));
                         contactEdit.setError("请输入有效的电话号码。");
                     } else {
-
+                        btnNext.setClickable(true);
+                        btnNext.setTextColor(getResources().getColor(R.color.black));
                         contactEdit.setError(null);
                         curPhone = s1;
                     }
@@ -207,7 +205,6 @@ public class RegisterContactActivity extends AppCompatActivity {
                 break;
             case R.id.btn_next:
                 if (curContractType == CommonData.EContactType.E_PHONE) {
-
                     new AlertDialog.Builder(this)
                             .setTitle("验证手机")
                             .setMessage("我们会发送你的验证码到\n" + curPhone + "。可能收取短信费用")

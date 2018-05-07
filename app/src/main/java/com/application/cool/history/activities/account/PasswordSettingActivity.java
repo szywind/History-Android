@@ -1,8 +1,7 @@
-package com.application.cool.history.Activity;
+package com.application.cool.history.activities.account;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;

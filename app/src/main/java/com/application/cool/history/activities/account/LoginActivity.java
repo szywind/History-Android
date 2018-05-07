@@ -1,22 +1,19 @@
-package com.application.cool.history.Activity;
+package com.application.cool.history.activities.account;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.application.cool.history.MainActivity;
 import com.application.cool.history.R;
 import com.application.cool.history.util.ActivityCollector;
 import com.application.cool.history.util.CommonData;
@@ -54,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         ActivityCollector.addActivity(this);
 
+        userIdEdit.setHint(R.string.login_hint);
         userIdEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -70,9 +68,16 @@ public class LoginActivity extends AppCompatActivity {
                 if (userIdLayout.getError() != null) {
                     userIdLayout.setError(null);
                 }
+
+                if (passwordEdit.getText().toString().trim().length() != 0 && userIdEdit.getText().toString().trim().length() != 0) {
+                    enableBtnLogin();
+                } else {
+                    disableBtnLogin();
+                }
             }
         });
 
+        passwordEdit.setHint(R.string.password_hint);
         passwordEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -89,6 +94,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (passwordLayout.getError() != null) {
                     passwordLayout.setError(null);
                 }
+
+                if (passwordEdit.getText().toString().trim().length() != 0 && userIdEdit.getText().toString().trim().length() != 0) {
+                    enableBtnLogin();
+                } else {
+                    disableBtnLogin();
+                }
             }
         });
     }
@@ -103,20 +114,22 @@ public class LoginActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.forget_password:
+                Intent intentReset = new Intent(this, ResetPasswordActivity.class);
+                startActivity(intentReset);
                 break;
             case R.id.btn_login:
                 login();
                 break;
             case R.id.sign_up:
-                Intent intent = new Intent(this, RegisterNameActivity.class);
-                startActivity(intent);
+                Intent intentRegister = new Intent(this, RegisterNameActivity.class);
+                startActivity(intentRegister);
                 break;
         }
     }
 
     private void login() {
         if (!validate()) {
-            btnLogin.setEnabled(true);
+            disableBtnLogin();
             return;
         }
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
@@ -133,7 +146,6 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     progressDialog.dismiss();
                     onLoginFailed();
-                    Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -150,13 +162,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void onLoginSuccess() {
-        btnLogin.setEnabled(false);
         finish();
     }
 
     private void onLoginFailed() {
         Toast.makeText(getBaseContext(), R.string.login_failed, Toast.LENGTH_LONG).show();
-        btnLogin.setEnabled(true);
+        disableBtnLogin();
     }
 
 
@@ -181,6 +192,16 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+
+    private void disableBtnLogin() {
+        btnLogin.setClickable(false);
+        btnLogin.setTextColor(getResources().getColor(R.color.white));
+    }
+
+    private void enableBtnLogin() {
+        btnLogin.setClickable(true);
+        btnLogin.setTextColor(getResources().getColor(R.color.black));
     }
 
 
