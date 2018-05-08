@@ -9,19 +9,32 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.application.cool.history.activities.account.LoginActivity;
 import com.application.cool.history.activities.account.RegisterNameActivity;
 import com.application.cool.history.activities.account.WelcomeActivity;
+import com.application.cool.history.db.EventEntity;
+import com.application.cool.history.db.PersonEntity;
 import com.application.cool.history.fragment.EncyclopediaFragment;
 import com.application.cool.history.fragment.ForumFragment;
 import com.application.cool.history.fragment.SearchFragment;
 import com.application.cool.history.fragment.TimelineFragment;
+import com.application.cool.history.managers.DBManagers.EventStore;
+import com.application.cool.history.managers.DBManagers.PersonStore;
+import com.application.cool.history.managers.EventManager;
+import com.application.cool.history.managers.LocalDataManager;
+import com.application.cool.history.managers.PersonManager;
 import com.application.cool.history.util.CommonData;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.FindCallback;
+
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +50,27 @@ public class MainActivity extends AppCompatActivity {
     private TimelineFragment timelineFragment;
 
 
+    private EventManager.EventResponse eventResponse = new EventManager.EventResponse() {
+        @Override
+        public void processFinish(List<AVObject> list) {
+            for (AVObject event : list) {
+                EventEntity eventEntity = new EventEntity(event);
+                EventStore.getSharedInstance(getBaseContext()).saveEvent(eventEntity);
+                LocalDataManager.getSharedInstance(getBaseContext()).addRecord(eventEntity);
+            }
+        }
+    };
+
+    private PersonManager.PersonResponse personResponse = new PersonManager.PersonResponse() {
+        @Override
+        public void processFinish(List<AVObject> list) {
+            for (AVObject person : list) {
+                PersonEntity personEntity = new PersonEntity(person);
+                PersonStore.getSharedInstance(getBaseContext()).savePerson(personEntity);
+                LocalDataManager.getSharedInstance(getBaseContext()).addRecord(personEntity);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                 .initialise();
 
         setDefaultFragment();
+        setupData();
         bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener(){
             @Override
             public void onTabSelected(int position) {
@@ -151,5 +186,12 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, timelineFragment);
             getSupportFragmentManager().beginTransaction().commit();
         }
+    }
+
+    private void setupData() {
+        LocalDataManager.getSharedInstance(this).clearAll();
+        EventManager.getSharedInstance(this).fetchAllEventsFromLC(eventResponse);
+        PersonManager.getSharedInstance(this).fetchAllPeopleFromLC(personResponse);
+
     }
 }

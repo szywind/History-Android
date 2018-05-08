@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.application.cool.history.R;
+import com.application.cool.history.constants.LCConstants;
 import com.application.cool.history.util.ActivityCollector;
 import com.application.cool.history.util.CommonData;
 import com.application.cool.history.util.LogUtil;
@@ -139,7 +140,7 @@ public class PasswordSettingActivity extends AppCompatActivity {
         }
 
         user.setPassword(passwordEdit.getText().toString());
-        user.put("nickname", nickname);
+        user.put(LCConstants.UserKey.nickname, nickname);
         user.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(AVException e) {

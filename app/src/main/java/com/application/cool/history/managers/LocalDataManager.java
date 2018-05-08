@@ -2,6 +2,8 @@ package com.application.cool.history.managers;
 
 import android.content.Context;
 
+import com.application.cool.history.db.EventEntity;
+import com.application.cool.history.db.PersonEntity;
 import com.application.cool.history.managers.DBManagers.EventStore;
 import com.application.cool.history.managers.DBManagers.PersonStore;
 import com.application.cool.history.models.Record;
@@ -101,6 +103,34 @@ public class LocalDataManager {
         }
     }
 
+    public void addRecord(EventEntity eventEntity) {
+        Record record = new Record(eventEntity);
+        allEvents.add(record);
+        allRecords.add(record);
+        switch(record.getType()) {
+            case "event":
+                events.add(record);
+                break;
+            case "geography":
+                geo.add(record);
+                break;
+            case "art":
+                art.add(record);
+                break;
+            case "technology":
+                tech.add(record);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void addRecord(PersonEntity personEntity) {
+        Record record = new Record(personEntity);
+        allPeople.add(record);
+        allRecords.add(record);
+    }
+
     public List<Record> getFollowingTopics() {
         List<Record> followingTopics = new ArrayList<>();
         followingTopics.addAll(PersonStore.getSharedInstance(context).fetchFilteredPeople(State.currentSubscribeTopics));
@@ -109,7 +139,15 @@ public class LocalDataManager {
         return followingTopics;
     }
 
-
+    public void clearAll() {
+        allPeople.clear();
+        allRecords.clear();
+        allEvents.clear();
+        events.clear();
+        geo.clear();
+        art.clear();
+        tech.clear();
+    }
 }
 
 
