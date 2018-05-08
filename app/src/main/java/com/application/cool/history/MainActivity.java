@@ -25,6 +25,7 @@ import com.application.cool.history.fragment.TimelineFragment;
 import com.application.cool.history.managers.DBManagers.EventStore;
 import com.application.cool.history.managers.DBManagers.PersonStore;
 import com.application.cool.history.managers.EventManager;
+import com.application.cool.history.managers.LocalDataManager;
 import com.application.cool.history.managers.PersonManager;
 import com.application.cool.history.util.CommonData;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -53,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void processFinish(List<AVObject> list) {
             for (AVObject event : list) {
-                EventStore.getSharedInstance(getBaseContext()).saveEvent(new EventEntity(event));
+                EventEntity eventEntity = new EventEntity(event);
+                EventStore.getSharedInstance(getBaseContext()).saveEvent(eventEntity);
+                LocalDataManager.getSharedInstance(getBaseContext()).addRecord(eventEntity);
             }
         }
     };
@@ -62,7 +65,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void processFinish(List<AVObject> list) {
             for (AVObject person : list) {
-                PersonStore.getSharedInstance(getBaseContext()).savePerson(new PersonEntity(person));
+                PersonEntity personEntity = new PersonEntity(person);
+                PersonStore.getSharedInstance(getBaseContext()).savePerson(personEntity);
+                LocalDataManager.getSharedInstance(getBaseContext()).addRecord(personEntity);
             }
         }
     };
@@ -184,7 +189,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupData() {
+        LocalDataManager.getSharedInstance(this).clearAll();
         EventManager.getSharedInstance(this).fetchAllEventsFromLC(eventResponse);
         PersonManager.getSharedInstance(this).fetchAllPeopleFromLC(personResponse);
+
     }
 }
