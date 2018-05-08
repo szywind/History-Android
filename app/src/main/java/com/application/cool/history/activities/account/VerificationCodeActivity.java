@@ -12,10 +12,12 @@ import android.widget.Toast;
 
 import com.application.cool.history.R;
 import com.application.cool.history.util.ActivityCollector;
+import com.application.cool.history.util.LogUtil;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVMobilePhoneVerifyCallback;
 import com.avos.avoscloud.AVSMS;
 import com.avos.avoscloud.AVSMSOption;
+import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.RequestMobileCodeCallback;
 import com.jkb.vcedittext.VerificationCodeEditText;
 
@@ -25,6 +27,7 @@ import butterknife.OnClick;
 
 public class VerificationCodeActivity extends AppCompatActivity {
 
+    final private static String TAG = "Verification Code";
     @BindView(R.id.declare_text)
     TextView declareText;
     @BindView(R.id.message_receive)
@@ -32,9 +35,10 @@ public class VerificationCodeActivity extends AppCompatActivity {
     @BindView(R.id.btn_next)
     Button btnNext;
 
-    String[] alertDialogItems = {"重新发送短信", "更换号码重新注册", "取消"};
-    VerificationCodeEditText verificationCodeEditText;
-    String phoneNumber;
+    private String[] alertDialogItems = {"重新发送短信", "更换号码重新注册", "取消"};
+    private VerificationCodeEditText verificationCodeEditText;
+    private String phoneNumber;
+    private String intentMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,9 @@ public class VerificationCodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_verification_code);
         ActivityCollector.addActivity(this);
         ButterKnife.bind(this);
+
+
+        intentMode = getIntent().getStringExtra("intentMode");
 
         phoneNumber = getSharedPreferences("user_data", MODE_PRIVATE).getString("phone", "null");
 
@@ -121,25 +128,35 @@ public class VerificationCodeActivity extends AppCompatActivity {
                         .show();
                 break;
             case R.id.btn_next:
-                AVSMS.verifySMSCodeInBackground(verificationCodeEditText.getText().toString(), phoneNumber, new AVMobilePhoneVerifyCallback() {
-                    @Override
-                    public void done(AVException e) {
-                        if (null == e) {
-                            /* 验证成功 */
-                            Intent intent  = new Intent(VerificationCodeActivity.this, PasswordSettingActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            /* 验证失败 */
-                            verificationCodeEditText.setText("");
-                            Toast.makeText(VerificationCodeActivity.this, "验证码错误，请重新输入。", Toast.LENGTH_LONG).show();
-                            btnNext.setTextColor(getResources().getColor(R.color.white));
-                            btnNext.setClickable(false);
+                if (intentMode.equals("register")) {
+                    AVSMS.verifySMSCodeInBackground(verificationCodeEditText.getText().toString(), phoneNumber, new AVMobilePhoneVerifyCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            if (null == e) {
+                                /* 验证成功 */
+                                Intent intent = new Intent(VerificationCodeActivity.this, PasswordSettingActivity.class);
+                                intent.putExtra("intentMode", intentMode);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                /* 验证失败 */
+                                verificationCodeEditText.setText("");
+                                Toast.makeText(VerificationCodeActivity.this, "验证码错误，请重新输入。", Toast.LENGTH_LONG).show();
+                                btnNext.setTextColor(getResources().getColor(R.color.white));
+                                btnNext.setClickable(false);
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    Intent intent = new Intent(this, PasswordSettingActivity.class);
+                    intent.putExtra("intentMode", intentMode);
+                    intent.putExtra("verifyCode", verificationCodeEditText.getText().toString());
+                    startActivity(intent);
+                }
+
 
                 break;
         }
     }
+
 }

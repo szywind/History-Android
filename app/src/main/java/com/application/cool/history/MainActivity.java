@@ -1,13 +1,20 @@
 package com.application.cool.history;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.application.cool.history.activities.account.LoginActivity;
 import com.application.cool.history.activities.account.RegisterNameActivity;
+import com.application.cool.history.activities.account.WelcomeActivity;
 import com.application.cool.history.fragment.EncyclopediaFragment;
 import com.application.cool.history.fragment.ForumFragment;
 import com.application.cool.history.fragment.SearchFragment;
@@ -15,91 +22,54 @@ import com.application.cool.history.fragment.TimelineFragment;
 import com.application.cool.history.util.CommonData;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondarySwitchDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+
 
 public class MainActivity extends AppCompatActivity {
 
 
 
     private BottomNavigationBar bottomNavigationBar;
-    private Drawer drawerMenu;
+    private DrawerLayout drawerLayoutMenu;
 
     private EncyclopediaFragment encyclopediaFragment;
     private ForumFragment forumFragment;
     private SearchFragment searchFragment;
     private TimelineFragment timelineFragment;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        drawerLayoutMenu = findViewById(R.id.drawer_layout);
+
+        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        }
 
-        AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withHeaderBackground(R.drawable.background)
-                .addProfiles(
-                        new ProfileSettingDrawerItem()
-                                .withName(R.string.create_new_account)
-                                .withIcon(R.drawable.ic_add_black_24dp)
-                                .withIdentifier(CommonData.MENU_ID_CREATE_ACCOUNT),
-                        new ProfileSettingDrawerItem()
-                                .withName(R.string.add_exist_account)
-                                .withIcon(R.drawable.ic_person_add_black_24dp)
-                                .withIdentifier(CommonData.MENU_ID_ADD_ACCOUNT)
-                )
-                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-                    @Override
-                    public boolean onProfileChanged(View view, IProfile profile, boolean current) {
-                        if (profile instanceof ProfileSettingDrawerItem
-                                && profile.getIdentifier() == CommonData.MENU_ID_CREATE_ACCOUNT) {
-                            Intent intent = new Intent(MainActivity.this, RegisterNameActivity.class);
-                            startActivity(intent);
+        navView.setCheckedItem(-1);
+        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                drawerLayoutMenu.closeDrawers();
+                return true;
+            }
+        });
 
-                         } else if (profile instanceof ProfileSettingDrawerItem
-                                && profile.getIdentifier() == CommonData.MENU_ID_ADD_ACCOUNT) {
-                            Intent intent =  new Intent(MainActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                        }
-                        return true;
-                    }
-                })
-                .build();
-
-        drawerMenu = new DrawerBuilder().withActivity(this)
-                .withAccountHeader(headerResult)
-                .withActionBarDrawerToggle(true)
-                .withTranslucentStatusBar(false)
-                .withToolbar(toolbar)
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.personal_information)
-                                .withIcon(R.drawable.ic_person_black_24dp),
-                        new PrimaryDrawerItem().withName(R.string.following)
-                                .withIcon(R.drawable.ic_content_copy_black_24dp),
-                        new PrimaryDrawerItem().withName(R.string.book_mark)
-                                .withIcon(R.drawable.ic_bookmark),
-                        new PrimaryDrawerItem().withName(R.string.knowledge)
-                                .withIcon(R.drawable.ic_knowledge),
-                        new DividerDrawerItem(),
-                        new SecondarySwitchDrawerItem().withName(R.string.night_mode),
-                        new SecondaryDrawerItem().withName(R.string.qr_code),
-                        new SecondaryDrawerItem().withName(R.string.setting),
-                        new SecondaryDrawerItem().withName(R.string.help_center)
-                        )
-                .withSelectedItem(-1)
-                .withDrawerWidthDp(300)
-                .build();
+        navView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+                startActivity(intent);
+            }
+        });
 
         bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
         bottomNavigationBar
@@ -160,6 +130,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayoutMenu.openDrawer(GravityCompat.START);
+                break;
+            default:
+
+        }
+        return true;
     }
 
     private void setDefaultFragment() {

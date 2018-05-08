@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:padding="10dp"
+    android:background="@drawable/background">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/icon_image"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/ic_account_default"/>
+
+    <TextView
+        android:id="@+id/sign_up_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="35dp"
+        android:layout_toRightOf="@id/icon_image"
+        android:layout_marginLeft="80dp"
+        android:text="登陆/注册"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/mail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="null"
+        android:textColor="#FFF"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mail"
+        android:text="null"
+        android:textColor="#FFF"
+        android:textSize="18sp"/>
+
+</RelativeLayout>

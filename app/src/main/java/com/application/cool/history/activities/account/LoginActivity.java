@@ -162,7 +162,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void onLoginSuccess() {
-        finish();
+        ActivityCollector.finishAll();
     }
 
     private void onLoginFailed() {

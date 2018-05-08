@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -18,15 +19,19 @@ import com.application.cool.history.R;
 import com.application.cool.history.constants.LCConstants;
 import com.application.cool.history.util.ActivityCollector;
 import com.application.cool.history.util.CommonData;
+import com.application.cool.history.util.LogUtil;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SignUpCallback;
+import com.avos.avoscloud.UpdatePasswordCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class PasswordSettingActivity extends AppCompatActivity {
+
+    private final static String TAG = "Password Setting";
 
     @BindView(R.id.password_edit)
     TextInputEditText passwordEdit;
@@ -35,6 +40,9 @@ public class PasswordSettingActivity extends AppCompatActivity {
     @BindView(R.id.password_layout)
     TextInputLayout passwordLayout;
 
+    private String intentMode;
+    private String verifyCode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +50,8 @@ public class PasswordSettingActivity extends AppCompatActivity {
         ActivityCollector.addActivity(this);
         ButterKnife.bind(this);
 
+        intentMode = getIntent().getStringExtra("intentMode");
+        verifyCode = getIntent().getStringExtra("verifyCode");
         passwordEdit.setHint(R.string.password_hint);
 
         passwordEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -97,12 +107,27 @@ public class PasswordSettingActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_next)
     public void onViewClicked() {
+
+        if (intentMode.equals("resetPassword")) {
+            resetPassword();
+        } else if (intentMode.equals("register")) {
+            signUp();
+        } else {
+            LogUtil.d(TAG, "unknown intent mode");
+        }
+
+    }
+
+    private boolean isPasswordValid(String s) {
+        return s.length() >= 8;
+    }
+
+    private void signUp() {
         AVUser user = new AVUser();
         SharedPreferences pref = getSharedPreferences("user_data", MODE_PRIVATE);
         String nickname = pref.getString("user_name", "");
 
-        if (RegisterContactActivity.getContractType() == CommonData.EContactType.E_EMAIL)
-        {
+        if (RegisterContactActivity.getContractType() == CommonData.EContactType.E_EMAIL) {
             String email = pref.getString("email", "");
             user.setEmail(email);
             user.setUsername(email);
@@ -128,7 +153,17 @@ public class PasswordSettingActivity extends AppCompatActivity {
         });
     }
 
-    private boolean isPasswordValid(String s) {
-        return s.length() >= 8;
+    private void resetPassword() {
+        AVUser.resetPasswordBySmsCodeInBackground(verifyCode, passwordEdit.getText().toString(), new UpdatePasswordCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null) {
+                    ActivityCollector.finishAll();
+                } else {
+                    Toast.makeText(PasswordSettingActivity.this, "验证码错误，请重新输入验证码", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+        });
     }
 }

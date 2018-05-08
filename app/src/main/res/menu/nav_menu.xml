@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_personal_information"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="@string/personal_information"
+            />
+        <item
+            android:id="@+id/nav_following"
+            android:icon="@drawable/ic_content_copy_black_24dp"
+            android:title="@string/following"
+            />
+        <item
+            android:id="@+id/nav_book_mark"
+            android:icon="@drawable/ic_bookmark"
+            android:title="@string/book_mark"
+            />
+        <item
+            android:id="@+id/nav_knowledge"
+            android:icon="@drawable/ic_knowledge"
+            android:title="@string/knowledge"
+            />
+    </group>
+
+    <item android:checkableBehavior="single"
+          android:title=" ">
+        <menu>
+            <item
+                android:id="@+id/nav_night_mode"
+                android:icon="@drawable/ic_night_mode"
+                android:title="@string/night_mode"
+                />
+            <item
+                android:id="@+id/nav_qr_code"
+                android:icon="@drawable/ic_qrcode"
+                android:title="@string/qr_code"
+                />
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings"
+                android:title="@string/setting"
+                />
+            <item
+                android:id="@+id/nav_help_center"
+                android:icon="@drawable/ic_help"
+                android:title="@string/help_center"
+                />
+        </menu>
+
+    </item>
+
+</menu>
