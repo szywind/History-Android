@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -16,13 +15,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.application.cool.history.R;
+import com.application.cool.history.constants.Constants;
+import com.application.cool.history.managers.UserManager;
 import com.application.cool.history.util.ActivityCollector;
-import com.application.cool.history.util.CommonData;
 import com.application.cool.history.util.LogUtil;
+import com.application.cool.history.util.MessageEvent;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SignUpCallback;
 import com.avos.avoscloud.UpdatePasswordCallback;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -122,17 +125,17 @@ public class PasswordSettingActivity extends AppCompatActivity {
     }
 
     private void signUp() {
-        AVUser user = new AVUser();
+        final AVUser user = new AVUser();
         SharedPreferences pref = getSharedPreferences("user_data", MODE_PRIVATE);
-        String nickname = pref.getString("user_name", "");
+        final String nickname = pref.getString("user_name", "");
 
-        if (RegisterContactActivity.getContractType() == CommonData.EContactType.E_EMAIL) {
+        if (RegisterContactActivity.getContractType() == Constants.EContactType.E_EMAIL) {
             String email = pref.getString("email", "");
             user.setEmail(email);
             user.setUsername(email);
 
 
-        } else if (RegisterContactActivity.getContractType() == CommonData.EContactType.E_PHONE) {
+        } else if (RegisterContactActivity.getContractType() == Constants.EContactType.E_PHONE) {
             String phone = pref.getString("phone", "");
             user.setMobilePhoneNumber(phone);
             user.setUsername(phone);
@@ -144,7 +147,12 @@ public class PasswordSettingActivity extends AppCompatActivity {
             @Override
             public void done(AVException e) {
                 if (e == null) {
+
+                    UserManager userManager = UserManager.getSharedInstance(PasswordSettingActivity.this);
+                    userManager.createLoginSession(userManager.getUserId(user), nickname, userManager.getAccountType(user));
                     ActivityCollector.finishAll();
+                    EventBus.getDefault().post(new MessageEvent(Constants.EventType.EVENT_SIGN_UP));
+
                 } else {
                     Toast.makeText(PasswordSettingActivity.this, "注册失败", Toast.LENGTH_LONG).show();
                 }

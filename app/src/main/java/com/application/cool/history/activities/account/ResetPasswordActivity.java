@@ -17,9 +17,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.application.cool.history.R;
+import com.application.cool.history.constants.Constants;
 import com.application.cool.history.managers.UserManager;
 import com.application.cool.history.util.ActivityCollector;
-import com.application.cool.history.util.CommonData;
 import com.application.cool.history.util.LogUtil;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVSMS;
@@ -46,7 +46,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     @BindView(R.id.contact_layout)
     TextInputLayout contactLayout;
 
-    private CommonData.EContactType resetMode;
+    private Constants.EContactType resetMode;
     private SharedPreferences.Editor editor;
     private String contact;
 
@@ -102,17 +102,22 @@ public class ResetPasswordActivity extends AppCompatActivity {
         }
 
         contact = contactEdit.getText().toString();
-
+        final ProgressDialog progressDialog = new ProgressDialog(ResetPasswordActivity.this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("正在查找账户，请稍后...");
+        progressDialog.show();
         UserManager.getSharedInstance(this).findUser("username", contact, new FindCallback<AVUser>() {
             @Override
             public void done(List<AVUser> list, AVException e) {
                 if (e == null) {
+                    progressDialog.dismiss();
                     if (list.size() != 0) {
                         resetPassword();
                     } else {
                         contactLayout.setError("没有查找到此账户，请重新输入。");
                     }
                 } else {
+                    progressDialog.dismiss();
                     Toast.makeText(ResetPasswordActivity.this, "查找用户失败", Toast.LENGTH_LONG).show();
                 }
             }
@@ -129,9 +134,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
         String contact = contactEdit.getText().toString();
 
         if (!contact.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(contact).matches()) {
-            resetMode = CommonData.EContactType.E_EMAIL;
+            resetMode = Constants.EContactType.E_EMAIL;
         } else if (!contact.isEmpty() && Patterns.PHONE.matcher(contact).matches()) {
-            resetMode = CommonData.EContactType.E_PHONE;
+            resetMode = Constants.EContactType.E_PHONE;
         } else {
             valid = false;
             contactLayout.setError(getResources().getString(R.string.valid_id));
@@ -152,7 +157,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
 
     private void resetPassword() {
-        if (resetMode == CommonData.EContactType.E_EMAIL) {
+        if (resetMode == Constants.EContactType.E_EMAIL) {
             editor.putString("email", contactEdit.getText().toString());
             editor.apply();
             UserManager.getSharedInstance(this).resetPasswordWithEmail(contact, new RequestPasswordResetCallback() {
@@ -160,8 +165,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 public void done(AVException e) {
                     if (e == null) {
                         disableBtnNext();
-                        Intent intentEmial =  new Intent(ResetPasswordActivity.this, ResetWithEmailActivity.class);
-                        startActivity(intentEmial);
+                        Intent intentEmail =  new Intent(ResetPasswordActivity.this, ResetWithEmailActivity.class);
+                        intentEmail.putExtra("email", contact);
+                        startActivity(intentEmail);
                     } else {
                         Toast.makeText(ResetPasswordActivity.this, "重置密码操作失败，请采用其他方式", Toast.LENGTH_LONG).show();
                         enableBtnNext();

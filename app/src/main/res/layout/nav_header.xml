@@ -6,9 +6,10 @@
     android:background="@drawable/background">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/icon_image"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:id="@+id/avatar_img"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="10dp"
         android:src="@drawable/ic_account_default"/>
 
     <TextView
@@ -17,18 +18,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="35dp"
-        android:layout_toRightOf="@id/icon_image"
+        android:layout_toRightOf="@id/avatar_img"
         android:layout_marginLeft="80dp"
         android:text="登陆/注册"
+        android:textColor="@color/black"
         android:textSize="20sp"/>
 
     <TextView
-        android:id="@+id/mail"
+        android:id="@+id/user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="null"
-        android:textColor="#FFF"
+        android:layout_marginLeft="20dp"
+        android:textColor="@color/black"
+        android:text="@"
         android:textSize="18sp"
         />
 
@@ -36,9 +39,10 @@
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/mail"
-        android:text="null"
-        android:textColor="#FFF"
+        android:layout_marginLeft="20dp"
+        android:layout_above="@+id/user_email"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         android:textSize="18sp"/>
 
 </RelativeLayout>
