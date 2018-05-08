@@ -207,7 +207,7 @@ public class RegisterContactActivity extends AppCompatActivity {
                 if (curContractType == CommonData.EContactType.E_PHONE) {
                     new AlertDialog.Builder(this)
                             .setTitle("验证手机")
-                            .setMessage("我们会发送你的验证码到\n" + curPhone + "。可能收取短信费用")
+                            .setMessage("我们会发送你的验证码到\n" + curPhone + "。")
                             .setNegativeButton("编辑", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

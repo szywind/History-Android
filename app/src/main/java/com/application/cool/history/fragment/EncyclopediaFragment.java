@@ -46,8 +46,8 @@ public class EncyclopediaFragment extends Fragment {
     }
 
     private class MyAdapter extends IndicatorViewPager.IndicatorViewPagerAdapter {
-        private String[] tabTile = {"人物", "全部", "事件", "考古", "科技", "地理"};
-        private String[] text = {"人物", "全部", "事件", "考古", "科技", "地理"};
+        private String[] tabTile = {"人物", "全部", "事件", "考古", "科技", "地理", "艺术", "政治"};
+        private String[] text = {"人物", "全部", "事件", "考古", "科技", "地理", "艺术", "政治"};
 
         @Override
         public int getCount() {
