@@ -28,8 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.application.cool.history.R;
+import com.application.cool.history.constants.Constants;
 import com.application.cool.history.util.ActivityCollector;
-import com.application.cool.history.util.CommonData;
 import com.application.cool.history.managers.UserManager;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVSMS;
@@ -37,7 +37,6 @@ import com.avos.avoscloud.AVSMSOption;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.RequestMobileCodeCallback;
-import com.avos.avoscloud.RequestPasswordResetCallback;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -50,7 +49,7 @@ import butterknife.OnClick;
 public class RegisterContactActivity extends AppCompatActivity {
 
 
-    private  static CommonData.EContactType curContractType = CommonData.EContactType.E_PHONE;
+    private  static Constants.EContactType curContractType = Constants.EContactType.E_PHONE;
     private String curPhone = null;
     private String curEmail = null;
 
@@ -126,7 +125,7 @@ public class RegisterContactActivity extends AppCompatActivity {
                 }
 
 
-                if (curContractType == CommonData.EContactType.E_PHONE) {
+                if (curContractType == Constants.EContactType.E_PHONE) {
                     if (!isPhoneNumberValid(s1)) {
                         disableBtnNext();
                         contactEdit.setError("请输入有效的电话号码。");
@@ -136,7 +135,7 @@ public class RegisterContactActivity extends AppCompatActivity {
                         curPhone = s1;
                     }
 
-                } else if (curContractType == CommonData.EContactType.E_EMAIL) {
+                } else if (curContractType == Constants.EContactType.E_EMAIL) {
                     if (!isEmailValid(s1)) {
                         disableBtnNext();
                         contactEdit.setError("请输入有效的邮箱地址。");
@@ -186,7 +185,7 @@ public class RegisterContactActivity extends AppCompatActivity {
             case R.id.contact_edit:
                 break;
             case R.id.contact_text:
-                if (curContractType == CommonData.EContactType.E_PHONE) {
+                if (curContractType == Constants.EContactType.E_PHONE) {
                     contactEdit.setHint(R.string.email_hint);
                     contactEdit.setText("");
                     contactEdit.setError(null);
@@ -194,9 +193,9 @@ public class RegisterContactActivity extends AppCompatActivity {
                     contextTitle.setText(R.string.what_is_email);
                     declareText.setText(R.string.email_declare);
                     contactText.setText(R.string.use_phone_num);
-                    curContractType = CommonData.EContactType.E_EMAIL;
+                    curContractType = Constants.EContactType.E_EMAIL;
 
-                } else if (curContractType == CommonData.EContactType.E_EMAIL) {
+                } else if (curContractType == Constants.EContactType.E_EMAIL) {
                     contactEdit.setHint(R.string.phone_hint);
                     contactEdit.setText("");
                     contactEdit.setError(null);
@@ -204,7 +203,7 @@ public class RegisterContactActivity extends AppCompatActivity {
                     contextTitle.setText(R.string.what_is_phone);
                     declareText.setText(R.string.phone_declare);
                     contactText.setText(R.string.use_email);
-                    curContractType = CommonData.EContactType.E_PHONE;
+                    curContractType = Constants.EContactType.E_PHONE;
                 }
                 break;
             case R.id.btn_next:
@@ -214,9 +213,9 @@ public class RegisterContactActivity extends AppCompatActivity {
                     public void done(List<AVUser> list, AVException e) {
                         if (e == null) {
                             if (list.size() != 0) {
-                                if (curContractType == CommonData.EContactType.E_PHONE) {
+                                if (curContractType == Constants.EContactType.E_PHONE) {
                                     contactLayout.setError("此号码已被注册，请更换手机号码重新注册。");
-                                } else if (curContractType == CommonData.EContactType.E_EMAIL) {
+                                } else if (curContractType == Constants.EContactType.E_EMAIL) {
                                     contactLayout.setError("此邮箱地址已经被注册，请更换其他邮箱重新注册。");
                                 }
                                 disableBtnNext();
@@ -249,12 +248,12 @@ public class RegisterContactActivity extends AppCompatActivity {
         return m.matches();
     }
 
-    public static CommonData.EContactType getContractType() {
+    public static Constants.EContactType getContractType() {
         return curContractType;
     }
 
     private void verifyContacts() {
-        if (curContractType == CommonData.EContactType.E_PHONE) {
+        if (curContractType == Constants.EContactType.E_PHONE) {
             new AlertDialog.Builder(this)
                     .setTitle("验证手机")
                     .setMessage("我们会发送你的验证码到\n" + curPhone + "。可能收取短信费用")
@@ -304,7 +303,7 @@ public class RegisterContactActivity extends AppCompatActivity {
                         }
                     })
                     .create().show();
-        } else if (curContractType == CommonData.EContactType.E_EMAIL) {
+        } else if (curContractType == Constants.EContactType.E_EMAIL) {
             // Todo
             editor.putString("email", contactEdit.getText().toString());
             editor.apply();

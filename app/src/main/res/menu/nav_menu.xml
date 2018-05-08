@@ -46,6 +46,10 @@
                 android:icon="@drawable/ic_help"
                 android:title="@string/help_center"
                 />
+            <item
+                android:id="@+id/nav_logout"
+                android:title="登出"
+                />
         </menu>
 
     </item>

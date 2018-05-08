@@ -47,5 +47,17 @@ public interface Constants {
     enum MessageDirection {
         incoming, outgoing
     }
+
+    enum EContactType {
+        E_PHONE,
+        E_EMAIL,
+        E_WECHAT
+    }
+
+    interface EventType {
+        int EVENT_LOGIN = 10001;
+        int EVENT_SIGN_UP = 10002;
+    }
+
 }
 

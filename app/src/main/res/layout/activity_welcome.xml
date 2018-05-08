@@ -21,10 +21,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:layout_margin="30dp"
+        android:layout_margin="40dp"
         android:background="@drawable/button_sign_up"
         android:text="立即注册"
-        android:textColor="#ffff"
+        android:textColor="@color/black"
         android:textSize="18sp"
         android:shadowRadius="4"/>
 

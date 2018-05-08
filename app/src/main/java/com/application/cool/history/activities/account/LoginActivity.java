@@ -3,6 +3,7 @@ package com.application.cool.history.activities.account;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import com.application.cool.history.managers.UserManager;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.application.cool.history.R;
+import com.application.cool.history.constants.Constants;
 import com.application.cool.history.util.ActivityCollector;
-import com.application.cool.history.util.CommonData;
+import com.application.cool.history.util.MessageEvent;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,11 +42,12 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.btn_login)
     Button btnLogin;
 
-    CommonData.EContactType loginType;
+    Constants.EContactType loginType;
     @BindView(R.id.user_id_layout)
     TextInputLayout userIdLayout;
     @BindView(R.id.password_layout)
     TextInputLayout passwordLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
+        progressDialog.setMessage("登录中...");
         progressDialog.show();
 
         AVUser.logInInBackground(userIdEdit.getText().toString(), passwordEdit.getText().toString(), new LogInCallback<AVUser>() {
@@ -143,6 +148,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (e == null) {
                     onLoginSuccess();
                     finish();
+                    UserManager userManager = UserManager.getSharedInstance(LoginActivity.this);
+                    userManager.createLoginSession(userManager.getUserId(avUser),
+                            userManager.getNickname(avUser),
+                            userManager.getAccountType(avUser));
+
+                    EventBus.getDefault().post(new MessageEvent(Constants.EventType.EVENT_LOGIN));
                 } else {
                     progressDialog.dismiss();
                     onLoginFailed();
@@ -178,9 +189,9 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordEdit.getText().toString();
 
         if (!id.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(id).matches()) {
-            loginType = CommonData.EContactType.E_EMAIL;
+            loginType = Constants.EContactType.E_EMAIL;
         } else if (!id.isEmpty() && Patterns.PHONE.matcher(id).matches()) {
-            loginType = CommonData.EContactType.E_PHONE;
+            loginType = Constants.EContactType.E_PHONE;
         } else {
             valid = false;
             userIdLayout.setError(getResources().getString(R.string.valid_id));

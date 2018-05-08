@@ -1,6 +1,11 @@
 package com.application.cool.history;
 
 import android.content.Intent;
+
+import com.application.cool.history.constants.Constants;
+import com.application.cool.history.managers.UserManager;
+
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.application.cool.history.activities.account.LoginActivity;
 import com.application.cool.history.activities.account.RegisterNameActivity;
@@ -22,14 +28,22 @@ import com.application.cool.history.fragment.EncyclopediaFragment;
 import com.application.cool.history.fragment.ForumFragment;
 import com.application.cool.history.fragment.SearchFragment;
 import com.application.cool.history.fragment.TimelineFragment;
+import com.application.cool.history.util.MessageEvent;
 import com.application.cool.history.managers.DBManagers.EventStore;
 import com.application.cool.history.managers.DBManagers.PersonStore;
 import com.application.cool.history.managers.EventManager;
 import com.application.cool.history.managers.LocalDataManager;
 import com.application.cool.history.managers.PersonManager;
-import com.application.cool.history.util.CommonData;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.FindCallback;
@@ -43,11 +57,17 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationBar bottomNavigationBar;
     private DrawerLayout drawerLayoutMenu;
-
+    private NavigationView navView;
     private EncyclopediaFragment encyclopediaFragment;
     private ForumFragment forumFragment;
     private SearchFragment searchFragment;
     private TimelineFragment timelineFragment;
+
+    private CircleImageView imageView;
+    private TextView userName;
+    private TextView userEmail;
+    private CircleImageView userAvatar;
+    private UserManager userManager;
 
 
     private EventManager.EventResponse eventResponse = new EventManager.EventResponse() {
@@ -76,10 +96,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        EventBus.getDefault().register(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         drawerLayoutMenu = findViewById(R.id.drawer_layout);
 
-        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+        navView = (NavigationView) findViewById(R.id.nav_view);
+        userName = navView.getHeaderView(0).findViewById(R.id.username);
+        userEmail = navView.getHeaderView(0).findViewById(R.id.user_email);
+        userAvatar = navView.getHeaderView(0).findViewById(R.id.avatar_img);
+        userManager = UserManager.getSharedInstance(this);
 
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -92,18 +117,27 @@ public class MainActivity extends AppCompatActivity {
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                drawerLayoutMenu.closeDrawers();
+                if (item.getItemId() == R.id.nav_logout) {
+                    userManager.logout();
+                }
+
+                navView.setCheckedItem(-1);
                 return true;
             }
         });
 
-        navView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
-                startActivity(intent);
-            }
-        });
+        if (!UserManager.getSharedInstance(MainActivity.this).isLogin()) {
+            navView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            onLogin();
+        }
+
 
         bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
         bottomNavigationBar
@@ -186,6 +220,40 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, timelineFragment);
             getSupportFragmentManager().beginTransaction().commit();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void LoginOrRegisterEvent(MessageEvent messageEvent) {
+
+        if (messageEvent.messgae == Constants.EventType.EVENT_LOGIN
+                || messageEvent.messgae == Constants.EventType.EVENT_SIGN_UP) {
+            onLogin();
+        }
+    }
+
+    private void onLogin() {
+        View view= navView.getHeaderView(0);
+        view.findViewById(R.id.sign_up_in).setVisibility(View.GONE);
+
+        AVUser user = userManager.currentUser();
+        String url = userManager.getAvatarURL(user);
+        if (url != null) {
+            userAvatar.setImageURI(Uri.parse(url));
+        }
+
+        userName.setText(userManager.getNickname());
+
+        String email = userManager.getEmail(userManager.currentUser());
+        if (null != email) {
+            userEmail.setText(email);
+        }
+        navView.getHeaderView(0).setClickable(false);
     }
 
     private void setupData() {
