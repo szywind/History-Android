@@ -1,5 +1,8 @@
 package com.application.cool.history.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.application.cool.history.db.EventEntity;
 import com.application.cool.history.db.PersonEntity;
 
@@ -10,7 +13,7 @@ import java.util.List;
  * Created by Zhenyuan Shen on 5/6/18.
  */
 
-public class Record {
+public class Record implements Parcelable {
 
     /**
      * 用于表示百科中的记录词条，对应本地DB和LeanCloud DB中的Person表和Event表
@@ -134,4 +137,48 @@ public class Record {
     public String getObjectId() {
         return objectId;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.dynastyDetail);
+        dest.writeString(this.dynasty);
+        dest.writeString(this.name);
+        dest.writeString(this.pinyin);
+        dest.writeInt(this.start);
+        dest.writeString(this.type);
+        dest.writeInt(this.end);
+        dest.writeString(this.avatarURL);
+        dest.writeString(this.infoURL);
+        dest.writeString(this.objectId);
+    }
+
+    protected Record(Parcel in) {
+        this.dynastyDetail = in.readString();
+        this.dynasty = in.readString();
+        this.name = in.readString();
+        this.pinyin = in.readString();
+        this.start = in.readInt();
+        this.type = in.readString();
+        this.end = in.readInt();
+        this.avatarURL = in.readString();
+        this.infoURL = in.readString();
+        this.objectId = in.readString();
+    }
+
+    public static final Parcelable.Creator<Record> CREATOR = new Parcelable.Creator<Record>() {
+        @Override
+        public Record createFromParcel(Parcel source) {
+            return new Record(source);
+        }
+
+        @Override
+        public Record[] newArray(int size) {
+            return new Record[size];
+        }
+    };
 }
