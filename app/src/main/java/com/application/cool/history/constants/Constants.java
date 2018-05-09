@@ -61,6 +61,7 @@ public interface Constants {
 
     enum EDataSource {
         E_RECORD,
+        E_TOPIC,
         E_POST,
         E_USER
     }

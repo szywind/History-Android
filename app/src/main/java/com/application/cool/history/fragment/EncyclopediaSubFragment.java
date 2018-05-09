@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.application.cool.history.R;
-import com.application.cool.history.activities.encyclopedia.EncyclopediaDetail;
+import com.application.cool.history.activities.encyclopedia.EncyclopediaDetailActivity;
 import com.application.cool.history.adapters.RecordListAdapter;
 import com.application.cool.history.managers.LocalDataManager;
 import com.application.cool.history.models.Record;
@@ -30,8 +30,6 @@ public class EncyclopediaSubFragment extends LazyFragment {
     private ListView listView;
     private int tabIndex;
     public static final String INTENT_INT_INDEX = "intent_int_index";
-
-    int typeIndex = 0;
 
     private List<Record> records;
 
@@ -59,9 +57,9 @@ public class EncyclopediaSubFragment extends LazyFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), EncyclopediaDetail.class);
+                Intent intent = new Intent(getContext(), EncyclopediaDetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(EncyclopediaDetail.INTENT_RECORD, records.get(position));
+                bundle.putParcelable(EncyclopediaDetailActivity.INTENT_RECORD, records.get(position));
 
                 intent.putExtras(bundle);
                 //intent.putExtra("event", eventList.get(position));

@@ -1,14 +1,17 @@
 package com.application.cool.history.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 
 import com.application.cool.history.R;
+import com.application.cool.history.activities.community.ForumActivity;
 import com.application.cool.history.adapters.RecordListAdapter;
 import com.application.cool.history.adapters.TopicGridAdapter;
 import com.application.cool.history.managers.LocalDataManager;
@@ -28,8 +31,6 @@ public class CommunitySubFragment extends LazyFragment {
     private GridView gridView;
     private int tabIndex;
     public static final String INTENT_INT_INDEX = "intent_int_index";
-
-    int typeIndex = 0;
 
     private List<Record> topics;
 
@@ -53,6 +54,20 @@ public class CommunitySubFragment extends LazyFragment {
 //        textView.setText("界面" + " " + tabIndex + " 加载完毕");
 
         gridView = (GridView) findViewById(R.id.community_gridview);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), ForumActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(ForumActivity.INTENT_TOPIC, topics.get(position));
+
+                intent.putExtras(bundle);
+
+                //intent.putExtra("event", eventList.get(position));
+                startActivity(intent);
+            }
+        });
 
         handler.sendEmptyMessageDelayed(1, 200);
 

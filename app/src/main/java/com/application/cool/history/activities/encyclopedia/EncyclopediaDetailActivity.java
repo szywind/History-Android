@@ -25,7 +25,7 @@ import java.nio.charset.StandardCharsets;
  * Created by Zhenyuan Shen on 5/9/18.
  */
 
-public class EncyclopediaDetail extends AppCompatActivity {
+public class EncyclopediaDetailActivity extends AppCompatActivity {
 
     public static final String INTENT_RECORD = "intent_record";
 

@@ -27,19 +27,23 @@ import com.application.cool.history.models.Record;
 import com.avos.avoscloud.AVObject;
 import com.shizhefei.fragment.LazyFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class ForumSubFragment extends LazyFragment {
+
+    public static final String INTENT_INT_INDEX = "intent_int_index";
+    public static final String INTENT_TOPIC_NAME = "intent_topic_name";
+
     private ProgressBar progressBar;
 //    private TextView textView;
 
     private ListView listView;
     private int tabIndex;
-    public static final String INTENT_INT_INDEX = "intent_int_index";
 
-    private Record topic;
-    private List<AVObject> posts;   // TODO List<Post> posts;
+    private String topicName;
+    private List<AVObject> posts = new ArrayList<>();   // TODO List<Post> posts;
     private PostListAdapter adapter;
 
     public PostManager.PostResponse postResponse = new PostManager.PostResponse() {
@@ -48,6 +52,7 @@ public class ForumSubFragment extends LazyFragment {
             for (AVObject post : list) {
                 posts.add(post);
             }
+            refreshUI();
         }
     };
 
@@ -65,6 +70,8 @@ public class ForumSubFragment extends LazyFragment {
 
         setContentView(R.layout.fragment_forum_tab_item);
         tabIndex = getArguments().getInt(INTENT_INT_INDEX);
+        topicName = getArguments().getString(INTENT_TOPIC_NAME);
+
         progressBar = (ProgressBar) findViewById(R.id.fragment_mainTab_item_progressBar);
 //        textView = (TextView) findViewById(R.id.fragment_mainTab_item_textView);
 //        textView.setText("界面" + " " + tabIndex + " 加载完毕");
@@ -86,6 +93,8 @@ public class ForumSubFragment extends LazyFragment {
 
         handler.sendEmptyMessageDelayed(1, 200);
 
+        PostManager.getSharedInstance(getContext())
+                .fetchPostFromLC(LCConstants.PostKey.subtopic, topicName, postResponse);
     }
 
     @Override
@@ -97,10 +106,8 @@ public class ForumSubFragment extends LazyFragment {
     public void refreshUI(){
 
 //        {"最新发布", "最多回复", "最多喜欢"};
-        PostManager.getSharedInstance(getContext())
-                .fetchPostFromLC(LCConstants.PostKey.subtopic, topic.getName(), postResponse);
 
-        Log.i("people: ", Integer.toString(posts.size()));
+        Log.i("posts: ", Integer.toString(posts.size()));
 
         switch (tabIndex) {
             case 0:
