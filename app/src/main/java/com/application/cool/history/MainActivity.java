@@ -15,18 +15,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.application.cool.history.activities.account.LoginActivity;
-import com.application.cool.history.activities.account.RegisterNameActivity;
 import com.application.cool.history.activities.account.WelcomeActivity;
 import com.application.cool.history.db.EventEntity;
 import com.application.cool.history.db.PersonEntity;
 import com.application.cool.history.fragment.EncyclopediaFragment;
-import com.application.cool.history.fragment.ForumFragment;
 import com.application.cool.history.fragment.SearchFragment;
 import com.application.cool.history.fragment.TimelineFragment;
 import com.application.cool.history.util.MessageEvent;
@@ -45,9 +41,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.FindCallback;
 
 import java.util.List;
 

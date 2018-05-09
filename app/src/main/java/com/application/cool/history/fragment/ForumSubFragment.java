@@ -4,36 +4,58 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.application.cool.history.R;
+import com.application.cool.history.activities.community.PostDetailActivity;
 import com.application.cool.history.activities.encyclopedia.EncyclopediaDetailActivity;
+import com.application.cool.history.adapters.PostListAdapter;
 import com.application.cool.history.adapters.RecordListAdapter;
-import com.application.cool.history.managers.LocalDataManager;
+import com.application.cool.history.constants.LCConstants;
+import com.application.cool.history.managers.PostManager;
+import com.application.cool.history.models.Post;
 import com.application.cool.history.models.Record;
+import com.avos.avoscloud.AVObject;
 import com.shizhefei.fragment.LazyFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Zhenyuan Shen on 5/8/18.
- */
 
-public class EncyclopediaSubFragment extends LazyFragment {
+public class ForumSubFragment extends LazyFragment {
+
+    public static final String INTENT_INT_INDEX = "intent_int_index";
+    public static final String INTENT_TOPIC_NAME = "intent_topic_name";
+
     private ProgressBar progressBar;
 //    private TextView textView;
 
     private ListView listView;
     private int tabIndex;
-    public static final String INTENT_INT_INDEX = "intent_int_index";
 
-    private List<Record> records;
+    private String topicName;
+    private List<AVObject> posts = new ArrayList<>();   // TODO List<Post> posts;
+    private PostListAdapter adapter;
 
-    private RecordListAdapter adapter;
+    public PostManager.PostResponse postResponse = new PostManager.PostResponse() {
+        @Override
+        public void processFinish(List<AVObject> list) {
+            for (AVObject post : list) {
+                posts.add(post);
+            }
+            refreshUI();
+        }
+    };
+
 
     @Override
     protected void onCreateViewLazy(final Bundle savedInstanceState) {
@@ -46,20 +68,22 @@ public class EncyclopediaSubFragment extends LazyFragment {
             }
         };
 
-        setContentView(R.layout.fragment_encyclopedia_tab_item);
+        setContentView(R.layout.fragment_forum_tab_item);
         tabIndex = getArguments().getInt(INTENT_INT_INDEX);
+        topicName = getArguments().getString(INTENT_TOPIC_NAME);
+
         progressBar = (ProgressBar) findViewById(R.id.fragment_mainTab_item_progressBar);
 //        textView = (TextView) findViewById(R.id.fragment_mainTab_item_textView);
 //        textView.setText("界面" + " " + tabIndex + " 加载完毕");
 
-        listView = (ListView) findViewById(R.id.record_listview);
+        listView = (ListView) findViewById(R.id.post_listview);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), EncyclopediaDetailActivity.class);
+                Intent intent = new Intent(getContext(), PostDetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(EncyclopediaDetailActivity.INTENT_RECORD, records.get(position));
+                bundle.putParcelable(PostDetailActivity.INTENT_RECORD, posts.get(position));
 
                 intent.putExtras(bundle);
                 //intent.putExtra("event", eventList.get(position));
@@ -69,6 +93,8 @@ public class EncyclopediaSubFragment extends LazyFragment {
 
         handler.sendEmptyMessageDelayed(1, 200);
 
+        PostManager.getSharedInstance(getContext())
+                .fetchPostFromLC(LCConstants.PostKey.subtopic, topicName, postResponse);
     }
 
     @Override
@@ -79,43 +105,27 @@ public class EncyclopediaSubFragment extends LazyFragment {
 
     public void refreshUI(){
 
-//        {"人物", "全部", "事件", "地理", "艺术", "科技"};
+//        {"最新发布", "最多回复", "最多喜欢"};
+
+        Log.i("posts: ", Integer.toString(posts.size()));
+
         switch (tabIndex) {
             case 0:
-                records = LocalDataManager.getSharedInstance(getContext()).allPeople;
-                Log.i("people: ", Integer.toString(records.size()));
                 break;
 
             case 1:
-                records = LocalDataManager.getSharedInstance(getContext()).allEvents;
-                Log.i("all: ", Integer.toString(records.size()));
+//                posts = posts.sortByRepies();
                 break;
 
             case 2:
-                records = LocalDataManager.getSharedInstance(getContext()).events;
-                Log.i("events: ", Integer.toString(records.size()));
-                break;
-
-            case 3:
-                records = LocalDataManager.getSharedInstance(getContext()).geo;
-                Log.i("geo: ", Integer.toString(records.size()));
-                break;
-
-            case 4:
-                records = LocalDataManager.getSharedInstance(getContext()).art;
-                Log.i("art: ", Integer.toString(records.size()));
-                break;
-
-            case 5:
-                records = LocalDataManager.getSharedInstance(getContext()).tech;
-                Log.i("tech: ", Integer.toString(records.size()));
+//                posts = posts.sortByLikes();
                 break;
 
             default:
                 break;
         }
 
-        adapter = new RecordListAdapter(getActivity(), records);
+        adapter = new PostListAdapter(getActivity(), posts);
         listView.setAdapter(adapter);
     }
 

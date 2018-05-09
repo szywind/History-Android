@@ -9,22 +9,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.application.cool.history.R;
+import com.application.cool.history.constants.LCConstants;
+import com.application.cool.history.managers.PostManager;
 import com.application.cool.history.models.Record;
+import com.avos.avoscloud.AVObject;
 import com.koushikdutta.ion.Ion;
 
 import java.util.List;
 
 /**
- * Created by Zhenyuan Shen on 5/8/18.
+ * Created by Zhenyuan Shen on 5/9/18.
  */
 
-public class RecordListAdapter extends BaseAdapter {
+
+public class PostListAdapter extends BaseAdapter {
 
     private Context context;
-    private List<Record> list;
+    private List<AVObject> list;
 
 
-    public RecordListAdapter(Context context, List<Record> list) {
+    public PostListAdapter(Context context, List<AVObject> list) {
         this.context = context;
         this.list = list;
     }
@@ -49,9 +53,9 @@ public class RecordListAdapter extends BaseAdapter {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.record_cell, null);
+            convertView = inflater.inflate(R.layout.post_cell, null);
             holder = new ViewHolder();
-            holder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
+//            holder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
             holder.name = (TextView) convertView.findViewById(R.id.name);
 
             holder.padding = (TextView) convertView.findViewById(R.id.padding);
@@ -60,16 +64,16 @@ public class RecordListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        final Record record = list.get(position);
+        final AVObject post = list.get(position);
 
-        if (record != null) {
+        if (post != null) {
 
-            holder.name.setText(record.getName());
+            holder.name.setText(PostManager.getSharedInstance(context).getTitle(post));
 
-            Ion.with(holder.avatar).fitXY().placeholder(R.drawable.placeholder).error(R.drawable.placeholder).load(record.getAvatarURL());
+//            Ion.with(holder.avatar).fitXY().placeholder(R.drawable.placeholder).error(R.drawable.placeholder).load(record.getAvatarURL());
         }
 
-        if (position == getCount()-1){
+        if (position == getCount()-1) {
             ViewGroup.LayoutParams params = holder.padding.getLayoutParams();
             params.height = context.getResources().getDimensionPixelSize(R.dimen.text_view_padding_height);
             holder.padding.setLayoutParams(params);
@@ -82,12 +86,12 @@ public class RecordListAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        ImageView avatar;
+//        ImageView avatar;
         TextView name;
         TextView padding;
     }
 
-    public void updateListView(List<Record> list) {
+    public void updateListView(List<AVObject> list) {
         this.list = list;
         notifyDataSetChanged();
     }

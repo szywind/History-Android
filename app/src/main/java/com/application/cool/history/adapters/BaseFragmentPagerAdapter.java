@@ -16,7 +16,9 @@ import com.application.cool.history.R;
 import com.application.cool.history.constants.Constants;
 import com.application.cool.history.fragment.CommunitySubFragment;
 import com.application.cool.history.fragment.EncyclopediaSubFragment;
+import com.application.cool.history.fragment.ForumSubFragment;
 import com.application.cool.history.models.Post;
+import com.application.cool.history.models.Record;
 import com.application.cool.history.util.DisplayUtil;
 import com.shizhefei.view.indicator.IndicatorViewPager;
 
@@ -30,13 +32,25 @@ public class BaseFragmentPagerAdapter extends IndicatorViewPager.IndicatorFragme
     private String[] tabTitle;
     private Constants.EDataSource dataSource;
 
+    private String topicName;
+
     public BaseFragmentPagerAdapter(FragmentManager fragmentManager,
-                                    LayoutInflater inflate, Context context, Constants.EDataSource dataSource) {
+                                    LayoutInflater inflate, Context context,
+                                    Constants.EDataSource dataSource) {
+
+        this(fragmentManager, inflate, context, dataSource, null);
+    }
+
+    public BaseFragmentPagerAdapter(FragmentManager fragmentManager,
+                                    LayoutInflater inflate, Context context,
+                                    Constants.EDataSource dataSource, String topicName) {
         super(fragmentManager);
 
         this.context = context;
         this.inflate = inflate;
         this.dataSource = dataSource;
+
+        this.topicName = topicName;
 
         switch (dataSource) {
             case E_RECORD:
@@ -45,9 +59,15 @@ public class BaseFragmentPagerAdapter extends IndicatorViewPager.IndicatorFragme
                 this.tabTitle = recordTitle;
                 break;
 
+            case E_TOPIC:
+                // TODO
+                String[] topicTitle = {"关注", "人物", "事件", "地理", "艺术", "科技"};
+                this.tabTitle = topicTitle;
+                break;
+
             case E_POST:
                 // TODO
-                String[] postTitle = {"关注", "人物", "事件", "地理", "艺术", "科技"};
+                String[] postTitle = {"最新发布", "最多回复", "最多喜欢"};
                 this.tabTitle = postTitle;
                 break;
 
@@ -92,19 +112,27 @@ public class BaseFragmentPagerAdapter extends IndicatorViewPager.IndicatorFragme
                 encyclopediaSubFragment.setArguments(bundle);
                 return encyclopediaSubFragment;
 
-            case E_POST:
+            case E_TOPIC:
                 CommunitySubFragment communitySubFragment = new CommunitySubFragment();
                 bundle.putInt(CommunitySubFragment.INTENT_INT_INDEX, position);
                 communitySubFragment.setArguments(bundle);
                 return communitySubFragment;
 
+            case E_POST:
+                ForumSubFragment forumSubFragment = new ForumSubFragment();
+                bundle.putInt(ForumSubFragment.INTENT_INT_INDEX, position);
+                bundle.putString(ForumSubFragment.INTENT_TOPIC_NAME, topicName);
+                forumSubFragment.setArguments(bundle);
+                return forumSubFragment;
+
+            case E_USER:
+                // TODO
+                return null;
+
             default:
                 return null;
 
         }
-
-
-
     }
 
     @Override

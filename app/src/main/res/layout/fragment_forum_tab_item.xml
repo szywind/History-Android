@@ -20,11 +20,11 @@
         <!--android:visibility="gone" />-->
 
     <ListView
-        android:id="@+id/record_listview"
+        android:id="@+id/post_listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:dividerHeight="1dp"
-        android:divider="@drawable/list_divider"
+        android:divider="@drawable/post_list_divider"
         android:overScrollMode="never"></ListView>
 
 </FrameLayout>

@@ -1,5 +1,8 @@
 package com.application.cool.history.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.application.cool.history.db.PostEntity;
 
 import java.util.ArrayList;
@@ -9,7 +12,7 @@ import java.util.List;
  * Created by Zhenyuan Shen on 5/6/18.
  */
 
-public class Post {
+public class Post implements Parcelable {
 
     /**
      * 用于表示社区中的文章，对应LeanCloud DB中的Post表，暂时没有使用
@@ -127,4 +130,55 @@ public class Post {
         return posts;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.objectId);
+        dest.writeString(this.imageURL);
+        dest.writeString(this.authorId);
+        dest.writeInt(this.dislikes);
+        dest.writeInt(this.subscribers);
+        dest.writeString(this.dynasty);
+        dest.writeString(this.type);
+        dest.writeInt(this.likes);
+        dest.writeString(this.title);
+        dest.writeString(this.topic);
+        dest.writeString(this.subtopic);
+        dest.writeInt(this.replies);
+        dest.writeString(this.textURL);
+        dest.writeInt(this.reviews);
+    }
+
+    protected Post(Parcel in) {
+        this.objectId = in.readString();
+        this.imageURL = in.readString();
+        this.authorId = in.readString();
+        this.dislikes = in.readInt();
+        this.subscribers = in.readInt();
+        this.dynasty = in.readString();
+        this.type = in.readString();
+        this.likes = in.readInt();
+        this.title = in.readString();
+        this.topic = in.readString();
+        this.subtopic = in.readString();
+        this.replies = in.readInt();
+        this.textURL = in.readString();
+        this.reviews = in.readInt();
+    }
+
+    public static final Parcelable.Creator<Post> CREATOR = new Parcelable.Creator<Post>() {
+        @Override
+        public Post createFromParcel(Parcel source) {
+            return new Post(source);
+        }
+
+        @Override
+        public Post[] newArray(int size) {
+            return new Post[size];
+        }
+    };
 }

@@ -45,7 +45,7 @@ public class PostManager {
     public String getImageURL(AVObject post) {
         return post.getString(LCConstants.PostKey.imageURL);
     }
-    public String getText(AVObject post) {
+    public String getTextURL(AVObject post) {
         return post.getString(LCConstants.PostKey.textURL);
     }
     public int getLikes(AVObject post) {
@@ -97,7 +97,7 @@ public class PostManager {
                 if (e == null) {
                     delegate.processFinish(list);
                 } else {
-                    Log.e(TAG,"Fetch All Events Error: " + e.toString());
+                    Log.e(TAG,"Fetch All Posts Error: " + e.toString());
                 }
             }
         });
@@ -113,7 +113,7 @@ public class PostManager {
                 if (e == null) {
                     delegate.processFinish(list);
                 } else {
-                    Log.e(TAG,"Fetch All Events Error: " + e.toString());
+                    Log.e(TAG,"Fetch Specific Posts Error: " + e.toString());
                 }
             }
         });
@@ -129,7 +129,7 @@ public class PostManager {
                 if (e == null) {
                     delegate.processFinish(list);
                 } else {
-                    Log.e(TAG,"Fetch All Events Error: " + e.toString());
+                    Log.e(TAG,"Find Posts Error: " + e.toString());
                 }
             }
         });

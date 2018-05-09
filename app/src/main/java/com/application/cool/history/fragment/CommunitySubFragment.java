@@ -1,18 +1,21 @@
 package com.application.cool.history.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
-import android.widget.ListView;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ProgressBar;
 
 import com.application.cool.history.R;
+import com.application.cool.history.activities.community.ForumActivity;
 import com.application.cool.history.adapters.RecordListAdapter;
+import com.application.cool.history.adapters.TopicGridAdapter;
 import com.application.cool.history.managers.LocalDataManager;
 import com.application.cool.history.models.Record;
-import com.application.cool.history.models.State;
 import com.shizhefei.fragment.LazyFragment;
 
 import java.util.List;
@@ -25,15 +28,13 @@ public class CommunitySubFragment extends LazyFragment {
     private ProgressBar progressBar;
 //    private TextView textView;
 
-    private ListView listView;
+    private GridView gridView;
     private int tabIndex;
     public static final String INTENT_INT_INDEX = "intent_int_index";
 
-    int typeIndex = 0;
-
     private List<Record> topics;
 
-    private RecordListAdapter adapter;
+    private TopicGridAdapter adapter;
 
     @Override
     protected void onCreateViewLazy(final Bundle savedInstanceState) {
@@ -46,13 +47,27 @@ public class CommunitySubFragment extends LazyFragment {
             }
         };
 
-        setContentView(R.layout.fragment_tabmain_item);
+        setContentView(R.layout.fragment_community_tab_item);
         tabIndex = getArguments().getInt(INTENT_INT_INDEX);
         progressBar = (ProgressBar) findViewById(R.id.fragment_mainTab_item_progressBar);
 //        textView = (TextView) findViewById(R.id.fragment_mainTab_item_textView);
 //        textView.setText("界面" + " " + tabIndex + " 加载完毕");
 
-        listView = (ListView) findViewById(R.id.record_listview);
+        gridView = (GridView) findViewById(R.id.community_gridview);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), ForumActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(ForumActivity.INTENT_TOPIC, topics.get(position));
+
+                intent.putExtras(bundle);
+
+                //intent.putExtra("event", eventList.get(position));
+                startActivity(intent);
+            }
+        });
 
         handler.sendEmptyMessageDelayed(1, 200);
 
@@ -100,8 +115,9 @@ public class CommunitySubFragment extends LazyFragment {
             default:
                 break;
         }
-        adapter = new RecordListAdapter(getActivity(), topics);
-        listView.setAdapter(adapter);
+
+        adapter = new TopicGridAdapter(getActivity(), topics);
+        gridView.setAdapter(adapter);
     }
 
 

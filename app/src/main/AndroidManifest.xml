@@ -70,8 +70,17 @@
 
         <!-- Encyclopedia module -->
         <activity
-            android:name=".activities.encyclopedia.EncyclopediaDetail"
+            android:name=".activities.encyclopedia.EncyclopediaDetailActivity"
             android:windowSoftInputMode="adjustResize"/>
+
+        <!-- Community module -->
+        <activity
+            android:name=".activities.community.ForumActivity"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".activities.community.PostDetailActivity"
+            android:windowSoftInputMode="adjustResize"/>》
+
     </application>
 
 </manifest>

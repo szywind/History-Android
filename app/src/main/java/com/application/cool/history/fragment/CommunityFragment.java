@@ -56,7 +56,7 @@ public class CommunityFragment extends Fragment {
         indicatorViewPager = new IndicatorViewPager(scrollIndicatorView, viewPager);
         inflate = LayoutInflater.from(getActivity().getApplicationContext());
         indicatorViewPager.setAdapter(new BaseFragmentPagerAdapter(getActivity().getSupportFragmentManager(),
-                inflate, getContext(), Constants.EDataSource.E_POST));
+                inflate, getContext(), Constants.EDataSource.E_TOPIC));
 
         return view;
     }
