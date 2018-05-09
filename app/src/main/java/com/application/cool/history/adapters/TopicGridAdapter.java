@@ -15,16 +15,15 @@ import com.koushikdutta.ion.Ion;
 import java.util.List;
 
 /**
- * Created by Zhenyuan Shen on 5/8/18.
+ * Created by Zhenyuan Shen on 5/9/18.
  */
 
-public class RecordListAdapter extends BaseAdapter {
+public class TopicGridAdapter extends BaseAdapter {
 
     private Context context;
     private List<Record> list;
 
-
-    public RecordListAdapter(Context context, List<Record> list) {
+    public TopicGridAdapter(Context context, List<Record> list) {
         this.context = context;
         this.list = list;
     }
@@ -36,61 +35,46 @@ public class RecordListAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return list.get(position);
+        return null;
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return 0;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
+
         if (convertView == null) {
+
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.record_cell, null);
+            convertView = inflater.inflate(R.layout.topic_cell, null);
             holder = new ViewHolder();
             holder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
             holder.name = (TextView) convertView.findViewById(R.id.name);
 
-            holder.padding = (TextView) convertView.findViewById(R.id.padding);
             convertView.setTag(holder);
+
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        final Record record = list.get(position);
+        final Record topic = list.get(position);
 
-        if (record != null) {
+        if (topic != null) {
 
-            holder.name.setText(record.getName());
+            holder.name.setText(topic.getName());
 
-            Ion.with(holder.avatar).fitXY().placeholder(R.drawable.placeholder).error(R.drawable.placeholder).load(record.getAvatarURL());
+            Ion.with(holder.avatar).fitXY().placeholder(R.drawable.placeholder).error(R.drawable.placeholder).load(topic.getAvatarURL());
         }
 
-        if (position == getCount()-1){
-            ViewGroup.LayoutParams params = holder.padding.getLayoutParams();
-            params.height = context.getResources().getDimensionPixelSize(R.dimen.text_view_padding_height);
-            holder.padding.setLayoutParams(params);
-        } else {
-            ViewGroup.LayoutParams params = holder.padding.getLayoutParams();
-            params.height = context.getResources().getDimensionPixelSize(R.dimen.zero_height);
-            holder.padding.setLayoutParams(params);
-        }
         return convertView;
     }
 
     class ViewHolder {
         ImageView avatar;
         TextView name;
-        TextView padding;
     }
-
-    public void updateListView(List<Record> list) {
-        this.list = list;
-        notifyDataSetChanged();
-    }
-
-
 }

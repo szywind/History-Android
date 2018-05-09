@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.application.cool.history.R;
 import com.application.cool.history.activities.encyclopedia.EncyclopediaDetail;
@@ -49,7 +48,7 @@ public class EncyclopediaSubFragment extends LazyFragment {
             }
         };
 
-        setContentView(R.layout.fragment_tabmain_item);
+        setContentView(R.layout.fragment_encyclopedia_tab_item);
         tabIndex = getArguments().getInt(INTENT_INT_INDEX);
         progressBar = (ProgressBar) findViewById(R.id.fragment_mainTab_item_progressBar);
 //        textView = (TextView) findViewById(R.id.fragment_mainTab_item_textView);
@@ -117,6 +116,7 @@ public class EncyclopediaSubFragment extends LazyFragment {
             default:
                 break;
         }
+
         adapter = new RecordListAdapter(getActivity(), records);
         listView.setAdapter(adapter);
     }
