@@ -1,15 +1,18 @@
 package com.application.cool.history.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.application.cool.history.R;
+import com.application.cool.history.activities.encyclopedia.EncyclopediaDetail;
 import com.application.cool.history.adapters.RecordListAdapter;
 import com.application.cool.history.managers.LocalDataManager;
 import com.application.cool.history.models.Record;
@@ -53,6 +56,19 @@ public class EncyclopediaSubFragment extends LazyFragment {
 //        textView.setText("界面" + " " + tabIndex + " 加载完毕");
 
         listView = (ListView) findViewById(R.id.record_listview);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), EncyclopediaDetail.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(EncyclopediaDetail.INTENT_RECORD, records.get(position));
+
+                intent.putExtras(bundle);
+                //intent.putExtra("event", eventList.get(position));
+                startActivity(intent);
+            }
+        });
 
         handler.sendEmptyMessageDelayed(1, 200);
 
