@@ -3,6 +3,7 @@ package com.application.cool.history;
 import android.content.Intent;
 
 import com.application.cool.history.constants.Constants;
+import com.application.cool.history.fragment.CommunityFragment;
 import com.application.cool.history.managers.UserManager;
 
 import android.net.Uri;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayoutMenu;
     private NavigationView navView;
     private EncyclopediaFragment encyclopediaFragment;
-    private ForumFragment forumFragment;
+    private CommunityFragment communityFragment;
     private SearchFragment searchFragment;
     private TimelineFragment timelineFragment;
 
@@ -167,24 +168,28 @@ public class MainActivity extends AppCompatActivity {
                         }
                         transaction.replace(R.id.fragment_container, timelineFragment);
                         break;
+
                     case 1:
-                        if (forumFragment == null) {
-                            forumFragment = new ForumFragment();
+                        if (communityFragment == null) {
+                            communityFragment = new CommunityFragment();
                         }
-                        transaction.replace(R.id.fragment_container, forumFragment);
+                        transaction.replace(R.id.fragment_container, communityFragment);
                         break;
+
                     case 2:
                         if (encyclopediaFragment == null) {
                             encyclopediaFragment = new EncyclopediaFragment();
                         }
                         transaction.replace(R.id.fragment_container, encyclopediaFragment);
                         break;
+
                     case 3:
                         if (searchFragment == null) {
                             searchFragment = new SearchFragment();
                         }
                         transaction.replace(R.id.fragment_container, searchFragment);
                         break;
+
                     default:
                         break;
                 }
