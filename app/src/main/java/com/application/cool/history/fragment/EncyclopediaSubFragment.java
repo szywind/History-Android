@@ -21,7 +21,7 @@ import java.util.List;
  * Created by Zhenyuan Shen on 5/8/18.
  */
 
-public class MoreFragment extends LazyFragment {
+public class EncyclopediaSubFragment extends LazyFragment {
     private ProgressBar progressBar;
 //    private TextView textView;
 
@@ -70,27 +70,34 @@ public class MoreFragment extends LazyFragment {
         switch (tabIndex) {
             case 0:
                 records = LocalDataManager.getSharedInstance(getContext()).allPeople;
-                Log.i("all people: ", Integer.toString(records.size()));
+                Log.i("people: ", Integer.toString(records.size()));
                 break;
+
             case 1:
-                records = LocalDataManager.getSharedInstance(getContext()).allRecords;
-                Log.i("all records: ", Integer.toString(records.size()));
-                break;
-            case 2:
                 records = LocalDataManager.getSharedInstance(getContext()).allEvents;
+                Log.i("all: ", Integer.toString(records.size()));
+                break;
+
+            case 2:
+                records = LocalDataManager.getSharedInstance(getContext()).events;
                 Log.i("events: ", Integer.toString(records.size()));
                 break;
+
             case 3:
                 records = LocalDataManager.getSharedInstance(getContext()).geo;
                 Log.i("geo: ", Integer.toString(records.size()));
+                break;
+
             case 4:
                 records = LocalDataManager.getSharedInstance(getContext()).art;
                 Log.i("art: ", Integer.toString(records.size()));
                 break;
+
             case 5:
                 records = LocalDataManager.getSharedInstance(getContext()).tech;
                 Log.i("tech: ", Integer.toString(records.size()));
                 break;
+
             default:
                 break;
         }

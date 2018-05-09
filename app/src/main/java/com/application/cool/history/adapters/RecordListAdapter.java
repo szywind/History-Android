@@ -15,8 +15,6 @@ import com.koushikdutta.ion.Ion;
 
 import java.util.List;
 
-import static java.lang.System.load;
-
 /**
  * Created by Zhenyuan Shen on 5/8/18.
  */
@@ -52,7 +50,7 @@ public class RecordListAdapter extends BaseAdapter {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.record_list, null);
+            convertView = inflater.inflate(R.layout.record_cell, null);
             holder = new ViewHolder();
             holder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
             holder.name = (TextView) convertView.findViewById(R.id.name);

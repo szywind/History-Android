@@ -59,5 +59,11 @@ public interface Constants {
         int EVENT_SIGN_UP = 10002;
     }
 
+    enum EDataSource {
+        E_RECORD,
+        E_POST,
+        E_USER
+    }
+
 }
 

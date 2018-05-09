@@ -14,27 +14,28 @@
         android:layout_gravity="center_horizontal"
         android:weightSum="1">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
-            >
+        <!--<LinearLayout-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_width="70dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--&gt;-->
 
-            <ImageView
-                android:id="@+id/avatar"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+            <!--<ImageView-->
+                <!--android:id="@+id/avatar"-->
+                <!--android:layout_width="70dp"-->
+                <!--android:layout_height="70dp"-->
 
-                android:layout_gravity="right|bottom"
-                android:src="@drawable/empty"
+                <!--android:layout_gravity="right|bottom"-->
+                <!--android:src="@drawable/empty"-->
 
-                />
-        </LinearLayout>
+                <!--/>-->
+        <!--</LinearLayout>-->
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp">
 
             <TextView
                 android:id="@+id/name"

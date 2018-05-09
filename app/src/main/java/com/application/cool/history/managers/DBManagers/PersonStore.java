@@ -53,6 +53,7 @@ public class PersonStore extends LocalStore {
     }
 
     public List<Record> fetchFilteredPeople(Set<String> topics) {
+
         List<PersonEntity> personEntities = personDao.queryBuilder()
                 .where(PersonEntityDao.Properties.Name.in(topics)).list();
         return Record.getRecordsWithPeople(personEntities);
