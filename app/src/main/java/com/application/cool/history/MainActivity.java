@@ -1,7 +1,9 @@
 package com.application.cool.history;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 
+import com.application.cool.history.activities.navigation.SocialActivity;
 import com.application.cool.history.constants.Constants;
 import com.application.cool.history.fragment.CommunityFragment;
 import com.application.cool.history.managers.UserManager;
@@ -12,12 +14,15 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.application.cool.history.activities.account.WelcomeActivity;
 import com.application.cool.history.db.EventEntity;
@@ -35,6 +40,7 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
+import com.koushikdutta.ion.Ion;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -113,6 +119,13 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.nav_logout) {
                     userManager.logout();
+                } else if (item.getItemId() == R.id.nav_following) {
+                    if (!userManager.isLogin()) {
+                        Toast.makeText(getBaseContext(), "请先登录", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, SocialActivity.class);
+                        startActivity(intent);
+                    }
                 }
 
                 navView.setCheckedItem(-1);
@@ -244,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
         String url = userManager.getAvatarURL(user);
         if (url != null) {
             userAvatar.setImageURI(Uri.parse(url));
+//            Ion.with(userAvatar).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).load(url);
         }
 
         userName.setText(userManager.getNickname());

@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 import com.application.cool.history.R;
 import com.application.cool.history.activities.community.PostDetailActivity;
 import com.application.cool.history.activities.encyclopedia.EncyclopediaDetailActivity;
-import com.application.cool.history.activities.social.UserProfileDetailActivity;
+import com.application.cool.history.activities.navigation.UserProfileDetailActivity;
 import com.application.cool.history.adapters.PostListAdapter;
 import com.application.cool.history.adapters.RecordListAdapter;
 import com.application.cool.history.adapters.UserListAdapter;
@@ -57,7 +57,7 @@ public class SearchSubFragment extends LazyFragment {
         public void processFinish(List<AVObject> list) {
             posts = list;
             Log.i("search post: ", Integer.toString(posts.size()));
-            postListAdapter = new PostListAdapter(getActivity(), posts);
+            postListAdapter = new PostListAdapter(getContext(), posts);
             listView.setAdapter(postListAdapter);
         }
     };
@@ -72,7 +72,7 @@ public class SearchSubFragment extends LazyFragment {
         public void processFinish(List<AVUser> list) {
             users = list;
             Log.i("search user: ", Integer.toString(users.size()));
-            userListAdapter = new UserListAdapter(getActivity(), users);
+            userListAdapter = new UserListAdapter(getContext(),users);
             listView.setAdapter(userListAdapter);
         }
     };
@@ -163,7 +163,7 @@ public class SearchSubFragment extends LazyFragment {
                     }
                 }
                 Log.i("search record: ", Integer.toString(records.size()));
-                recordListAdapter = new RecordListAdapter(getActivity(), records);
+                recordListAdapter = new RecordListAdapter(getContext(),records);
                 listView.setAdapter(recordListAdapter);
                 return;
 
@@ -177,7 +177,7 @@ public class SearchSubFragment extends LazyFragment {
                 }
 
                 Log.i("search record: ", Integer.toString(records.size()));
-                recordListAdapter = new RecordListAdapter(getActivity(), records);
+                recordListAdapter = new RecordListAdapter(getContext(),records);
                 listView.setAdapter(recordListAdapter);
                 return;
 

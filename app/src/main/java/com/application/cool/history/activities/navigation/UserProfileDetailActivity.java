@@ -1,4 +1,4 @@
-package com.application.cool.history.activities.social;
+package com.application.cool.history.activities.navigation;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

@@ -7,5 +7,6 @@ import java.util.Set;
  * Created by Zhenyuan Shen on 5/6/18.
  */
 public class State {
-    public static Set<String> currentSubscribeTopics = new HashSet<String>();
+    public static Set<String> currentSubscribeTopics = new HashSet<>();
+    public static Set<String> currentFollowees = new HashSet<>();
 }
