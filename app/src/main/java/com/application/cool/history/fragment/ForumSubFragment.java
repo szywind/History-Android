@@ -116,7 +116,7 @@ public class ForumSubFragment extends LazyFragment {
                 break;
         }
 
-        adapter = new PostListAdapter(getActivity(), posts);
+        adapter = new PostListAdapter(getContext(), posts);
         listView.setAdapter(adapter);
     }
 

@@ -18,6 +18,7 @@ import com.application.cool.history.fragment.CommunitySubFragment;
 import com.application.cool.history.fragment.EncyclopediaSubFragment;
 import com.application.cool.history.fragment.ForumSubFragment;
 import com.application.cool.history.fragment.SearchSubFragment;
+import com.application.cool.history.fragment.SocialSubFragment;
 import com.application.cool.history.models.Post;
 import com.application.cool.history.models.Record;
 import com.application.cool.history.util.DisplayUtil;
@@ -136,8 +137,10 @@ public class BaseFragmentPagerAdapter extends IndicatorViewPager.IndicatorFragme
                 return forumSubFragment;
 
             case E_USER:
-                // TODO
-                return null;
+                SocialSubFragment socialSubFragment = new SocialSubFragment();
+                bundle.putInt(SocialSubFragment.INTENT_INT_INDEX, position);
+                socialSubFragment.setArguments(bundle);
+                return socialSubFragment;
 
             case E_SEARCH:
                 SearchSubFragment searchSubFragment = new SearchSubFragment();

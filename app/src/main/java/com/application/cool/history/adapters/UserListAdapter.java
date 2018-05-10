@@ -5,15 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.application.cool.history.R;
 import com.application.cool.history.managers.UserManager;
+import com.application.cool.history.models.State;
 import com.avos.avoscloud.AVUser;
 import com.koushikdutta.ion.Ion;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Zhenyuan Shen on 5/10/18.
@@ -52,9 +56,9 @@ public class UserListAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.user_cell, null);
             holder = new ViewHolder();
-            holder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
+            holder.avatar = (CircleImageView) convertView.findViewById(R.id.avatar);
             holder.name = (TextView) convertView.findViewById(R.id.name);
-
+            holder.followBtn = (Button) convertView.findViewById(R.id.follow_btn);
             holder.padding = (TextView) convertView.findViewById(R.id.padding);
             convertView.setTag(holder);
         } else {
@@ -69,9 +73,15 @@ public class UserListAdapter extends BaseAdapter {
 
             holder.name.setText(userManager.getNickname(user));
 
-            Ion.with(holder.avatar).fitXY()
+            Ion.with(holder.avatar)
                     .placeholder(R.drawable.placeholder).error(R.drawable.placeholder)
                     .load(userManager.getAvatarURL(user));
+
+            if (State.currentFollowees.contains(UserManager.getSharedInstance(context).getNickname(user))) {
+                holder.followBtn.setText("正在关注");
+            } else {
+                holder.followBtn.setText("+关注");
+            }
         }
 
         if (position == getCount()-1){
@@ -87,8 +97,9 @@ public class UserListAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        ImageView avatar;
+        CircleImageView avatar;
         TextView name;
+        Button followBtn;
         TextView padding;
     }
 

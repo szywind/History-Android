@@ -30,10 +30,6 @@ public class SearchFragment extends Fragment {
 
     private LayoutInflater inflate;
 
-    private String searchWord;
-
-//    private String[] tabTitle = {"人物", "全部", "事件", "地理", "艺术", "科技"};
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

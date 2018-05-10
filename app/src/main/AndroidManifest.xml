@@ -70,17 +70,25 @@
             android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".activities.account.LoginActivity"/>
 
-        <!-- Encyclopedia module -->
+        <!-- encyclopedia module -->
         <activity
             android:name=".activities.encyclopedia.EncyclopediaDetailActivity"
             android:windowSoftInputMode="adjustResize"/>
 
-        <!-- Community module -->
+        <!-- community module -->
         <activity
             android:name=".activities.community.ForumActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".activities.community.PostDetailActivity"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <!-- navigation module -->
+        <activity
+            android:name=".activities.navigation.UserProfileDetailActivity"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".activities.navigation.SocialActivity"
             android:windowSoftInputMode="adjustResize"/>
 
 

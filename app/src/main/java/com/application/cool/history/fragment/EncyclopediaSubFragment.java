@@ -115,7 +115,7 @@ public class EncyclopediaSubFragment extends LazyFragment {
                 break;
         }
 
-        adapter = new RecordListAdapter(getActivity(), records);
+        adapter = new RecordListAdapter(getContext(),records);
         listView.setAdapter(adapter);
     }
 

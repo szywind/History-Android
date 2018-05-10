@@ -213,7 +213,8 @@ public class UserManager implements Constants {
 
     public void searchUserFromLC(String key, String value, final UserResponse delegate) {
         AVQuery<AVUser> query = AVUser.getQuery();
-        query.whereEqualTo(key, value);
+//        query.whereEqualTo(key, value);
+        query.whereContains(key, value);
         query.findInBackground(new FindCallback<AVUser>() {
             @Override
             public void done(List<AVUser> list, AVException e) {

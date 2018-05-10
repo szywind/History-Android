@@ -116,7 +116,7 @@ public class CommunitySubFragment extends LazyFragment {
                 break;
         }
 
-        adapter = new TopicGridAdapter(getActivity(), topics);
+        adapter = new TopicGridAdapter(getContext(), topics);
         gridView.setAdapter(adapter);
     }
 
