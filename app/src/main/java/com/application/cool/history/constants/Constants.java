@@ -63,7 +63,8 @@ public interface Constants {
         E_RECORD,
         E_TOPIC,
         E_POST,
-        E_USER
+        E_USER,
+        E_SEARCH
     }
 
 }

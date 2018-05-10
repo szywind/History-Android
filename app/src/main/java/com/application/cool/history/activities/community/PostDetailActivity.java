@@ -20,7 +20,7 @@ import com.koushikdutta.ion.Ion;
  */
 public class PostDetailActivity extends AppCompatActivity {
 
-    public static final String INTENT_RECORD = "intent_record";
+    public static final String INTENT_POST = "intent_post";
 
     private ImageView image;
     private TextView title;
@@ -42,7 +42,7 @@ public class PostDetailActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
 
         //Extract the data
-        post = bundle.getParcelable(INTENT_RECORD);
+        post = bundle.getParcelable(INTENT_POST);
 
         title.setText(postManager.getTitle(post));
 

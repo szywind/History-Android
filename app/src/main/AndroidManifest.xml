@@ -37,7 +37,9 @@
         <activity android:name="com.avos.avoscloud.feedback.ThreadActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action
+                    android:name="android.intent.action.MAIN"
+                    android:windowSoftInputMode="adjustPan" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
@@ -79,7 +81,8 @@
             android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".activities.community.PostDetailActivity"
-            android:windowSoftInputMode="adjustResize"/>》
+            android:windowSoftInputMode="adjustResize"/>
+
 
     </application>
 

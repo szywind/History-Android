@@ -58,4 +58,6 @@
     <string name="check_email_information">我们已经向xxx发送了一封邮件。点击邮件中的连接以重置你的密码。
     如果没有看到该邮件，请检查可能出现的其他位置，如垃圾邮件等。</string>
     <string name="not_receive_email">未收到邮件？</string>
+
+    <string name="search_hint">将搜索用户，社区和百科</string>
 </resources>

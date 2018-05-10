@@ -119,7 +119,7 @@ public class PostManager {
         });
     }
 
-    public void findPosts(String key, String value, final PostResponse delegate) {
+    public void searchPostFromLC(String key, String value, final PostResponse delegate) {
         AVQuery<AVObject> query = new AVQuery<>(LCConstants.PostKey.className);
         query.whereContains(key, value);
         query.orderByDescending(LCConstants.GeneralKey.createAt);

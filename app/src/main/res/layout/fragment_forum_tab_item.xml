@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <ProgressBar
-        android:id="@+id/fragment_mainTab_item_progressBar"
+        android:id="@+id/forum_progressBar"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         <!--android:visibility="gone" />-->
 
     <ListView
-        android:id="@+id/post_listview"
+        android:id="@+id/forum_listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:dividerHeight="1dp"
