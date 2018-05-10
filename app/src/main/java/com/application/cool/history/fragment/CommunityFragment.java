@@ -37,10 +37,10 @@ public class CommunityFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_community, container, false);
+        View view = inflater.inflate(R.layout.fragment_base, container, false);
 
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.community_viewpager);
-        ScrollIndicatorView scrollIndicatorView = (ScrollIndicatorView) view.findViewById(R.id.community_indicator);
+        ViewPager viewPager = (ViewPager) view.findViewById(R.id.base_viewpager);
+        ScrollIndicatorView scrollIndicatorView = (ScrollIndicatorView) view.findViewById(R.id.base_indicator);
 
         float unSelectSize = 12;
         float selectSize = unSelectSize * 1.3f;

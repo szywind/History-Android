@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 .addItem(new BottomNavigationItem(R.drawable.ic_forum, R.string.forum))
                 .addItem(new BottomNavigationItem(R.drawable.ic_encyclopdeic, R.string.encyclopedia))
                 .addItem(new BottomNavigationItem(R.drawable.ic_search, R.string.search))
+                .setFirstSelectedPosition(0)
                 .initialise();
 
         setDefaultFragment();

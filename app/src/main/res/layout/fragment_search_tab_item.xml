@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <ProgressBar
-        android:id="@+id/encyclopedia_progressBar"
+        android:id="@+id/search_progressBar"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,11 +20,11 @@
         <!--android:visibility="gone" />-->
 
     <ListView
-        android:id="@+id/encyclopedia_listview"
+        android:id="@+id/search_listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:dividerHeight="1dp"
-        android:divider="@drawable/record_list_divider"
+        android:divider="@drawable/post_list_divider"
         android:overScrollMode="never"></ListView>
 
 </FrameLayout>
