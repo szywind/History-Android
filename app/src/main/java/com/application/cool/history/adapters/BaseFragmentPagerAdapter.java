@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.application.cool.history.R;
 import com.application.cool.history.constants.Constants;
+import com.application.cool.history.fragment.BookmarkSubFragment;
 import com.application.cool.history.fragment.CommunitySubFragment;
 import com.application.cool.history.fragment.EncyclopediaSubFragment;
 import com.application.cool.history.fragment.ForumSubFragment;
@@ -36,6 +37,7 @@ public class BaseFragmentPagerAdapter extends IndicatorViewPager.IndicatorFragme
 
     private String topicName;
     private String searchWord;
+    private String userId;
 
     public BaseFragmentPagerAdapter(FragmentManager fragmentManager,
                                     LayoutInflater inflate, Context context,
@@ -88,6 +90,13 @@ public class BaseFragmentPagerAdapter extends IndicatorViewPager.IndicatorFragme
                 this.tabTitle = searchTitle;
                 break;
 
+            case E_BOOKMARK:
+                // TODO
+                this.userId = word;
+
+                String[] bookmarkTitle = {"发帖", "回帖", "喜欢", "收藏"};
+                this.tabTitle = bookmarkTitle;
+                break;
             default:
                 break;
         }
@@ -148,6 +157,13 @@ public class BaseFragmentPagerAdapter extends IndicatorViewPager.IndicatorFragme
                 bundle.putString(SearchSubFragment.INTENT_SEARCH_WORD, searchWord);
                 searchSubFragment.setArguments(bundle);
                 return searchSubFragment;
+
+            case E_BOOKMARK:
+                BookmarkSubFragment bookmarkSubFragment = new BookmarkSubFragment();
+                bundle.putInt(BookmarkSubFragment.INTENT_INT_INDEX, position);
+                bundle.putString(BookmarkSubFragment.INTENT_USER_INDEX, userId);
+                bookmarkSubFragment.setArguments(bundle);
+                return bookmarkSubFragment;
 
             default:
                 return null;
