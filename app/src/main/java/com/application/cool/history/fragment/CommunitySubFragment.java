@@ -26,7 +26,6 @@ import java.util.List;
 
 public class CommunitySubFragment extends LazyFragment {
     private ProgressBar progressBar;
-//    private TextView textView;
 
     private GridView gridView;
     private int tabIndex;
@@ -42,7 +41,6 @@ public class CommunitySubFragment extends LazyFragment {
         handler = new Handler(Looper.getMainLooper()) {
             public void handleMessage(android.os.Message msg) {
                 progressBar.setVisibility(View.GONE);
-//                textView.setVisibility(View.VISIBLE);
                 refreshUI();
             }
         };
@@ -50,8 +48,6 @@ public class CommunitySubFragment extends LazyFragment {
         setContentView(R.layout.fragment_community_tab_item);
         tabIndex = getArguments().getInt(INTENT_INT_INDEX);
         progressBar = (ProgressBar) findViewById(R.id.community_progressBar);
-//        textView = (TextView) findViewById(R.id.fragment_mainTab_item_textView);
-//        textView.setText("界面" + " " + tabIndex + " 加载完毕");
 
         gridView = (GridView) findViewById(R.id.community_gridview);
 
@@ -64,7 +60,6 @@ public class CommunitySubFragment extends LazyFragment {
 
                 intent.putExtras(bundle);
 
-                //intent.putExtra("event", eventList.get(position));
                 startActivity(intent);
             }
         });

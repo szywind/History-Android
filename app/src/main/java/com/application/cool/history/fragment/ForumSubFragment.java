@@ -28,7 +28,6 @@ public class ForumSubFragment extends LazyFragment {
     public static final String INTENT_TOPIC_NAME = "intent_topic_name";
 
     private ProgressBar progressBar;
-//    private TextView textView;
 
     private ListView listView;
     private int tabIndex;
@@ -54,7 +53,6 @@ public class ForumSubFragment extends LazyFragment {
         handler = new Handler(Looper.getMainLooper()) {
             public void handleMessage(android.os.Message msg) {
                 progressBar.setVisibility(View.GONE);
-//                textView.setVisibility(View.VISIBLE);
                 refreshUI();
             }
         };
@@ -64,8 +62,6 @@ public class ForumSubFragment extends LazyFragment {
         topicName = getArguments().getString(INTENT_TOPIC_NAME);
 
         progressBar = (ProgressBar) findViewById(R.id.forum_progressBar);
-//        textView = (TextView) findViewById(R.id.fragment_mainTab_item_textView);
-//        textView.setText("界面" + " " + tabIndex + " 加载完毕");
 
         listView = (ListView) findViewById(R.id.forum_listview);
 
@@ -77,7 +73,6 @@ public class ForumSubFragment extends LazyFragment {
                 bundle.putParcelable(PostDetailActivity.INTENT_POST, posts.get(position));
 
                 intent.putExtras(bundle);
-                //intent.putExtra("event", eventList.get(position));
                 startActivity(intent);
             }
         });

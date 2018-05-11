@@ -50,8 +50,6 @@ public class CommunityFragment extends Fragment {
         scrollIndicatorView.setScrollBar(new ColorBar(getContext(), 0xFF2196F3, 4));
 
         viewPager.setOffscreenPageLimit(2);
-//        indicatorViewPager = new IndicatorViewPager(scrollIndicatorView, viewPager);
-//        indicatorViewPager.setAdapter(new PagerAdapter());
 
         indicatorViewPager = new IndicatorViewPager(scrollIndicatorView, viewPager);
         inflate = LayoutInflater.from(getActivity().getApplicationContext());

@@ -41,7 +41,6 @@ public class EncyclopediaSubFragment extends LazyFragment {
         handler = new Handler(Looper.getMainLooper()) {
             public void handleMessage(android.os.Message msg) {
                 progressBar.setVisibility(View.GONE);
-//                textView.setVisibility(View.VISIBLE);
                 refreshUI();
             }
         };
@@ -49,8 +48,7 @@ public class EncyclopediaSubFragment extends LazyFragment {
         setContentView(R.layout.fragment_encyclopedia_tab_item);
         tabIndex = getArguments().getInt(INTENT_INT_INDEX);
         progressBar = (ProgressBar) findViewById(R.id.encyclopedia_progressBar);
-//        textView = (TextView) findViewById(R.id.fragment_mainTab_item_textView);
-//        textView.setText("界面" + " " + tabIndex + " 加载完毕");
+
 
         listView = (ListView) findViewById(R.id.encyclopedia_listview);
 
@@ -62,7 +60,6 @@ public class EncyclopediaSubFragment extends LazyFragment {
                 bundle.putParcelable(EncyclopediaDetailActivity.INTENT_RECORD, records.get(position));
 
                 intent.putExtras(bundle);
-                //intent.putExtra("event", eventList.get(position));
                 startActivity(intent);
             }
         });

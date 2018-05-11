@@ -85,7 +85,6 @@ public class SocialSubFragment extends LazyFragment {
                 bundle.putParcelable(UserProfileDetailActivity.INTENT_USER, users.get(position));
 
                 intent.putExtras(bundle);
-                //intent.putExtra("event", eventList.get(position));
                 startActivity(intent);
             }
         });
