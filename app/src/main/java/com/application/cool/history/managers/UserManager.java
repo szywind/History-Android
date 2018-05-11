@@ -122,10 +122,33 @@ public class UserManager implements Constants {
     public String getAvatarURL(AVUser user) {
         return user.getString(LCConstants.UserKey.avatarURL);
     }
+
     public List<String> getSubscribeTopics(AVUser user) {
-        List<String> topics = (List<String>) user.get(LCConstants.UserKey.subscribeTopics);
-        return topics;
+        List<String> list = (List<String>) user.get(LCConstants.UserKey.subscribeTopics);
+        return list;
     }
+    public List<String> getSubscribeList(AVUser user) {
+        List<String> list = (List<String>) user.get(LCConstants.UserKey.subscribeList);
+        return list;
+    }
+    public List<String> getLikeList(AVUser user) {
+        List<String> list = (List<String>) user.get(LCConstants.UserKey.likeList);
+        return list;
+    }
+    public List<String> getDislikeList(AVUser user) {
+        List<String> list = (List<String>) user.get(LCConstants.UserKey.dislikeList);
+        return list;
+    }
+    public List<String> getReplyList(AVUser user) {
+        List<String> list = (List<String>) user.get(LCConstants.UserKey.replyList);
+        return list;
+    }
+    public List<String> getList(AVUser user, String key) {
+        List<String> list = (List<String>) user.get(key);
+        return list;
+    }
+
+
     public AVGeoPoint getUserLocation(AVUser user) {
         return user.getAVGeoPoint(LCConstants.UserKey.location);
     }
@@ -135,10 +158,32 @@ public class UserManager implements Constants {
     public void setNickname(String nickname) {
         currentUser().put(LCConstants.UserKey.nickname, nickname);
     }
+
     public void setSubscribeTopics(SaveCallback saveCallback) {
         currentUser().put(LCConstants.UserKey.subscribeTopics, State.currentSubscribeTopics.toArray());
         currentUser().saveInBackground(saveCallback);
     }
+    public void setSubscribeList(String[] list, SaveCallback saveCallback) {
+        currentUser().put(LCConstants.UserKey.subscribeList, list);
+        currentUser().saveInBackground(saveCallback);
+    }
+    public void setLikeList(String[] list, SaveCallback saveCallback) {
+        currentUser().put(LCConstants.UserKey.likeList, list);
+        currentUser().saveInBackground(saveCallback);
+    }
+    public void setDislikeList(String[] list, SaveCallback saveCallback) {
+        currentUser().put(LCConstants.UserKey.dislikeList, list);
+        currentUser().saveInBackground(saveCallback);
+    }
+    public void setReplyList(String[] list, SaveCallback saveCallback) {
+        currentUser().put(LCConstants.UserKey.replyList, list);
+        currentUser().saveInBackground(saveCallback);
+    }
+    public void setList(String[] list, String key, SaveCallback saveCallback) {
+        currentUser().put(key, list);
+        currentUser().saveInBackground(saveCallback);
+    }
+
     public AVGeoPoint setUserLocation() {
         SimpleLocation loc = new SimpleLocation(context);
         SimpleLocation.Point pt = loc.getPosition();

@@ -91,7 +91,7 @@ public class BookmarkSubFragment extends LazyFragment {
 
     public void refreshUI(){
 
-//        {"最新发布", "最多回复", "最多喜欢"};
+//         {"发帖", "回帖", "喜欢", "收藏"};
 
         Log.i("posts: ", Integer.toString(posts.size()));
 
@@ -104,6 +104,10 @@ public class BookmarkSubFragment extends LazyFragment {
                 break;
 
             case 2:
+//                posts = posts.sortByLikes();
+                break;
+
+            case 3:
 //                posts = posts.sortByLikes();
                 break;
 
