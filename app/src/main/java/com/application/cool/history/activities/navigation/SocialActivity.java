@@ -12,7 +12,7 @@ public class SocialActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_social);
+        setContentView(R.layout.activity_base);
 
         if (socialFragment == null) {
             socialFragment = new SocialFragment();

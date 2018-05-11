@@ -3,6 +3,7 @@ package com.application.cool.history;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import com.application.cool.history.activities.navigation.BookmarkActivity;
 import com.application.cool.history.activities.navigation.SocialActivity;
 import com.application.cool.history.constants.Constants;
 import com.application.cool.history.fragment.CommunityFragment;
@@ -117,17 +118,26 @@ public class MainActivity extends AppCompatActivity {
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.nav_logout) {
-                    userManager.logout();
-                } else if (item.getItemId() == R.id.nav_following) {
-                    if (!userManager.isLogin()) {
-                        Toast.makeText(getBaseContext(), "请先登录", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Intent intent = new Intent(MainActivity.this, SocialActivity.class);
-                        startActivity(intent);
+                Intent intent;
+                if (!userManager.isLogin()) {
+                    Toast.makeText(getBaseContext(), "请先登录", Toast.LENGTH_SHORT).show();
+                } else {
+                    switch (item.getItemId()) {
+                        case R.id.nav_logout:
+                            userManager.logout();
+                            break;
+
+                        case R.id.nav_following:
+                            intent = new Intent(getBaseContext(), SocialActivity.class);
+                            startActivity(intent);
+                            break;
+
+                        case R.id.nav_bookmark:
+                            intent = new Intent(getBaseContext(), BookmarkActivity.class);
+                            startActivity(intent);
+                            break;
                     }
                 }
-
                 navView.setCheckedItem(-1);
                 return true;
             }

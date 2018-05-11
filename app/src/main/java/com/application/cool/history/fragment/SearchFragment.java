@@ -27,8 +27,19 @@ import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 public class SearchFragment extends Fragment {
 
     private IndicatorViewPager indicatorViewPager;
-
     private LayoutInflater inflate;
+    private SearchView searchView;
+    private TextView searchHint;
+    private LinearLayout searchResultLayout;
+    private ListView searchRecomList;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        searchResultLayout.setVisibility(View.INVISIBLE);
+//        searchHint.setVisibility(View.INVISIBLE);
+//        searchRecomList.setVisibility(View.VISIBLE);
+    }
 
     @Nullable
     @Override
@@ -39,16 +50,14 @@ public class SearchFragment extends Fragment {
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.search_viewpager);
         ScrollIndicatorView scrollIndicatorView = (ScrollIndicatorView) view.findViewById(R.id.search_indicator);
 
-        final SearchView searchView = (SearchView) view.findViewById(R.id.search);
-        final TextView searchHint = (TextView) view.findViewById(R.id.search_hint);
-        final LinearLayout searchResultLayout = (LinearLayout) view.findViewById(R.id.search_result);
-        final ListView searchRecomList = (ListView) view.findViewById(R.id.search_recommend);
+        searchView = (SearchView) view.findViewById(R.id.search);
+        searchHint = (TextView) view.findViewById(R.id.search_hint);
+        searchResultLayout = (LinearLayout) view.findViewById(R.id.search_result);
+        searchRecomList = (ListView) view.findViewById(R.id.search_recommend);
 
-        searchResultLayout.setVisibility(view.INVISIBLE);
-        searchHint.setVisibility(view.INVISIBLE);
-
-        searchRecomList.setVisibility(view.VISIBLE);
-
+        searchResultLayout.setVisibility(View.INVISIBLE);
+        searchHint.setVisibility(View.INVISIBLE);
+        searchRecomList.setVisibility(View.VISIBLE);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -56,28 +65,28 @@ public class SearchFragment extends Fragment {
                 App.hideSoftKeyboard(getActivity());
 
                 if (query.isEmpty()) {
-                    searchRecomList.setVisibility(view.VISIBLE);
-                    searchResultLayout.setVisibility(view.INVISIBLE);
-                    searchHint.setVisibility(view.INVISIBLE);
+                    searchRecomList.setVisibility(View.VISIBLE);
+                    searchResultLayout.setVisibility(View.INVISIBLE);
+                    searchHint.setVisibility(View.INVISIBLE);
                 } else {
-                    searchRecomList.setVisibility(view.INVISIBLE);
-                    searchResultLayout.setVisibility(view.VISIBLE);
+                    searchRecomList.setVisibility(View.INVISIBLE);
+                    searchResultLayout.setVisibility(View.VISIBLE);
 
                     indicatorViewPager.setAdapter(
                             new BaseFragmentPagerAdapter(getActivity().getSupportFragmentManager(),
                                     inflate, getContext(), Constants.EDataSource.E_SEARCH, query));
 
-                    searchHint.setVisibility(view.INVISIBLE);
+                    searchHint.setVisibility(View.INVISIBLE);
                 }
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                searchRecomList.setVisibility(view.INVISIBLE);
-                searchResultLayout.setVisibility(view.INVISIBLE);
+                searchRecomList.setVisibility(View.INVISIBLE);
+                searchResultLayout.setVisibility(View.INVISIBLE);
 
-                searchHint.setVisibility(view.VISIBLE);
+                searchHint.setVisibility(View.VISIBLE);
 
                 return true;
             }
@@ -105,6 +114,8 @@ public class SearchFragment extends Fragment {
                 searchRecomList.setVisibility(view.INVISIBLE);
             }
         });
+
+        searchView.setQueryHint("请输入所要查询的关键词");
 
         float unSelectSize = 12;
         float selectSize = unSelectSize * 1.3f;

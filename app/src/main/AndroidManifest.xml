@@ -90,6 +90,9 @@
         <activity
             android:name=".activities.navigation.SocialActivity"
             android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".activities.navigation.BookmarkActivity"
+            android:windowSoftInputMode="adjustResize" />
 
 
     </application>
