@@ -19,6 +19,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <provider
+            android:authorities="com.application.cool.history.activities.menu"
+            android:name="android.support.v4.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
         <!-- 实时通信模块、推送（均需要加入以下声明） START -->
         <!-- 实时通信模块、推送都要使用 PushService -->
         <service android:name="com.avos.avoscloud.PushService" />
@@ -43,7 +53,7 @@
             </intent-filter>
         </activity>
 
-        <!--Login/Signup module-->
+        <!-- Login/Signup module -->
         <activity android:name=".activities.account.WelcomeActivity" />
         <activity
             android:name=".activities.account.RegisterNameActivity"
@@ -62,25 +72,27 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.account.ResetPasswordActivity"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.account.ResetWithEmailActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:parentActivityName=".activities.account.LoginActivity"/>
+            android:parentActivityName=".activities.account.LoginActivity"
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- Encyclopedia module -->
         <activity
             android:name=".activities.encyclopedia.EncyclopediaDetailActivity"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- Community module -->
         <activity
             android:name=".activities.community.ForumActivity"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.community.PostDetailActivity"
-            android:windowSoftInputMode="adjustResize"/>》
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".activities.menu.ProfileActivity" />
 
+        <activity android:name=".activities.menu.ProfileEditActivity"></activity>
     </application>
 
 </manifest>
