@@ -3,7 +3,6 @@ package com.application.cool.history.managers;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -302,22 +301,22 @@ public class UserManager implements Constants {
     }
 
     public void updateUser(final String nickname, String imgPath, final SaveCallback saveCallback) {
+
         try {
             AvatarManager.getSharedInstance(context).updateAvatarWithImage(imgPath, new SaveCallback() {
                 @Override
-                public void done(AVException e) {
-                    if (e != null) {
-                        Log.d(TAG, "Update User Error: " + e.toString());
-                    } else {
-                        setNickname(nickname);
-                        setUserLocation();
-                        currentUser().saveInBackground(saveCallback);
-                    }
-                }
+                public void done(AVException e) {}
             });
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        updateUser(nickname, saveCallback);
+    }
+
+    public void updateUser(final String nickname, final SaveCallback saveCallback) {
+        setNickname(nickname);
+        setUserLocation();
+        currentUser().saveInBackground(saveCallback);
     }
 }
