@@ -12,7 +12,7 @@ public interface Constants {
         int defaultUsernameLimit = 20;
         int defaultSmsCodeLength = 6;
         int defaultPasswordLimit = 8;
-        String defaultString = "None";
+        String defaultString = "";
     }
 
     /*************************
