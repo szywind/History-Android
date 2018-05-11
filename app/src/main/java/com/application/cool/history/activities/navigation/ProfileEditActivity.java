@@ -32,6 +32,7 @@ import com.application.cool.history.constants.Constants;
 import com.application.cool.history.managers.AvatarManager;
 import com.application.cool.history.managers.UserManager;
 import com.application.cool.history.util.MessageEvent;
+import com.application.cool.history.util.PhotoUtils;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.SaveCallback;
 
@@ -60,10 +61,11 @@ public class ProfileEditActivity extends AppCompatActivity {
     private final static int CAMERA_REQUEST_CODE = 0;
     private final static int GALLERY_REQUEST_CODE = 1;
     private Uri imageUri;
-    private File outputImage;
+    private File outputImageFile;
     private File avatarImageFile;
     private UserManager userManager;
     private AvatarManager avatarManager;
+    private Bitmap avatarBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,8 +118,8 @@ public class ProfileEditActivity extends AppCompatActivity {
                     @Override
                     public void done(AVException e) {
                         if (e == null) {
-                            finish();
                             EventBus.getDefault().post(new MessageEvent(Constants.EventType.EVENT_UPDATE_USER));
+                            finish();
                         } else {
                             Toast.makeText(ProfileEditActivity.this, "保存失败", Toast.LENGTH_LONG).show();
                         }
@@ -176,20 +178,20 @@ public class ProfileEditActivity extends AppCompatActivity {
 
 
     private void takePhoto() {
-        outputImage = new File(getExternalCacheDir(), "output_image.jpg");
+        outputImageFile = new File(getExternalCacheDir(), "output_image.jpg");
         try {
-            if (outputImage.exists()) {
-                outputImage.delete();
+            if (outputImageFile.exists()) {
+                outputImageFile.delete();
             }
-            outputImage.createNewFile();
+            outputImageFile.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         if (Build.VERSION.SDK_INT >= 24) {
-            imageUri = FileProvider.getUriForFile(this, "com.application.cool.history.activities.menu", outputImage);
+            imageUri = FileProvider.getUriForFile(this, "com.application.cool.history.activities.menu", outputImageFile);
         } else {
-            imageUri = Uri.fromFile(outputImage);
+            imageUri = Uri.fromFile(outputImageFile);
         }
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -209,21 +211,24 @@ public class ProfileEditActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case CAMERA_REQUEST_CODE:
-                    avatarImageFile = avatarManager.saveImage(outputImage);
+                    try {
+                        FileInputStream inputStream = new FileInputStream(outputImageFile);
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                        int degree = PhotoUtils.readPictureDegree(outputImageFile.getAbsolutePath());
+                        avatarBitmap = PhotoUtils.rotaingImageView(degree, bitmap);
+                        PhotoUtils.saveBitmap(outputImageFile.getAbsolutePath(), avatarBitmap);
+                        avatarImageFile = avatarManager.saveImage(outputImageFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     if (avatarImageFile != null) {
                         try {
                             avatarManager.updateAvatarWithImage(avatarImageFile.getPath(), new SaveCallback() {
                                 @Override
                                 public void done(AVException e) {
                                     if (e == null) {
-                                        try {
-                                            FileInputStream inputStream = new FileInputStream(avatarImageFile);
-                                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                                            avatarImg.setImageBitmap(rotateImage(bitmap));
-                                            inputStream.close();
-                                        } catch (IOException e1) {
-                                            e1.printStackTrace();
-                                        }
+                                            avatarImg.setImageBitmap(avatarBitmap);
                                     } else {
                                         Toast.makeText(ProfileEditActivity.this, "头像上传失败", Toast.LENGTH_LONG).show();
                                     }
@@ -325,20 +330,21 @@ public class ProfileEditActivity extends AppCompatActivity {
 
             try {
                 File file = new File(imagePath);
+
+                FileInputStream inputStream = new FileInputStream(file);
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                int degree = PhotoUtils.readPictureDegree(file.getAbsolutePath());
+                avatarBitmap = PhotoUtils.rotaingImageView(degree, bitmap);
+                PhotoUtils.saveBitmap(file.getAbsolutePath(), avatarBitmap);
                 avatarImageFile = avatarManager.saveImage(file);
+
                 avatarManager.updateAvatarWithImage(avatarImageFile.getAbsolutePath(), new SaveCallback() {
                     @Override
                     public void done(AVException e) {
                         if (e != null) {
                             Toast.makeText(ProfileEditActivity.this, "头像上传失败", Toast.LENGTH_LONG).show();
                         } else {
-                            try {
-                                FileInputStream inputStream = new FileInputStream(avatarImageFile);
-                                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                                avatarImg.setImageBitmap(/*rotateImage(bitmap)*/bitmap);
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
+                            avatarImg.setImageBitmap(avatarBitmap);
                         }
                     }
                 });

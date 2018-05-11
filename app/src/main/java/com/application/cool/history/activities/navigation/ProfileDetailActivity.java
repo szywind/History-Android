@@ -9,8 +9,10 @@ import android.widget.TextView;
 
 import com.application.cool.history.R;
 import com.application.cool.history.constants.Constants;
+import com.application.cool.history.managers.LocationManager;
 import com.application.cool.history.managers.UserManager;
 import com.application.cool.history.util.MessageEvent;
+import com.application.cool.history.util.SimpleLocation;
 import com.avos.avoscloud.AVUser;
 import com.bumptech.glide.Glide;
 
@@ -56,6 +58,9 @@ public class ProfileDetailActivity extends AppCompatActivity {
             Glide.with(this).load(avatarUrl).into(avatarImage);
         }
 
+        SimpleLocation simpleLocation = new SimpleLocation(this);
+        String locationText = LocationManager.getSharedInstance(this).getAddressFromLoc(simpleLocation);
+        location.setText(locationText);
 
     }
 
