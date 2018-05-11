@@ -13,27 +13,19 @@ import android.view.ViewGroup;
 import com.application.cool.history.R;
 import com.application.cool.history.adapters.BaseFragmentPagerAdapter;
 import com.application.cool.history.constants.Constants;
-import com.application.cool.history.models.Record;
 import com.shizhefei.view.indicator.IndicatorViewPager;
 import com.shizhefei.view.indicator.ScrollIndicatorView;
 import com.shizhefei.view.indicator.slidebar.ColorBar;
 import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 
-/**
- * Created by Zhenyuan Shen on 5/9/18.
- */
 
-public class ForumFragment extends Fragment {
-
-    public static final String INTENT_TOPIC_NAME = "intent_topic_name";
+public class SocialFragment extends Fragment {
 
     private IndicatorViewPager indicatorViewPager;
 
     private LayoutInflater inflate;
 
-    private String topicName;
-
-//    private String[] tabTitle = {"最新发布", "最多回复", "最多喜欢"};
+//    private String[] tabTitle = {"关注者", "正在关注", "最热用户", "可能喜欢"};
 
     @Nullable
     @Override
@@ -57,11 +49,10 @@ public class ForumFragment extends Fragment {
         inflate = LayoutInflater.from(getActivity().getApplicationContext());
 
 
-        topicName =  getArguments().getString(INTENT_TOPIC_NAME);
 
         indicatorViewPager.setAdapter(
                 new BaseFragmentPagerAdapter(getActivity().getSupportFragmentManager(),
-                        inflate, getContext(), Constants.EDataSource.E_POST, topicName));
+                        inflate, getContext(), Constants.EDataSource.E_USER));
 
         return view;
     }

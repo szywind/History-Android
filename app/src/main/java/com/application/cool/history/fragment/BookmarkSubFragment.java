@@ -22,18 +22,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ForumSubFragment extends LazyFragment {
+public class BookmarkSubFragment extends LazyFragment {
 
     public static final String INTENT_INT_INDEX = "intent_int_index";
-    public static final String INTENT_TOPIC_NAME = "intent_topic_name";
+    public static final String INTENT_USER_INDEX = "intent_user_index";
 
     private ProgressBar progressBar;
-//    private TextView textView;
-
     private ListView listView;
     private int tabIndex;
 
-    private String topicName;
+    private String userId;
     private List<AVObject> posts = new ArrayList<>();   // TODO List<Post> posts;
     private PostListAdapter adapter;
 
@@ -54,18 +52,15 @@ public class ForumSubFragment extends LazyFragment {
         handler = new Handler(Looper.getMainLooper()) {
             public void handleMessage(android.os.Message msg) {
                 progressBar.setVisibility(View.GONE);
-//                textView.setVisibility(View.VISIBLE);
                 refreshUI();
             }
         };
 
         setContentView(R.layout.fragment_forum_tab_item);
         tabIndex = getArguments().getInt(INTENT_INT_INDEX);
-        topicName = getArguments().getString(INTENT_TOPIC_NAME);
+        userId = getArguments().getString(INTENT_USER_INDEX);
 
         progressBar = (ProgressBar) findViewById(R.id.forum_progressBar);
-//        textView = (TextView) findViewById(R.id.fragment_mainTab_item_textView);
-//        textView.setText("界面" + " " + tabIndex + " 加载完毕");
 
         listView = (ListView) findViewById(R.id.forum_listview);
 
@@ -77,15 +72,15 @@ public class ForumSubFragment extends LazyFragment {
                 bundle.putParcelable(PostDetailActivity.INTENT_POST, posts.get(position));
 
                 intent.putExtras(bundle);
-                //intent.putExtra("event", eventList.get(position));
                 startActivity(intent);
             }
         });
 
         handler.sendEmptyMessageDelayed(1, 200);
 
+        // TODO
         PostManager.getSharedInstance(getContext())
-                .fetchPostFromLC(LCConstants.PostKey.subtopic, topicName, postResponse);
+                .fetchPostFromLC(LCConstants.PostKey.subtopic, userId, postResponse);
     }
 
     @Override

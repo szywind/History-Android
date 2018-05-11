@@ -14,9 +14,12 @@ import android.widget.TextView;
 
 import com.application.cool.history.R;
 import com.application.cool.history.constants.Constants;
+import com.application.cool.history.fragment.BookmarkSubFragment;
 import com.application.cool.history.fragment.CommunitySubFragment;
 import com.application.cool.history.fragment.EncyclopediaSubFragment;
 import com.application.cool.history.fragment.ForumSubFragment;
+import com.application.cool.history.fragment.SearchSubFragment;
+import com.application.cool.history.fragment.SocialSubFragment;
 import com.application.cool.history.models.Post;
 import com.application.cool.history.models.Record;
 import com.application.cool.history.util.DisplayUtil;
@@ -33,6 +36,8 @@ public class BaseFragmentPagerAdapter extends IndicatorViewPager.IndicatorFragme
     private Constants.EDataSource dataSource;
 
     private String topicName;
+    private String searchWord;
+    private String userId;
 
     public BaseFragmentPagerAdapter(FragmentManager fragmentManager,
                                     LayoutInflater inflate, Context context,
@@ -43,14 +48,12 @@ public class BaseFragmentPagerAdapter extends IndicatorViewPager.IndicatorFragme
 
     public BaseFragmentPagerAdapter(FragmentManager fragmentManager,
                                     LayoutInflater inflate, Context context,
-                                    Constants.EDataSource dataSource, String topicName) {
+                                    Constants.EDataSource dataSource, String word) {
         super(fragmentManager);
 
         this.context = context;
         this.inflate = inflate;
         this.dataSource = dataSource;
-
-        this.topicName = topicName;
 
         switch (dataSource) {
             case E_RECORD:
@@ -67,6 +70,8 @@ public class BaseFragmentPagerAdapter extends IndicatorViewPager.IndicatorFragme
 
             case E_POST:
                 // TODO
+                this.topicName = word;
+
                 String[] postTitle = {"最新发布", "最多回复", "最多喜欢"};
                 this.tabTitle = postTitle;
                 break;
@@ -77,6 +82,21 @@ public class BaseFragmentPagerAdapter extends IndicatorViewPager.IndicatorFragme
                 this.tabTitle = userTitle;
                 break;
 
+            case E_SEARCH:
+                // TODO
+                this.searchWord = word;
+
+                String[] searchTitle = {"人物", "事件", "社区", "用户"};
+                this.tabTitle = searchTitle;
+                break;
+
+            case E_BOOKMARK:
+                // TODO
+                this.userId = word;
+
+                String[] bookmarkTitle = {"发帖", "回帖", "喜欢", "收藏"};
+                this.tabTitle = bookmarkTitle;
+                break;
             default:
                 break;
         }
@@ -126,8 +146,24 @@ public class BaseFragmentPagerAdapter extends IndicatorViewPager.IndicatorFragme
                 return forumSubFragment;
 
             case E_USER:
-                // TODO
-                return null;
+                SocialSubFragment socialSubFragment = new SocialSubFragment();
+                bundle.putInt(SocialSubFragment.INTENT_INT_INDEX, position);
+                socialSubFragment.setArguments(bundle);
+                return socialSubFragment;
+
+            case E_SEARCH:
+                SearchSubFragment searchSubFragment = new SearchSubFragment();
+                bundle.putInt(SearchSubFragment.INTENT_INT_INDEX, position);
+                bundle.putString(SearchSubFragment.INTENT_SEARCH_WORD, searchWord);
+                searchSubFragment.setArguments(bundle);
+                return searchSubFragment;
+
+            case E_BOOKMARK:
+                BookmarkSubFragment bookmarkSubFragment = new BookmarkSubFragment();
+                bundle.putInt(BookmarkSubFragment.INTENT_INT_INDEX, position);
+                bundle.putString(BookmarkSubFragment.INTENT_USER_INDEX, userId);
+                bookmarkSubFragment.setArguments(bundle);
+                return bookmarkSubFragment;
 
             default:
                 return null;

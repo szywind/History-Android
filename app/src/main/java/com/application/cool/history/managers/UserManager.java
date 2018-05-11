@@ -60,8 +60,9 @@ public class UserManager implements Constants {
         void processFinish(String output);
     }
 
-    public interface SessionResponse {
+    public interface UserResponse {
         void processFinish(String output);
+        void processFinish(List<AVUser> list);
     }
 
 
@@ -152,7 +153,7 @@ public class UserManager implements Constants {
 
 
     // save profile leancloud
-    public void saveMyProfile(String nickname, String phone, String email, String accountType, final SessionResponse delegate){
+    public void saveMyProfile(String nickname, String phone, String email, String accountType, final UserResponse delegate){
         currentUser().put(LCConstants.UserKey.nickname, nickname);
         currentUser().put(LCConstants.UserKey.phone, phone);
         currentUser().put(LCConstants.UserKey.email, email);
@@ -161,7 +162,7 @@ public class UserManager implements Constants {
         saveMyProfile(delegate);
     }
 
-    public void saveMyProfile(final SessionResponse delegate){
+    public void saveMyProfile(final UserResponse delegate){
         currentUser().saveInBackground(new SaveCallback() {
             @Override
             public void done(AVException e) {
@@ -175,7 +176,7 @@ public class UserManager implements Constants {
     }
 
     // store profile
-    public void saveProfile(AVObject needStoreProfileLC, final SessionResponse delegate){
+    public void saveProfile(AVObject needStoreProfileLC, final UserResponse delegate){
         needStoreProfileLC.saveInBackground(new SaveCallback() {
             @Override
             public void done(AVException e) {
@@ -209,6 +210,20 @@ public class UserManager implements Constants {
         context.startActivity(i);
     }
 
+
+    public void searchUserFromLC(String key, String value, final UserResponse delegate) {
+        AVQuery<AVUser> query = AVUser.getQuery();
+//        query.whereEqualTo(key, value);
+        query.whereContains(key, value);
+        query.findInBackground(new FindCallback<AVUser>() {
+            @Override
+            public void done(List<AVUser> list, AVException e) {
+                if (e == null) {
+                    delegate.processFinish(list);
+                }
+            }
+        });
+    }
 
     public void findUser(String key, String value, FindCallback<AVUser> findCallback) {
         AVQuery<AVUser> query = AVUser.getQuery();

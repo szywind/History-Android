@@ -70,7 +70,7 @@ public class Record implements Parcelable {
     }
 
     public Record(PersonEntity person) {
-        this.objectId = "e" + person.getPersonId();
+        this.objectId = "p" + person.getPersonId();
         this.avatarURL = person.getAvatarURL();
         this.infoURL = person.getInfoURL();
         this.name = person.getName();

@@ -1,8 +1,6 @@
-package com.application.cool.history.activities.menu;
+package com.application.cool.history.activities.navigation;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;

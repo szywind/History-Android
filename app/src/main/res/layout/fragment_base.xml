@@ -5,13 +5,13 @@
     android:orientation="vertical">
 
     <com.shizhefei.view.indicator.ScrollIndicatorView
-        android:id="@+id/community_indicator"
+        android:id="@+id/base_indicator"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         />
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/community_viewpager"
+        android:id="@+id/base_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

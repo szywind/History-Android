@@ -48,11 +48,11 @@ public class EncyclopediaSubFragment extends LazyFragment {
 
         setContentView(R.layout.fragment_encyclopedia_tab_item);
         tabIndex = getArguments().getInt(INTENT_INT_INDEX);
-        progressBar = (ProgressBar) findViewById(R.id.fragment_mainTab_item_progressBar);
+        progressBar = (ProgressBar) findViewById(R.id.encyclopedia_progressBar);
 //        textView = (TextView) findViewById(R.id.fragment_mainTab_item_textView);
 //        textView.setText("界面" + " " + tabIndex + " 加载完毕");
 
-        listView = (ListView) findViewById(R.id.record_listview);
+        listView = (ListView) findViewById(R.id.encyclopedia_listview);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -115,7 +115,7 @@ public class EncyclopediaSubFragment extends LazyFragment {
                 break;
         }
 
-        adapter = new RecordListAdapter(getActivity(), records);
+        adapter = new RecordListAdapter(getContext(),records);
         listView.setAdapter(adapter);
     }
 

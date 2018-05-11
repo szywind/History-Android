@@ -49,7 +49,7 @@ public class CommunitySubFragment extends LazyFragment {
 
         setContentView(R.layout.fragment_community_tab_item);
         tabIndex = getArguments().getInt(INTENT_INT_INDEX);
-        progressBar = (ProgressBar) findViewById(R.id.fragment_mainTab_item_progressBar);
+        progressBar = (ProgressBar) findViewById(R.id.community_progressBar);
 //        textView = (TextView) findViewById(R.id.fragment_mainTab_item_textView);
 //        textView.setText("界面" + " " + tabIndex + " 加载完毕");
 
@@ -116,7 +116,7 @@ public class CommunitySubFragment extends LazyFragment {
                 break;
         }
 
-        adapter = new TopicGridAdapter(getActivity(), topics);
+        adapter = new TopicGridAdapter(getContext(), topics);
         gridView.setAdapter(adapter);
     }
 

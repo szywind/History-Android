@@ -31,10 +31,10 @@ public class EncyclopediaFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_encyclopedia, container, false);
+        View view = inflater.inflate(R.layout.fragment_base, container, false);
 
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.encyclopedia_viewpager);
-        ScrollIndicatorView scrollIndicatorView = (ScrollIndicatorView) view.findViewById(R.id.encyclopedia_indicator);
+        ViewPager viewPager = (ViewPager) view.findViewById(R.id.base_viewpager);
+        ScrollIndicatorView scrollIndicatorView = (ScrollIndicatorView) view.findViewById(R.id.base_indicator);
 
         float unSelectSize = 12;
         float selectSize = unSelectSize * 1.3f;

@@ -1,4 +1,4 @@
-package com.application.cool.history.activities.menu;
+package com.application.cool.history.activities.navigation;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -110,7 +110,9 @@ public class ProfileEditActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.save_profile:
-                userManager.updateUser(nicknameEdit.getText().toString(), avatarImageFile.getAbsolutePath(), new SaveCallback() {
+                String nickName = nicknameEdit.getText().toString();
+                String imgPath = avatarImageFile == null ? null : avatarImageFile.getAbsolutePath();
+                userManager.updateUser(nickName, imgPath, new SaveCallback() {
                     @Override
                     public void done(AVException e) {
                         if (e == null) {

@@ -3,12 +3,13 @@ package com.application.cool.history;
 import android.content.DialogInterface;
 import android.content.Intent;
 
-import com.application.cool.history.activities.menu.ProfileDetailActivity;
+import com.application.cool.history.activities.navigation.ProfileDetailActivity;
+import com.application.cool.history.activities.navigation.BookmarkActivity;
+import com.application.cool.history.activities.navigation.SocialActivity;
 import com.application.cool.history.constants.Constants;
 import com.application.cool.history.fragment.CommunityFragment;
 import com.application.cool.history.managers.UserManager;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent;
                 if (!userManager.isLogin()) {
                     new AlertDialog.Builder(MainActivity.this)
                             .setTitle("提醒")
@@ -129,17 +131,26 @@ public class MainActivity extends AppCompatActivity {
                             })
                             .create().show();
                     return false;
-                }
+                } else {
+                    switch (item.getItemId()) {
+                        case R.id.nav_logout:
+                            userManager.logout();
+                            break;
 
-                if (item.getItemId() == R.id.nav_logout) {
-                    userManager.logout();
-                }
+                        case R.id.nav_following:
+                            intent = new Intent(getBaseContext(), SocialActivity.class);
+                            startActivity(intent);
+                            break;
 
-                if (item.getItemId() == R.id.nav_personal_information) {
-                    Intent intent = new Intent(MainActivity.this, ProfileDetailActivity.class);
-                    startActivity(intent);
+                        case R.id.nav_bookmark:
+                            intent = new Intent(getBaseContext(), BookmarkActivity.class);
+                            startActivity(intent);
+                            break;
+                        case R.id.nav_personal_information:
+                            intent = intent = new Intent(MainActivity.this, ProfileDetailActivity.class);
+                            startActivity(intent);
+                    }
                 }
-
                 navView.setCheckedItem(-1);
                 return true;
             }
@@ -252,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(MessageEvent messageEvent) {
+    public void LoginOrRegisterEvent(MessageEvent messageEvent) {
 
         if (messageEvent.messgae == Constants.EventType.EVENT_LOGIN
                 || messageEvent.messgae == Constants.EventType.EVENT_SIGN_UP) {
@@ -261,6 +272,7 @@ public class MainActivity extends AppCompatActivity {
             String url = userManager.getAvatarURL(userManager.currentUser());
             if (url != null) {
                 Glide.with(this).load(url).into(userAvatar);
+                userName.setText(userManager.getNickname(userManager.currentUser()));
             }
         }
     }
