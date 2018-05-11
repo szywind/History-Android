@@ -57,6 +57,7 @@ public interface Constants {
     interface EventType {
         int EVENT_LOGIN = 10001;
         int EVENT_SIGN_UP = 10002;
+        int EVENT_UPDATE_USER = 10003;
     }
 
     enum EDataSource {

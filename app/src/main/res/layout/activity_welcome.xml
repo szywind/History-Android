@@ -22,7 +22,7 @@
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_margin="40dp"
-        android:background="@drawable/button_sign_up"
+        android:background="@drawable/button_account_shappe"
         android:text="立即注册"
         android:textColor="@color/black"
         android:textSize="18sp"

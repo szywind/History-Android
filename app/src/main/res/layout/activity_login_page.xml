@@ -81,7 +81,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/button_sign_up"
+        android:background="@drawable/button_account_shappe"
         android:text="@string/login"
         android:textSize="20sp"
         android:textColor="@color/white"

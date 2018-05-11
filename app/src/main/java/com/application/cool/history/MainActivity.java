@@ -3,13 +3,13 @@ package com.application.cool.history;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import com.application.cool.history.activities.navigation.ProfileDetailActivity;
 import com.application.cool.history.activities.navigation.BookmarkActivity;
 import com.application.cool.history.activities.navigation.SocialActivity;
 import com.application.cool.history.constants.Constants;
 import com.application.cool.history.fragment.CommunityFragment;
 import com.application.cool.history.managers.UserManager;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,9 +21,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.application.cool.history.activities.account.WelcomeActivity;
 import com.application.cool.history.db.EventEntity;
@@ -41,7 +39,7 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
-import com.koushikdutta.ion.Ion;
+import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -120,7 +118,19 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Intent intent;
                 if (!userManager.isLogin()) {
-                    Toast.makeText(getBaseContext(), "请先登录", Toast.LENGTH_SHORT).show();
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("提醒")
+                            .setMessage("请先登录账号")
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+                                    startActivity(intent);
+                                }
+                            })
+                            .create().show();
+                    return false;
                 } else {
                     switch (item.getItemId()) {
                         case R.id.nav_logout:
@@ -136,6 +146,9 @@ public class MainActivity extends AppCompatActivity {
                             intent = new Intent(getBaseContext(), BookmarkActivity.class);
                             startActivity(intent);
                             break;
+                        case R.id.nav_personal_information:
+                            intent = intent = new Intent(MainActivity.this, ProfileDetailActivity.class);
+                            startActivity(intent);
                     }
                 }
                 navView.setCheckedItem(-1);
@@ -168,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
                 .addItem(new BottomNavigationItem(R.drawable.ic_forum, R.string.forum))
                 .addItem(new BottomNavigationItem(R.drawable.ic_encyclopdeic, R.string.encyclopedia))
                 .addItem(new BottomNavigationItem(R.drawable.ic_search, R.string.search))
-                .setFirstSelectedPosition(0)
                 .initialise();
 
         setDefaultFragment();
@@ -256,6 +268,12 @@ public class MainActivity extends AppCompatActivity {
         if (messageEvent.messgae == Constants.EventType.EVENT_LOGIN
                 || messageEvent.messgae == Constants.EventType.EVENT_SIGN_UP) {
             onLogin();
+        } else if (messageEvent.messgae == Constants.EventType.EVENT_UPDATE_USER) {
+            String url = userManager.getAvatarURL(userManager.currentUser());
+            if (url != null) {
+                Glide.with(this).load(url).into(userAvatar);
+                userName.setText(userManager.getNickname(userManager.currentUser()));
+            }
         }
     }
 
@@ -266,8 +284,7 @@ public class MainActivity extends AppCompatActivity {
         AVUser user = userManager.currentUser();
         String url = userManager.getAvatarURL(user);
         if (url != null) {
-            userAvatar.setImageURI(Uri.parse(url));
-//            Ion.with(userAvatar).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).load(url);
+            Glide.with(this).load(url).into(userAvatar);
         }
 
         userName.setText(userManager.getNickname());
