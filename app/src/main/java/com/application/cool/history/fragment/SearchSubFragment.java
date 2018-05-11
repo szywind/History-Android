@@ -73,7 +73,7 @@ public class SearchSubFragment extends LazyFragment {
         public void processFinish(List<AVUser> list) {
             users = list;
             Log.i("search user: ", Integer.toString(users.size()));
-            userListAdapter = new UserListAdapter(getContext(),users);
+            userListAdapter = new UserListAdapter(getContext(), users);
             listView.setAdapter(userListAdapter);
         }
     };

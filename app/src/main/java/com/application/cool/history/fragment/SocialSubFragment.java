@@ -51,10 +51,14 @@ public class SocialSubFragment extends LazyFragment {
                 // update current followee list
                 State.currentFollowees.clear();
                 for (AVUser user: users) {
-                    State.currentFollowees.add(userManager.getNickname(user));
+                    State.currentFollowees.add(userManager.getUserId(user));
                 }
+                adapter = new UserListAdapter(getContext(), users, true);
+
+            } else {
+                adapter = new UserListAdapter(getContext(), users);
             }
-            adapter = new UserListAdapter(getContext(), users);
+
             listView.setAdapter(adapter);
         }
     };
@@ -115,11 +119,11 @@ public class SocialSubFragment extends LazyFragment {
 //        {"关注者", "正在关注", "最热用户", "可能喜欢"};
         switch (tabIndex) {
             case 0:
-                socialManager.fetchAllFollowers(AVUser.getCurrentUser(), socialResponse);
+                socialManager.fetchAllFollowers(userManager.currentUser(), socialResponse);
                 return;
 
             case 1:
-                socialManager.fetchAllFollowees(AVUser.getCurrentUser(), socialResponse);
+                socialManager.fetchAllFollowees(userManager.currentUser(), socialResponse);
                 return;
 
             case 2:
