@@ -14,6 +14,7 @@ import com.application.cool.history.constants.Constants;
 import com.application.cool.history.managers.UserManager;
 import com.application.cool.history.util.MessageEvent;
 import com.avos.avoscloud.AVUser;
+import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -24,7 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.cancel)
     TextView cancel;
@@ -54,7 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
         email.setText(userManager.getEmail(userManager.currentUser()));
         String avatarUrl = userManager.getAvatarURL(userManager.currentUser());
         if (avatarUrl != null) {
-            avatarImage.setImageURI(Uri.parse(avatarUrl));
+            Glide.with(this).load(avatarUrl).into(avatarImage);
         }
 
 
@@ -87,7 +88,7 @@ public class ProfileActivity extends AppCompatActivity {
             AVUser user = userManager.currentUser();
             String url = userManager.getAvatarURL(user);
             if (url != null) {
-                avatarImage.setImageURI(Uri.parse(url));
+                Glide.with(this).load(url).into(avatarImage);
             }
             nickname.setText(userManager.getNickname(userManager.currentUser()));
         }
