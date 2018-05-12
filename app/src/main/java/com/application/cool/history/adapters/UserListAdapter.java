@@ -41,16 +41,29 @@ public class UserListAdapter extends BaseAdapter {
     private AVUser user;
     private Boolean isFolloweePage = false;
 
-    public UserListAdapter(Context context, List<AVUser> list) {
-        this(context, list, false);
+//    public UserListAdapter(Context context, List<AVUser> list) {
+//        this(context, list, false);
+//    }
+
+    public interface RefreshResponse {
+        void reloadData();
     }
 
-    public UserListAdapter(Context context, List<AVUser> list, Boolean isFolloweePage) {
+    private RefreshResponse refreshResponse;
+
+    public UserListAdapter(Context context, List<AVUser> list, RefreshResponse refreshResponse) {
         this.context = context;
         this.list = list;
-        isFolloweePage = isFolloweePage;
         this.userManager = UserManager.getSharedInstance(context);
+        this.refreshResponse = refreshResponse;
     }
+
+//    public UserListAdapter(Context context, List<AVUser> list, Boolean isFolloweePage) {
+//        this.context = context;
+//        this.list = list;
+//        isFolloweePage = isFolloweePage;
+//        this.userManager = UserManager.getSharedInstance(context);
+//    }
 
     @Override
     public int getCount() {
@@ -68,7 +81,7 @@ public class UserListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -93,7 +106,7 @@ public class UserListAdapter extends BaseAdapter {
                     .placeholder(R.drawable.placeholder).error(R.drawable.placeholder)
                     .load(userManager.getAvatarURL(user));
 
-            if (State.currentFollowees.contains(userManager.getNickname(user))) {
+            if (State.currentFollowees.contains(userManager.getUserId(user))) {
                 holder.followBtn.setText("正在关注");
             } else {
                 holder.followBtn.setText("+关注");
@@ -122,8 +135,10 @@ public class UserListAdapter extends BaseAdapter {
                                 })
                                 .create().show();
                     } else {
-                        if (holder.followBtn.getText().toString() == "+关注") {
-                            follow();
+                        String uid = userManager.getUserId(list.get(position));
+
+                        if (!State.currentFollowees.contains(uid)) {
+                            follow(position);
                         } else {
                             new AlertDialog.Builder(context)
                                     .setTitle("提醒")
@@ -132,7 +147,7 @@ public class UserListAdapter extends BaseAdapter {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             dialogInterface.dismiss();
-                                            unfollow();
+                                            unfollow(position);
                                         }
                                     }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                                 @Override
@@ -147,15 +162,11 @@ public class UserListAdapter extends BaseAdapter {
             });
         }
 
-        if (position == getCount()-1){
-            ViewGroup.LayoutParams params = holder.padding.getLayoutParams();
-            params.height = context.getResources().getDimensionPixelSize(R.dimen.text_view_padding_height);
-            holder.padding.setLayoutParams(params);
-        } else {
-            ViewGroup.LayoutParams params = holder.padding.getLayoutParams();
-            params.height = context.getResources().getDimensionPixelSize(R.dimen.zero_height);
-            holder.padding.setLayoutParams(params);
-        }
+
+        ViewGroup.LayoutParams params = holder.padding.getLayoutParams();
+        params.height = context.getResources().getDimensionPixelSize(R.dimen.zero_height);
+        holder.padding.setLayoutParams(params);
+
         return convertView;
     }
 
@@ -171,51 +182,53 @@ public class UserListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    private void follow() {
-        userManager.currentUser().followInBackground(userManager.getUserId(user), new FollowCallback() {
+    private void follow(final int position) {
+        final String uid = userManager.getUserId(list.get(position));
+
+        userManager.currentUser().followInBackground(uid, new FollowCallback() {
             @Override
             public void done(AVObject avObject, AVException e) {
-                if (e == null) {
-                    Log.i("Following", "succeed in following");
-                    userManager.updateCounter(LCConstants.UserKey.followees, 1);
-                    State.currentFollowees.add(userManager.getUserId(user));
-                    if (isFolloweePage) {
-                        list.add(user);
-                    }
-                    refreshUI();
-                }
+
             }
 
             @Override
             protected void internalDone0(Object o, AVException e) {
+                if (e == null) {
+                    Log.i("Following", "succeed in following");
+                    userManager.updateCounter(LCConstants.UserKey.followees, 1);
 
+                    State.currentFollowees.add(uid);
+                    refreshUI();
+                } else {
+                    Log.e("Following", "error: " + e.getLocalizedMessage());
+                }
             }
         });
     }
 
-    private void unfollow() {
-        userManager.currentUser().unfollowInBackground(userManager.getUserId(user), new FollowCallback() {
+    private void unfollow(int position) {
+        final String uid = userManager.getUserId(list.get(position));
+
+        userManager.currentUser().unfollowInBackground(uid, new FollowCallback() {
             @Override
             public void done(AVObject avObject, AVException e) {
-                if (e == null) {
-                   Log.i("Unfollowing", "succeed in unfollowing");
-                   userManager.updateCounter(LCConstants.UserKey.followees, -1);
-                   State.currentFollowees.remove(userManager.getUserId(user));
-                    if (isFolloweePage) {
-                        list.remove(user);
-                    }
-                   refreshUI();
-                }
+
             }
 
             @Override
             protected void internalDone0(Object o, AVException e) {
-
+                if (e == null) {
+                    Log.i("Unfollowing", "succeed in unfollowing");
+                    userManager.updateCounter(LCConstants.UserKey.followees, -1);
+                    State.currentFollowees.remove(uid);
+                    refreshUI();
+                }
             }
         });
     }
 
     private void refreshUI() {
-        updateListView(list);
+        refreshResponse.reloadData();
+//        updateListView(list);
     }
 }

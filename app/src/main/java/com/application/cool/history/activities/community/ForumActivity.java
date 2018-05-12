@@ -20,8 +20,10 @@ import com.application.cool.history.models.Record;
 import com.application.cool.history.models.State;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -62,7 +64,14 @@ public class ForumActivity extends AppCompatActivity {
 
         //Extract the data
         topic = bundle.getParcelable(INTENT_TOPIC);
-        userManager = UserManager.getSharedInstance(getBaseContext());
+        userManager = UserManager.getSharedInstance(this);
+
+
+        if (State.currentSubscribeTopics.contains(topic.getName())) {
+            followBtn.setText("正在关注");
+        } else {
+            followBtn.setText("+关注");
+        }
 
         if (forumFragment == null) {
             refreshFragment();
@@ -71,7 +80,7 @@ public class ForumActivity extends AppCompatActivity {
         encyclopediaBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), EncyclopediaDetailActivity.class);
+                Intent intent = new Intent(ForumActivity.this, EncyclopediaDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(EncyclopediaDetailActivity.INTENT_RECORD, topic);
 
@@ -81,18 +90,19 @@ public class ForumActivity extends AppCompatActivity {
             }
         });
 
+
         followBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!userManager.isLogin()) {
-                    new AlertDialog.Builder(getBaseContext())
+                    new AlertDialog.Builder(ForumActivity.this)
                             .setTitle("提醒")
                             .setMessage("请先登录账号")
                             .setPositiveButton("注册/登录", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
-                                    Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
+                                    Intent intent = new Intent(ForumActivity.this, WelcomeActivity.class);
                                     startActivity(intent);
                                 }
                             })
@@ -104,21 +114,21 @@ public class ForumActivity extends AppCompatActivity {
                             })
                             .create().show();
                 } else {
-                    if (followBtn.getText().toString() == "+关注") {
+                    if (!State.currentSubscribeTopics.contains(topic.getName())) {
                         State.currentSubscribeTopics.add(topic.getName());
                         userManager.setSubscribeTopics(new SaveCallback() {
                             @Override
                             public void done(AVException e) {
                                 if (e == null) {
                                     followBtn.setText("正在关注");
-                                    refreshFragment();
+//                                    refreshFragment();
                                 } else {
                                     State.currentSubscribeTopics.remove(topic.getName());
                                 }
                             }
                         });
                     } else {
-                        new AlertDialog.Builder(getBaseContext())
+                        new AlertDialog.Builder(ForumActivity.this)
                                 .setTitle("提醒")
                                 .setMessage("是否取消关注")
                                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -131,7 +141,7 @@ public class ForumActivity extends AppCompatActivity {
                                             public void done(AVException e) {
                                                 if (e == null) {
                                                     followBtn.setText("+关注");
-                                                    refreshFragment();
+//                                                    refreshFragment();
                                                 } else {
                                                     State.currentSubscribeTopics.add(topic.getName());
                                                 }
@@ -152,6 +162,11 @@ public class ForumActivity extends AppCompatActivity {
         });
 
     }
+
+//    private void refreshUI() {
+//        finish();
+//        startActivity(getIntent());
+//    }
 
     private void refreshFragment() {
 

@@ -16,6 +16,7 @@ import com.application.cool.history.activities.community.ForumActivity;
 import com.application.cool.history.adapters.RecordListAdapter;
 import com.application.cool.history.adapters.TopicGridAdapter;
 import com.application.cool.history.managers.LocalDataManager;
+import com.application.cool.history.managers.UserManager;
 import com.application.cool.history.models.Record;
 import com.shizhefei.fragment.LazyFragment;
 
@@ -68,7 +69,6 @@ public class CommunitySubFragment extends LazyFragment {
         handler.sendEmptyMessageDelayed(1, 200);
 
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setDistanceToTriggerSync(10);
         swipeRefreshLayout.setColorSchemeResources(R.color.history, R.color.black, R.color.avoscloud_blue);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -86,9 +86,9 @@ public class CommunitySubFragment extends LazyFragment {
     }
 
     public void refreshUI(){
-
+        int skip = (UserManager.getSharedInstance(getContext()).isLogin()) ? 0 : 1;
 //        {"关注", "人物", "事件", "地理", "艺术", "科技"};
-        switch (tabIndex) {
+        switch (tabIndex + skip) {
             case 0:
                 topics = LocalDataManager.getSharedInstance(getContext()).getFollowingTopics();
                 Log.i("following: ", Integer.toString(topics.size()));

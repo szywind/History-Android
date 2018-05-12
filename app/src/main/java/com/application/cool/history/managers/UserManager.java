@@ -20,8 +20,12 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.RequestPasswordResetCallback;
 import com.avos.avoscloud.SaveCallback;
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.application.cool.history.managers.LocationManager.isInvalid;
@@ -123,26 +127,27 @@ public class UserManager implements Constants {
     }
 
     public List<String> getSubscribeTopics(AVUser user) {
-        List<String> list = (List<String>) user.get(LCConstants.UserKey.subscribeTopics);
-        return list;
+        return getList(user, LCConstants.UserKey.subscribeTopics);
     }
     public List<String> getSubscribeList(AVUser user) {
-        List<String> list = (List<String>) user.get(LCConstants.UserKey.subscribeList);
-        return list;
+        return getList(user, LCConstants.UserKey.subscribeList);
     }
     public List<String> getLikeList(AVUser user) {
-        List<String> list = (List<String>) user.get(LCConstants.UserKey.likeList);
-        return list;
+        return getList(user, LCConstants.UserKey.likeList);
     }
     public List<String> getDislikeList(AVUser user) {
-        List<String> list = (List<String>) user.get(LCConstants.UserKey.dislikeList);
-        return list;
+        return getList(user, LCConstants.UserKey.dislikeList);
     }
     public List<String> getReplyList(AVUser user) {
-        List<String> list = (List<String>) user.get(LCConstants.UserKey.replyList);
-        return list;
+        return getList(user, LCConstants.UserKey.replyList);
     }
     public List<String> getList(AVUser user, String key) {
+
+//        List foo = user.getList(key);
+//        List<String> list = new ArrayList<>();
+//        for(String elem: (List<String>)user.get(key)) {
+//            list.add(elem);
+//        }
         List<String> list = (List<String>) user.get(key);
         return list;
     }
@@ -159,26 +164,24 @@ public class UserManager implements Constants {
     }
 
     public void setSubscribeTopics(SaveCallback saveCallback) {
-        currentUser().put(LCConstants.UserKey.subscribeTopics, State.currentSubscribeTopics.toArray());
-        currentUser().saveInBackground(saveCallback);
+        setList(State.currentSubscribeTopics.toArray(), LCConstants.UserKey.subscribeTopics, saveCallback);
     }
     public void setSubscribeList(String[] list, SaveCallback saveCallback) {
-        currentUser().put(LCConstants.UserKey.subscribeList, list);
-        currentUser().saveInBackground(saveCallback);
+        setList(list, LCConstants.UserKey.subscribeList, saveCallback);
+
     }
     public void setLikeList(String[] list, SaveCallback saveCallback) {
-        currentUser().put(LCConstants.UserKey.likeList, list);
-        currentUser().saveInBackground(saveCallback);
+        setList(list, LCConstants.UserKey.likeList, saveCallback);
+
     }
     public void setDislikeList(String[] list, SaveCallback saveCallback) {
-        currentUser().put(LCConstants.UserKey.dislikeList, list);
-        currentUser().saveInBackground(saveCallback);
+        setList(list, LCConstants.UserKey.dislikeList, saveCallback);
+
     }
     public void setReplyList(String[] list, SaveCallback saveCallback) {
-        currentUser().put(LCConstants.UserKey.replyList, list);
-        currentUser().saveInBackground(saveCallback);
+        setList(list, LCConstants.UserKey.replyList, saveCallback);
     }
-    public void setList(String[] list, String key, SaveCallback saveCallback) {
+    public void setList(Object[] list, String key, SaveCallback saveCallback) {
         currentUser().put(key, list);
         currentUser().saveInBackground(saveCallback);
     }

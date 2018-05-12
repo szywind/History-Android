@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.UserManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
@@ -64,8 +65,15 @@ public class BaseFragmentPagerAdapter extends IndicatorViewPager.IndicatorFragme
 
             case E_TOPIC:
                 // TODO
-                String[] topicTitle = {"关注", "人物", "事件", "地理", "艺术", "科技"};
-                this.tabTitle = topicTitle;
+                if (com.application.cool.history.managers.UserManager.getSharedInstance(context).isLogin()) {
+                    String[] topicTitle = {"关注", "人物", "事件", "地理", "艺术", "科技"};
+                    this.tabTitle = topicTitle;
+
+                } else {
+                    String[] topicTitle = {"人物", "事件", "地理", "艺术", "科技"};
+                    this.tabTitle = topicTitle;
+
+                }
                 break;
 
             case E_POST:
@@ -97,6 +105,7 @@ public class BaseFragmentPagerAdapter extends IndicatorViewPager.IndicatorFragme
                 String[] bookmarkTitle = {"发帖", "回帖", "喜欢", "收藏"};
                 this.tabTitle = bookmarkTitle;
                 break;
+
             default:
                 break;
         }

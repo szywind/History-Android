@@ -53,6 +53,13 @@ public class SearchSubFragment extends LazyFragment {
     private PostListAdapter postListAdapter;
     private UserListAdapter userListAdapter;
 
+    private UserListAdapter.RefreshResponse delegate = new UserListAdapter.RefreshResponse() {
+        @Override
+        public void reloadData() {
+            refreshUI();
+        }
+    };
+
     PostManager.PostResponse postResponse = new PostManager.PostResponse() {
         @Override
         public void processFinish(List<AVObject> list) {
@@ -73,7 +80,7 @@ public class SearchSubFragment extends LazyFragment {
         public void processFinish(List<AVUser> list) {
             users = list;
             Log.i("search user: ", Integer.toString(users.size()));
-            userListAdapter = new UserListAdapter(getContext(), users);
+            userListAdapter = new UserListAdapter(getContext(), users, delegate);
             listView.setAdapter(userListAdapter);
         }
     };

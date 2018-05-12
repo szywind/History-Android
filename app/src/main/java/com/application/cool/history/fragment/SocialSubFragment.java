@@ -24,6 +24,7 @@ import com.avos.avoscloud.FindCallback;
 import com.shizhefei.fragment.LazyFragment;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Zhenyuan Shen on 5/8/18.
@@ -41,24 +42,20 @@ public class SocialSubFragment extends LazyFragment {
 
     private UserListAdapter adapter;
 
+    private UserListAdapter.RefreshResponse delegate = new UserListAdapter.RefreshResponse() {
+        @Override
+        public void reloadData() {
+            refreshUI();
+        }
+    };
+
     private SocialManager.SocialResponse socialResponse = new SocialManager.SocialResponse() {
         @Override
         public void processFinish(List<AVUser> list) {
             users = list;
             Log.i("search social circle: ", Integer.toString(list.size()));
-
-            if (tabIndex == 1) {
-                // update current followee list
-                State.currentFollowees.clear();
-                for (AVUser user: users) {
-                    State.currentFollowees.add(userManager.getUserId(user));
-                }
-                adapter = new UserListAdapter(getContext(), users, true);
-
-            } else {
-                adapter = new UserListAdapter(getContext(), users);
-            }
-
+            
+            adapter = new UserListAdapter(getContext(), users, delegate);
             listView.setAdapter(adapter);
         }
     };
@@ -117,6 +114,7 @@ public class SocialSubFragment extends LazyFragment {
     public void refreshUI(){
 
 //        {"关注者", "正在关注", "最热用户", "可能喜欢"};
+
         switch (tabIndex) {
             case 0:
                 socialManager.fetchAllFollowers(userManager.currentUser(), socialResponse);
@@ -133,7 +131,7 @@ public class SocialSubFragment extends LazyFragment {
                         if (e == null) {
                             users = list;
                             Log.i("search hot users: ", Integer.toString(list.size()));
-                            adapter = new UserListAdapter(getContext(), users);
+                            adapter = new UserListAdapter(getContext(), users, delegate);
                             listView.setAdapter(adapter);
                         }
                     }
@@ -149,7 +147,7 @@ public class SocialSubFragment extends LazyFragment {
                         if (e == null) {
                             users = list;
                             Log.i("recommend users: ", Integer.toString(list.size()));
-                            adapter = new UserListAdapter(getContext(), users);
+                            adapter = new UserListAdapter(getContext(), users, delegate);
                             listView.setAdapter(adapter);
                         }
                     }
