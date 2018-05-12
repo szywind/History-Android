@@ -74,7 +74,7 @@ public class ForumActivity extends AppCompatActivity {
         }
 
         if (forumFragment == null) {
-            refreshFragment();
+            refreshUI();
         }
 
         encyclopediaBtn.setOnClickListener(new View.OnClickListener() {
@@ -168,7 +168,7 @@ public class ForumActivity extends AppCompatActivity {
 //        startActivity(getIntent());
 //    }
 
-    private void refreshFragment() {
+    private void refreshUI() {
 
         forumFragment = new ForumFragment();
 

@@ -33,6 +33,13 @@ public interface Constants {
     }
 
     /***********************
+     * Local Broadcast
+     **********************/
+    interface Broadcast {
+        String REFRESH_USER_TABLE = "refresh user table";
+    }
+
+    /***********************
      * Permission required
      **********************/
     interface Permission {

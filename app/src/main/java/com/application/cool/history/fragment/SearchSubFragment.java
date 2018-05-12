@@ -1,9 +1,13 @@
 package com.application.cool.history.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +22,7 @@ import com.application.cool.history.activities.navigation.UserProfileDetailActiv
 import com.application.cool.history.adapters.PostListAdapter;
 import com.application.cool.history.adapters.RecordListAdapter;
 import com.application.cool.history.adapters.UserListAdapter;
+import com.application.cool.history.constants.Constants;
 import com.application.cool.history.constants.LCConstants;
 import com.application.cool.history.managers.LocalDataManager;
 import com.application.cool.history.managers.PostManager;
@@ -36,7 +41,6 @@ import java.util.List;
 
 public class SearchSubFragment extends LazyFragment {
     private ProgressBar progressBar;
-//    private TextView textView;
 
     private ListView listView;
     private int tabIndex;
@@ -52,13 +56,6 @@ public class SearchSubFragment extends LazyFragment {
     private RecordListAdapter recordListAdapter;
     private PostListAdapter postListAdapter;
     private UserListAdapter userListAdapter;
-
-    private UserListAdapter.RefreshResponse delegate = new UserListAdapter.RefreshResponse() {
-        @Override
-        public void reloadData() {
-            refreshUI();
-        }
-    };
 
     PostManager.PostResponse postResponse = new PostManager.PostResponse() {
         @Override
@@ -80,7 +77,7 @@ public class SearchSubFragment extends LazyFragment {
         public void processFinish(List<AVUser> list) {
             users = list;
             Log.i("search user: ", Integer.toString(users.size()));
-            userListAdapter = new UserListAdapter(getContext(), users, delegate);
+            userListAdapter = new UserListAdapter(getContext(), users);
             listView.setAdapter(userListAdapter);
         }
     };
@@ -160,13 +157,30 @@ public class SearchSubFragment extends LazyFragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
+        LocalBroadcastManager.getInstance(getContext())
+                .registerReceiver(new MyBroadcastReceiver(), new IntentFilter(Constants.Broadcast.REFRESH_USER_TABLE));
     }
 
+    final class MyBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null && Constants.Broadcast.REFRESH_USER_TABLE.equals(intent.getAction())) {
+                if (tabIndex == 3) {
+                    refreshUI();
+                }
+            }
+        }
+    }
 
     @Override
     public void onDestroyViewLazy() {
         super.onDestroyViewLazy();
         handler.removeCallbacksAndMessages(null);
+
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(new MyBroadcastReceiver());
+
     }
 
     public void refreshUI(){

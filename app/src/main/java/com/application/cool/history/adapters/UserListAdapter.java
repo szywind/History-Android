@@ -3,6 +3,7 @@ package com.application.cool.history.adapters;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +16,10 @@ import android.widget.TextView;
 
 import com.application.cool.history.R;
 import com.application.cool.history.activities.account.WelcomeActivity;
+import com.application.cool.history.activities.navigation.SocialActivity;
+import com.application.cool.history.constants.Constants;
 import com.application.cool.history.constants.LCConstants;
+import com.application.cool.history.fragment.SocialSubFragment;
 import com.application.cool.history.managers.UserManager;
 import com.application.cool.history.models.State;
 import com.avos.avoscloud.AVException;
@@ -39,31 +43,12 @@ public class UserListAdapter extends BaseAdapter {
     private List<AVUser> list;
     private UserManager userManager;
     private AVUser user;
-    private Boolean isFolloweePage = false;
 
-//    public UserListAdapter(Context context, List<AVUser> list) {
-//        this(context, list, false);
-//    }
-
-    public interface RefreshResponse {
-        void reloadData();
-    }
-
-    private RefreshResponse refreshResponse;
-
-    public UserListAdapter(Context context, List<AVUser> list, RefreshResponse refreshResponse) {
+    public UserListAdapter(Context context, List<AVUser> list) {
         this.context = context;
         this.list = list;
         this.userManager = UserManager.getSharedInstance(context);
-        this.refreshResponse = refreshResponse;
     }
-
-//    public UserListAdapter(Context context, List<AVUser> list, Boolean isFolloweePage) {
-//        this.context = context;
-//        this.list = list;
-//        isFolloweePage = isFolloweePage;
-//        this.userManager = UserManager.getSharedInstance(context);
-//    }
 
     @Override
     public int getCount() {
@@ -198,7 +183,8 @@ public class UserListAdapter extends BaseAdapter {
                     userManager.updateCounter(LCConstants.UserKey.followees, 1);
 
                     State.currentFollowees.add(uid);
-                    refreshUI();
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(Constants.Broadcast.REFRESH_USER_TABLE));
+
                 } else {
                     Log.e("Following", "error: " + e.getLocalizedMessage());
                 }
@@ -221,14 +207,14 @@ public class UserListAdapter extends BaseAdapter {
                     Log.i("Unfollowing", "succeed in unfollowing");
                     userManager.updateCounter(LCConstants.UserKey.followees, -1);
                     State.currentFollowees.remove(uid);
-                    refreshUI();
+
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(Constants.Broadcast.REFRESH_USER_TABLE));
                 }
             }
         });
     }
 
     private void refreshUI() {
-        refreshResponse.reloadData();
-//        updateListView(list);
+        updateListView(list);
     }
 }

@@ -1,9 +1,13 @@
 package com.application.cool.history.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
@@ -13,8 +17,11 @@ import android.widget.ProgressBar;
 
 import com.application.cool.history.R;
 import com.application.cool.history.activities.encyclopedia.EncyclopediaDetailActivity;
+import com.application.cool.history.activities.navigation.SocialActivity;
 import com.application.cool.history.activities.navigation.UserProfileDetailActivity;
 import com.application.cool.history.adapters.UserListAdapter;
+import com.application.cool.history.constants.Constants;
+import com.application.cool.history.constants.LCConstants;
 import com.application.cool.history.managers.SocialManager;
 import com.application.cool.history.managers.UserManager;
 import com.application.cool.history.models.State;
@@ -31,8 +38,8 @@ import java.util.Set;
  */
 
 public class SocialSubFragment extends LazyFragment {
+
     private ProgressBar progressBar;
-//    private TextView textView;
 
     private ListView listView;
     private int tabIndex;
@@ -42,20 +49,14 @@ public class SocialSubFragment extends LazyFragment {
 
     private UserListAdapter adapter;
 
-    private UserListAdapter.RefreshResponse delegate = new UserListAdapter.RefreshResponse() {
-        @Override
-        public void reloadData() {
-            refreshUI();
-        }
-    };
 
     private SocialManager.SocialResponse socialResponse = new SocialManager.SocialResponse() {
         @Override
         public void processFinish(List<AVUser> list) {
             users = list;
             Log.i("search social circle: ", Integer.toString(list.size()));
-            
-            adapter = new UserListAdapter(getContext(), users, delegate);
+
+            adapter = new UserListAdapter(getContext(), users);
             listView.setAdapter(adapter);
         }
     };
@@ -103,12 +104,29 @@ public class SocialSubFragment extends LazyFragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
+        LocalBroadcastManager.getInstance(getContext())
+                .registerReceiver(new MyBroadcastReceiver(), new IntentFilter(Constants.Broadcast.REFRESH_USER_TABLE));
+
     }
 
     @Override
     public void onDestroyViewLazy() {
         super.onDestroyViewLazy();
         handler.removeCallbacksAndMessages(null);
+
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(new MyBroadcastReceiver());
+
+    }
+
+    final class MyBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null && Constants.Broadcast.REFRESH_USER_TABLE.equals(intent.getAction())) {
+                refreshUI();
+            }
+        }
     }
 
     public void refreshUI(){
@@ -131,7 +149,7 @@ public class SocialSubFragment extends LazyFragment {
                         if (e == null) {
                             users = list;
                             Log.i("search hot users: ", Integer.toString(list.size()));
-                            adapter = new UserListAdapter(getContext(), users, delegate);
+                            adapter = new UserListAdapter(getContext(), users);
                             listView.setAdapter(adapter);
                         }
                     }
@@ -147,7 +165,7 @@ public class SocialSubFragment extends LazyFragment {
                         if (e == null) {
                             users = list;
                             Log.i("recommend users: ", Integer.toString(list.size()));
-                            adapter = new UserListAdapter(getContext(), users, delegate);
+                            adapter = new UserListAdapter(getContext(), users);
                             listView.setAdapter(adapter);
                         }
                     }
