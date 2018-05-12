@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.application.cool.history.R;
 import com.application.cool.history.models.Record;
-import com.koushikdutta.ion.Ion;
+import com.application.cool.history.util.GlideApp;
 
 import java.util.List;
 
@@ -67,7 +67,12 @@ public class TopicGridAdapter extends BaseAdapter {
 
             holder.name.setText(topic.getName());
 
-            Ion.with(holder.avatar).fitXY().placeholder(R.drawable.placeholder).error(R.drawable.placeholder).load(topic.getAvatarURL());
+            GlideApp.with(context)
+                    .load(topic.getAvatarURL())
+                    .centerCrop()
+                    .error(R.drawable.avatar)
+                    .placeholder(R.drawable.avatar)
+                    .into(holder.avatar);
         }
 
         return convertView;

@@ -11,23 +11,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.application.cool.history.R;
 import com.application.cool.history.activities.account.WelcomeActivity;
-import com.application.cool.history.activities.navigation.SocialActivity;
 import com.application.cool.history.constants.Constants;
 import com.application.cool.history.constants.LCConstants;
-import com.application.cool.history.fragment.SocialSubFragment;
 import com.application.cool.history.managers.UserManager;
 import com.application.cool.history.models.State;
+import com.application.cool.history.util.GlideApp;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FollowCallback;
-import com.avos.avoscloud.SaveCallback;
-import com.koushikdutta.ion.Ion;
+
 
 import java.util.List;
 
@@ -87,9 +84,12 @@ public class UserListAdapter extends BaseAdapter {
 
             holder.name.setText(userManager.getNickname(user));
 
-            Ion.with(holder.avatar)
-                    .placeholder(R.drawable.placeholder).error(R.drawable.placeholder)
-                    .load(userManager.getAvatarURL(user));
+            GlideApp.with(context)
+                    .load(userManager.getAvatarURL(user))
+                    .circleCrop()
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.placeholder)
+                    .into(holder.avatar);
 
             if (State.currentFollowees.contains(userManager.getUserId(user))) {
                 holder.followBtn.setText("正在关注");
