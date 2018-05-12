@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.application.cool.history.R;
 import com.application.cool.history.models.Record;
-import com.koushikdutta.ion.Ion;
+import com.application.cool.history.util.GlideApp;
 
 import java.util.List;
 
@@ -66,18 +66,18 @@ public class RecordListAdapter extends BaseAdapter {
 
             holder.name.setText(record.getName());
 
-            Ion.with(holder.avatar).fitXY().placeholder(R.drawable.placeholder).error(R.drawable.placeholder).load(record.getAvatarURL());
+            GlideApp.with(context)
+                    .load(record.getAvatarURL())
+                    .centerCrop()
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.placeholder)
+                    .into(holder.avatar);
         }
 
-        if (position == getCount()-1){
-            ViewGroup.LayoutParams params = holder.padding.getLayoutParams();
-            params.height = context.getResources().getDimensionPixelSize(R.dimen.text_view_padding_height);
-            holder.padding.setLayoutParams(params);
-        } else {
-            ViewGroup.LayoutParams params = holder.padding.getLayoutParams();
-            params.height = context.getResources().getDimensionPixelSize(R.dimen.zero_height);
-            holder.padding.setLayoutParams(params);
-        }
+        ViewGroup.LayoutParams params = holder.padding.getLayoutParams();
+        params.height = context.getResources().getDimensionPixelSize(R.dimen.zero_height);
+        holder.padding.setLayoutParams(params);
+
         return convertView;
     }
 

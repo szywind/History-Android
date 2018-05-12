@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +16,7 @@ import com.application.cool.history.activities.community.ForumActivity;
 import com.application.cool.history.adapters.RecordListAdapter;
 import com.application.cool.history.adapters.TopicGridAdapter;
 import com.application.cool.history.managers.LocalDataManager;
+import com.application.cool.history.managers.UserManager;
 import com.application.cool.history.models.Record;
 import com.shizhefei.fragment.LazyFragment;
 
@@ -26,7 +28,6 @@ import java.util.List;
 
 public class CommunitySubFragment extends LazyFragment {
     private ProgressBar progressBar;
-//    private TextView textView;
 
     private GridView gridView;
     private int tabIndex;
@@ -42,7 +43,6 @@ public class CommunitySubFragment extends LazyFragment {
         handler = new Handler(Looper.getMainLooper()) {
             public void handleMessage(android.os.Message msg) {
                 progressBar.setVisibility(View.GONE);
-//                textView.setVisibility(View.VISIBLE);
                 refreshUI();
             }
         };
@@ -50,8 +50,6 @@ public class CommunitySubFragment extends LazyFragment {
         setContentView(R.layout.fragment_community_tab_item);
         tabIndex = getArguments().getInt(INTENT_INT_INDEX);
         progressBar = (ProgressBar) findViewById(R.id.community_progressBar);
-//        textView = (TextView) findViewById(R.id.fragment_mainTab_item_textView);
-//        textView.setText("界面" + " " + tabIndex + " 加载完毕");
 
         gridView = (GridView) findViewById(R.id.community_gridview);
 
@@ -64,13 +62,21 @@ public class CommunitySubFragment extends LazyFragment {
 
                 intent.putExtras(bundle);
 
-                //intent.putExtra("event", eventList.get(position));
                 startActivity(intent);
             }
         });
 
         handler.sendEmptyMessageDelayed(1, 200);
 
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.history, R.color.black, R.color.avoscloud_blue);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshUI();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override
@@ -80,9 +86,9 @@ public class CommunitySubFragment extends LazyFragment {
     }
 
     public void refreshUI(){
-
+        int skip = (UserManager.getSharedInstance(getContext()).isLogin()) ? 0 : 1;
 //        {"关注", "人物", "事件", "地理", "艺术", "科技"};
-        switch (tabIndex) {
+        switch (tabIndex + skip) {
             case 0:
                 topics = LocalDataManager.getSharedInstance(getContext()).getFollowingTopics();
                 Log.i("following: ", Integer.toString(topics.size()));

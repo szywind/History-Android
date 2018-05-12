@@ -73,15 +73,10 @@ public class PostListAdapter extends BaseAdapter {
 //            Ion.with(holder.avatar).fitXY().placeholder(R.drawable.placeholder).error(R.drawable.placeholder).load(record.getAvatarURL());
         }
 
-        if (position == getCount()-1) {
-            ViewGroup.LayoutParams params = holder.padding.getLayoutParams();
-            params.height = context.getResources().getDimensionPixelSize(R.dimen.text_view_padding_height);
-            holder.padding.setLayoutParams(params);
-        } else {
-            ViewGroup.LayoutParams params = holder.padding.getLayoutParams();
-            params.height = context.getResources().getDimensionPixelSize(R.dimen.zero_height);
-            holder.padding.setLayoutParams(params);
-        }
+        ViewGroup.LayoutParams params = holder.padding.getLayoutParams();
+        params.height = context.getResources().getDimensionPixelSize(R.dimen.zero_height);
+        holder.padding.setLayoutParams(params);
+
         return convertView;
     }
 

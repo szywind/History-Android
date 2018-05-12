@@ -34,6 +34,10 @@ public interface LCConstants {
         String followers = "followers";
         String followees = "followees";
         String subscribeTopics = "subscribeTopics";
+        String subscribeList = "subscribeList";
+        String likeList = "likeList";
+        String dislikeList = "dislikeList";
+        String replyList = "replyList";
     }
 
     /**

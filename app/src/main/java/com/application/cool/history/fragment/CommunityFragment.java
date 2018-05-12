@@ -18,11 +18,16 @@ import android.widget.TextView;
 import com.application.cool.history.R;
 import com.application.cool.history.adapters.BaseFragmentPagerAdapter;
 import com.application.cool.history.constants.Constants;
+import com.application.cool.history.managers.UserManager;
+import com.application.cool.history.models.State;
 import com.application.cool.history.util.DisplayUtil;
 import com.shizhefei.view.indicator.IndicatorViewPager;
 import com.shizhefei.view.indicator.ScrollIndicatorView;
 import com.shizhefei.view.indicator.slidebar.ColorBar;
 import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
+
+import java.util.HashSet;
+import java.util.List;
 
 
 public class CommunityFragment extends Fragment {
@@ -50,8 +55,16 @@ public class CommunityFragment extends Fragment {
         scrollIndicatorView.setScrollBar(new ColorBar(getContext(), 0xFF2196F3, 4));
 
         viewPager.setOffscreenPageLimit(2);
-//        indicatorViewPager = new IndicatorViewPager(scrollIndicatorView, viewPager);
-//        indicatorViewPager.setAdapter(new PagerAdapter());
+
+        UserManager userManager = UserManager.getSharedInstance(getContext());
+
+        if (userManager.isLogin()) {
+            State.currentSubscribeTopics.clear();
+            List<String> users = userManager.getSubscribeTopics(userManager.currentUser());
+            State.currentSubscribeTopics = new HashSet<>(users);
+        } else {
+            State.currentSubscribeTopics.clear();
+        }
 
         indicatorViewPager = new IndicatorViewPager(scrollIndicatorView, viewPager);
         inflate = LayoutInflater.from(getActivity().getApplicationContext());

@@ -7,8 +7,9 @@ import android.widget.TextView;
 
 import com.application.cool.history.R;
 import com.application.cool.history.managers.UserManager;
+import com.application.cool.history.util.GlideApp;
 import com.avos.avoscloud.AVUser;
-import com.koushikdutta.ion.Ion;
+
 
 /**
  * Created by Zhenyuan Shen on 5/10/18.
@@ -39,8 +40,12 @@ public class UserProfileDetailActivity extends AppCompatActivity {
         UserManager userManager = UserManager.getSharedInstance(this);
         name.setText(userManager.getNickname(user));
 
-        Ion.with(avatar).fitXY().placeholder(R.drawable.placeholder).error(R.drawable.placeholder)
-                .load(userManager.getAvatarURL(user));
+        GlideApp.with(this)
+                .load(userManager.getAvatarURL(user))
+                .circleCrop()
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
+                .into(avatar);
     }
 }
 

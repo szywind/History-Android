@@ -3,7 +3,6 @@ package com.application.cool.history.managers;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -21,8 +20,12 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.RequestPasswordResetCallback;
 import com.avos.avoscloud.SaveCallback;
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.application.cool.history.managers.LocationManager.isInvalid;
@@ -122,10 +125,34 @@ public class UserManager implements Constants {
     public String getAvatarURL(AVUser user) {
         return user.getString(LCConstants.UserKey.avatarURL);
     }
+
     public List<String> getSubscribeTopics(AVUser user) {
-        List<String> topics = (List<String>) user.get(LCConstants.UserKey.subscribeTopics);
-        return topics;
+        return getList(user, LCConstants.UserKey.subscribeTopics);
     }
+    public List<String> getSubscribeList(AVUser user) {
+        return getList(user, LCConstants.UserKey.subscribeList);
+    }
+    public List<String> getLikeList(AVUser user) {
+        return getList(user, LCConstants.UserKey.likeList);
+    }
+    public List<String> getDislikeList(AVUser user) {
+        return getList(user, LCConstants.UserKey.dislikeList);
+    }
+    public List<String> getReplyList(AVUser user) {
+        return getList(user, LCConstants.UserKey.replyList);
+    }
+    public List<String> getList(AVUser user, String key) {
+
+//        List foo = user.getList(key);
+//        List<String> list = new ArrayList<>();
+//        for(String elem: (List<String>)user.get(key)) {
+//            list.add(elem);
+//        }
+        List<String> list = (List<String>) user.get(key);
+        return list;
+    }
+
+
     public AVGeoPoint getUserLocation(AVUser user) {
         return user.getAVGeoPoint(LCConstants.UserKey.location);
     }
@@ -135,10 +162,30 @@ public class UserManager implements Constants {
     public void setNickname(String nickname) {
         currentUser().put(LCConstants.UserKey.nickname, nickname);
     }
+
     public void setSubscribeTopics(SaveCallback saveCallback) {
-        currentUser().put(LCConstants.UserKey.subscribeTopics, State.currentSubscribeTopics.toArray());
+        setList(State.currentSubscribeTopics.toArray(), LCConstants.UserKey.subscribeTopics, saveCallback);
+    }
+    public void setSubscribeList(String[] list, SaveCallback saveCallback) {
+        setList(list, LCConstants.UserKey.subscribeList, saveCallback);
+
+    }
+    public void setLikeList(String[] list, SaveCallback saveCallback) {
+        setList(list, LCConstants.UserKey.likeList, saveCallback);
+
+    }
+    public void setDislikeList(String[] list, SaveCallback saveCallback) {
+        setList(list, LCConstants.UserKey.dislikeList, saveCallback);
+
+    }
+    public void setReplyList(String[] list, SaveCallback saveCallback) {
+        setList(list, LCConstants.UserKey.replyList, saveCallback);
+    }
+    public void setList(Object[] list, String key, SaveCallback saveCallback) {
+        currentUser().put(key, list);
         currentUser().saveInBackground(saveCallback);
     }
+
     public AVGeoPoint setUserLocation() {
         SimpleLocation loc = new SimpleLocation(context);
         SimpleLocation.Point pt = loc.getPosition();
@@ -257,22 +304,22 @@ public class UserManager implements Constants {
     }
 
     public void updateUser(final String nickname, String imgPath, final SaveCallback saveCallback) {
+
         try {
             AvatarManager.getSharedInstance(context).updateAvatarWithImage(imgPath, new SaveCallback() {
                 @Override
-                public void done(AVException e) {
-                    if (e != null) {
-                        Log.d(TAG, "Update User Error: " + e.toString());
-                    } else {
-                        setNickname(nickname);
-                        setUserLocation();
-                        currentUser().saveInBackground(saveCallback);
-                    }
-                }
+                public void done(AVException e) {}
             });
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        updateUser(nickname, saveCallback);
+    }
+
+    public void updateUser(final String nickname, final SaveCallback saveCallback) {
+        setNickname(nickname);
+        setUserLocation();
+        currentUser().saveInBackground(saveCallback);
     }
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,7 +29,6 @@ public class ForumSubFragment extends LazyFragment {
     public static final String INTENT_TOPIC_NAME = "intent_topic_name";
 
     private ProgressBar progressBar;
-//    private TextView textView;
 
     private ListView listView;
     private int tabIndex;
@@ -54,7 +54,6 @@ public class ForumSubFragment extends LazyFragment {
         handler = new Handler(Looper.getMainLooper()) {
             public void handleMessage(android.os.Message msg) {
                 progressBar.setVisibility(View.GONE);
-//                textView.setVisibility(View.VISIBLE);
                 refreshUI();
             }
         };
@@ -64,8 +63,6 @@ public class ForumSubFragment extends LazyFragment {
         topicName = getArguments().getString(INTENT_TOPIC_NAME);
 
         progressBar = (ProgressBar) findViewById(R.id.forum_progressBar);
-//        textView = (TextView) findViewById(R.id.fragment_mainTab_item_textView);
-//        textView.setText("界面" + " " + tabIndex + " 加载完毕");
 
         listView = (ListView) findViewById(R.id.forum_listview);
 
@@ -77,7 +74,6 @@ public class ForumSubFragment extends LazyFragment {
                 bundle.putParcelable(PostDetailActivity.INTENT_POST, posts.get(position));
 
                 intent.putExtras(bundle);
-                //intent.putExtra("event", eventList.get(position));
                 startActivity(intent);
             }
         });
@@ -86,6 +82,17 @@ public class ForumSubFragment extends LazyFragment {
 
         PostManager.getSharedInstance(getContext())
                 .fetchPostFromLC(LCConstants.PostKey.subtopic, topicName, postResponse);
+
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setDistanceToTriggerSync(10);
+        swipeRefreshLayout.setColorSchemeResources(R.color.history, R.color.black, R.color.avoscloud_blue);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshUI();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override

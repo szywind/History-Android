@@ -1,6 +1,5 @@
 package com.application.cool.history.activities.encyclopedia;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
@@ -9,16 +8,11 @@ import android.widget.TextView;
 import com.application.cool.history.R;
 import com.application.cool.history.constants.Constants;
 import com.application.cool.history.models.Record;
+import com.application.cool.history.util.GlideApp;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.async.util.Charsets;
 import com.koushikdutta.ion.Ion;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 
 /**
@@ -51,9 +45,12 @@ public class EncyclopediaDetailActivity extends AppCompatActivity {
 
         title.setText(record.getName());
 
-        Ion.with(image).fitCenter().placeholder(R.drawable.empty).error(R.drawable.empty).load(record.getAvatarURL());
-
-//        text.setText(Ion.with(this).load(record.getInfoURL()).toString());
+        GlideApp.with(this)
+                .load(record.getAvatarURL())
+                .fitCenter()
+                .placeholder(R.drawable.jiangshan)
+                .error(R.drawable.jiangshan)
+                .into(image);
 
         Ion.with(this).load(record.getInfoURL()).asString(Charsets.UTF_8).setCallback(new FutureCallback<String>() {
             @Override

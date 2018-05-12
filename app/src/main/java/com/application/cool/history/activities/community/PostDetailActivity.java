@@ -10,6 +10,7 @@ import com.application.cool.history.R;
 import com.application.cool.history.constants.Constants;
 import com.application.cool.history.managers.PostManager;
 import com.application.cool.history.models.Post;
+import com.application.cool.history.util.GlideApp;
 import com.avos.avoscloud.AVObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.async.util.Charsets;
@@ -53,7 +54,13 @@ public class PostDetailActivity extends AppCompatActivity {
             image.setVisibility(View.GONE);
         } else {
             image.setVisibility(View.VISIBLE);
-            Ion.with(image).fitCenter().placeholder(R.drawable.empty).error(R.drawable.empty).load(imageURL);
+
+            GlideApp.with(this)
+                    .load(imageURL)
+                    .centerCrop()
+                    .placeholder(R.drawable.empty)
+                    .error(R.drawable.empty)
+                    .into(image);
         }
 
 //        text.setText(Ion.with(this).load(record.getInfoURL()).toString());

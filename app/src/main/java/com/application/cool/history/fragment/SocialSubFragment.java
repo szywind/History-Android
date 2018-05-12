@@ -1,9 +1,14 @@
 package com.application.cool.history.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,8 +17,11 @@ import android.widget.ProgressBar;
 
 import com.application.cool.history.R;
 import com.application.cool.history.activities.encyclopedia.EncyclopediaDetailActivity;
+import com.application.cool.history.activities.navigation.SocialActivity;
 import com.application.cool.history.activities.navigation.UserProfileDetailActivity;
 import com.application.cool.history.adapters.UserListAdapter;
+import com.application.cool.history.constants.Constants;
+import com.application.cool.history.constants.LCConstants;
 import com.application.cool.history.managers.SocialManager;
 import com.application.cool.history.managers.UserManager;
 import com.application.cool.history.models.State;
@@ -23,14 +31,15 @@ import com.avos.avoscloud.FindCallback;
 import com.shizhefei.fragment.LazyFragment;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Zhenyuan Shen on 5/8/18.
  */
 
 public class SocialSubFragment extends LazyFragment {
+
     private ProgressBar progressBar;
-//    private TextView textView;
 
     private ListView listView;
     private int tabIndex;
@@ -40,19 +49,13 @@ public class SocialSubFragment extends LazyFragment {
 
     private UserListAdapter adapter;
 
+
     private SocialManager.SocialResponse socialResponse = new SocialManager.SocialResponse() {
         @Override
         public void processFinish(List<AVUser> list) {
             users = list;
             Log.i("search social circle: ", Integer.toString(list.size()));
 
-            if (tabIndex == 1) {
-                // update current followee list
-                State.currentFollowees.clear();
-                for (AVUser user: users) {
-                    State.currentFollowees.add(userManager.getNickname(user));
-                }
-            }
             adapter = new UserListAdapter(getContext(), users);
             listView.setAdapter(adapter);
         }
@@ -85,12 +88,25 @@ public class SocialSubFragment extends LazyFragment {
                 bundle.putParcelable(UserProfileDetailActivity.INTENT_USER, users.get(position));
 
                 intent.putExtras(bundle);
-                //intent.putExtra("event", eventList.get(position));
                 startActivity(intent);
             }
         });
 
         handler.sendEmptyMessageDelayed(1, 200);
+
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setDistanceToTriggerSync(10);
+        swipeRefreshLayout.setColorSchemeResources(R.color.history, R.color.black, R.color.avoscloud_blue);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshUI();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        LocalBroadcastManager.getInstance(getContext())
+                .registerReceiver(new MyBroadcastReceiver(), new IntentFilter(Constants.Broadcast.REFRESH_USER_TABLE));
 
     }
 
@@ -98,18 +114,32 @@ public class SocialSubFragment extends LazyFragment {
     public void onDestroyViewLazy() {
         super.onDestroyViewLazy();
         handler.removeCallbacksAndMessages(null);
+
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(new MyBroadcastReceiver());
+
+    }
+
+    final class MyBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null && Constants.Broadcast.REFRESH_USER_TABLE.equals(intent.getAction())) {
+                refreshUI();
+            }
+        }
     }
 
     public void refreshUI(){
 
 //        {"关注者", "正在关注", "最热用户", "可能喜欢"};
+
         switch (tabIndex) {
             case 0:
-                socialManager.fetchAllFollowers(AVUser.getCurrentUser(), socialResponse);
+                socialManager.fetchAllFollowers(userManager.currentUser(), socialResponse);
                 return;
 
             case 1:
-                socialManager.fetchAllFollowees(AVUser.getCurrentUser(), socialResponse);
+                socialManager.fetchAllFollowees(userManager.currentUser(), socialResponse);
                 return;
 
             case 2:
