@@ -16,22 +16,17 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.application.cool.history.R;
-import com.application.cool.history.activities.encyclopedia.EncyclopediaDetailActivity;
-import com.application.cool.history.activities.navigation.SocialActivity;
 import com.application.cool.history.activities.navigation.UserProfileDetailActivity;
 import com.application.cool.history.adapters.UserListAdapter;
 import com.application.cool.history.constants.Constants;
-import com.application.cool.history.constants.LCConstants;
 import com.application.cool.history.managers.SocialManager;
 import com.application.cool.history.managers.UserManager;
-import com.application.cool.history.models.State;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.shizhefei.fragment.LazyFragment;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Zhenyuan Shen on 5/8/18.
