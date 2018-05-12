@@ -183,7 +183,7 @@ public class UserListAdapter extends BaseAdapter {
                     userManager.updateCounter(LCConstants.UserKey.followees, 1);
 
                     State.currentFollowees.add(uid);
-                    LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(Constants.Broadcast.REFRESH_USER_TABLE));
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(Constants.Broadcast.REFRESH_FOLLOWING_USER));
 
                 } else {
                     Log.e("Following", "error: " + e.getLocalizedMessage());
@@ -208,7 +208,7 @@ public class UserListAdapter extends BaseAdapter {
                     userManager.updateCounter(LCConstants.UserKey.followees, -1);
                     State.currentFollowees.remove(uid);
 
-                    LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(Constants.Broadcast.REFRESH_USER_TABLE));
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(Constants.Broadcast.REFRESH_FOLLOWING_USER));
                 }
             }
         });

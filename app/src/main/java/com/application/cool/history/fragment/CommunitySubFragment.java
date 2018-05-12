@@ -38,6 +38,12 @@ public class CommunitySubFragment extends LazyFragment {
     private TopicGridAdapter adapter;
 
     @Override
+    protected void onResumeLazy() {
+        super.onResumeLazy();
+        refreshUI();
+    }
+
+    @Override
     protected void onCreateViewLazy(final Bundle savedInstanceState) {
         super.onCreateViewLazy(savedInstanceState);
         handler = new Handler(Looper.getMainLooper()) {

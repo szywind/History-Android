@@ -159,14 +159,14 @@ public class SearchSubFragment extends LazyFragment {
         });
 
         LocalBroadcastManager.getInstance(getContext())
-                .registerReceiver(new MyBroadcastReceiver(), new IntentFilter(Constants.Broadcast.REFRESH_USER_TABLE));
+                .registerReceiver(new MyBroadcastReceiver(), new IntentFilter(Constants.Broadcast.REFRESH_FOLLOWING_USER));
     }
 
     final class MyBroadcastReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent != null && Constants.Broadcast.REFRESH_USER_TABLE.equals(intent.getAction())) {
+            if (intent != null && Constants.Broadcast.REFRESH_FOLLOWING_USER.equals(intent.getAction())) {
                 if (tabIndex == 3) {
                     refreshUI();
                 }

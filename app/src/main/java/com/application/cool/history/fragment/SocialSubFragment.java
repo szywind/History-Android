@@ -65,6 +65,11 @@ public class SocialSubFragment extends LazyFragment {
     private UserManager userManager = UserManager.getSharedInstance(getContext());
 
     @Override
+    protected void onResumeLazy() {
+        super.onResumeLazy();
+    }
+
+    @Override
     protected void onCreateViewLazy(final Bundle savedInstanceState) {
         super.onCreateViewLazy(savedInstanceState);
         handler = new Handler(Looper.getMainLooper()) {
@@ -106,7 +111,7 @@ public class SocialSubFragment extends LazyFragment {
         });
 
         LocalBroadcastManager.getInstance(getContext())
-                .registerReceiver(new MyBroadcastReceiver(), new IntentFilter(Constants.Broadcast.REFRESH_USER_TABLE));
+                .registerReceiver(new MyBroadcastReceiver(), new IntentFilter(Constants.Broadcast.REFRESH_FOLLOWING_USER));
 
     }
 
@@ -123,7 +128,7 @@ public class SocialSubFragment extends LazyFragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent != null && Constants.Broadcast.REFRESH_USER_TABLE.equals(intent.getAction())) {
+            if (intent != null && Constants.Broadcast.REFRESH_FOLLOWING_USER.equals(intent.getAction())) {
                 refreshUI();
             }
         }
