@@ -100,6 +100,19 @@ public class UserManager implements Constants {
     public String getNickname() {
         return pref.getString(SharedPref.PREF_NICKNAME, null);
     }
+
+    // 更新当前用户信息
+    public void updateNickName() {
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(SharedPref.PREF_NICKNAME, getNickname(currentUser()));
+        editor.apply();
+    }
+
+    public void updateAvatar() {
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(SharedPref.PREF_IMG_NAME, getAvatarURL(currentUser()));
+        editor.apply();
+    }
 //    public UserInfo getCurrentUser() {
 //        UserInfo currentUser = new UserInfo(getNickname(), getAccountType());
 //        return currentUser;
