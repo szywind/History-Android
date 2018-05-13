@@ -12,6 +12,8 @@ import com.application.cool.history.R;
 import com.application.cool.history.models.Record;
 import com.application.cool.history.util.GlideApp;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 /**
@@ -20,13 +22,18 @@ import java.util.List;
 
 public class RecordListAdapter extends BaseAdapter {
 
-    private Context context;
-    private List<Record> list;
-
+    protected Context context;
+    protected List<Record> list;
+    private int layoutId;
 
     public RecordListAdapter(Context context, List<Record> list) {
+        this(context, list, R.layout.record_cell);
+    }
+
+    public RecordListAdapter(Context context, List<Record> list, int layoutId) {
         this.context = context;
         this.list = list;
+        this.layoutId = layoutId;
     }
 
     @Override
@@ -49,12 +56,14 @@ public class RecordListAdapter extends BaseAdapter {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.record_cell, null);
+            convertView = inflater.inflate(layoutId, null);
             holder = new ViewHolder();
             holder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
             holder.name = (TextView) convertView.findViewById(R.id.name);
 
-            holder.padding = (TextView) convertView.findViewById(R.id.padding);
+            holder.letter = (layoutId == R.layout.encyclopedia_cell)?
+                    (TextView) convertView.findViewById(R.id.catalogText): null;
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -74,17 +83,13 @@ public class RecordListAdapter extends BaseAdapter {
                     .into(holder.avatar);
         }
 
-        ViewGroup.LayoutParams params = holder.padding.getLayoutParams();
-        params.height = context.getResources().getDimensionPixelSize(R.dimen.zero_height);
-        holder.padding.setLayoutParams(params);
-
         return convertView;
     }
 
     class ViewHolder {
         ImageView avatar;
         TextView name;
-        TextView padding;
+        TextView letter;
     }
 
     public void updateListView(List<Record> list) {

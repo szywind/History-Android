@@ -5,17 +5,23 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.application.cool.history.R;
 import com.application.cool.history.activities.encyclopedia.EncyclopediaDetailActivity;
+import com.application.cool.history.adapters.EncyclopediaAdapter;
 import com.application.cool.history.adapters.RecordListAdapter;
 import com.application.cool.history.managers.LocalDataManager;
 import com.application.cool.history.models.Record;
+import com.application.cool.history.view.SideIndexBar;
 import com.shizhefei.fragment.LazyFragment;
 
 import java.util.List;
@@ -24,9 +30,8 @@ import java.util.List;
  * Created by Zhenyuan Shen on 5/8/18.
  */
 
-public class EncyclopediaSubFragment extends LazyFragment {
+public class EncyclopediaSubFragment extends LazyFragment implements SideIndexBar.OnTouchListener {
     private ProgressBar progressBar;
-//    private TextView textView;
 
     private ListView listView;
     private int tabIndex;
@@ -34,7 +39,9 @@ public class EncyclopediaSubFragment extends LazyFragment {
 
     private List<Record> records;
 
-    private RecordListAdapter adapter;
+    private EncyclopediaAdapter adapter;
+    private SideIndexBar sideIndexBar;
+    private TextView dialog;
 
     @Override
     protected void onCreateViewLazy(final Bundle savedInstanceState) {
@@ -49,7 +56,11 @@ public class EncyclopediaSubFragment extends LazyFragment {
         setContentView(R.layout.fragment_encyclopedia_tab_item);
         tabIndex = getArguments().getInt(INTENT_INT_INDEX);
         progressBar = (ProgressBar) findViewById(R.id.encyclopedia_progressBar);
+        sideIndexBar = (SideIndexBar) findViewById(R.id.sidebar);
+        dialog = (TextView) findViewById(R.id.dialog);
 
+        sideIndexBar.setTextView(dialog);
+        sideIndexBar.setOnTouchListener(this);
 
         listView = (ListView) findViewById(R.id.encyclopedia_listview);
 
@@ -77,12 +88,33 @@ public class EncyclopediaSubFragment extends LazyFragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0) {
+                    swipeRefreshLayout.setEnabled(true);
+                } else {
+                    swipeRefreshLayout.setEnabled(false);
+                }
+            }
+        });
     }
 
     @Override
     public void onDestroyViewLazy() {
         super.onDestroyViewLazy();
         handler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    protected void onPauseLazy() {
+        super.onPauseLazy();
     }
 
     public void refreshUI(){
@@ -123,10 +155,23 @@ public class EncyclopediaSubFragment extends LazyFragment {
                 break;
         }
 
-        adapter = new RecordListAdapter(getContext(),records);
+        adapter = new EncyclopediaAdapter(getContext(),records);
         listView.setAdapter(adapter);
     }
 
 
     private Handler handler;
+
+
+    @Override
+    public void onTouchChanged(String s) {
+        int position = 0;
+        // 该字母首次出现的位置
+        if (adapter != null) {
+            position = adapter.getPositionForSection(s.charAt(0));
+        }
+        if (position != -1) {
+            listView.setSelection(position);
+        }
+    }
 }

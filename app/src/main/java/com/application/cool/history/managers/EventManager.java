@@ -37,7 +37,14 @@ public class EventManager {
     }
 
     public void fetchAllEventsFromLC(final EventResponse delegate) {
+        fetchAllEventsFromLC(delegate, true);
+    }
+
+    public void fetchAllEventsFromLC(final EventResponse delegate, boolean sortByPinyin) {
         AVQuery<AVObject> query = new AVQuery<>(LCConstants.EventKey.className);
+        if (sortByPinyin) {
+            query.orderByAscending(LCConstants.EventKey.pinyin);
+        }
         query.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> list, AVException e) {

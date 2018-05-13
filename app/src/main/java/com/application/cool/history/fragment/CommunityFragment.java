@@ -60,7 +60,7 @@ public class CommunityFragment extends Fragment {
 
         scrollIndicatorView.setScrollBar(new ColorBar(getContext(), 0xFF2196F3, 4));
 
-        viewPager.setOffscreenPageLimit(0);
+        // viewPager.setOffscreenPageLimit(0);
 
         UserManager userManager = UserManager.getSharedInstance(getContext());
 
