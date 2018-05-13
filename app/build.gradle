@@ -5,7 +5,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.application.cool.history"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -90,5 +90,8 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'org.greenrobot:eventbus:3.1.1'
+
+    implementation files('libs/pinyin4j-2.5.0.jar')
+    implementation 'com.github.stuxuhai:jpinyin:1.0'
 
 }

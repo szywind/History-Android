@@ -75,7 +75,7 @@ public class CommunitySubFragment extends LazyFragment {
         handler.sendEmptyMessageDelayed(1, 200);
 
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setColorSchemeResources(R.color.history, R.color.black, R.color.avoscloud_blue);
+        swipeRefreshLayout.setColorSchemeResources(R.color.historyDarkBrown, R.color.black, R.color.avoscloud_blue);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

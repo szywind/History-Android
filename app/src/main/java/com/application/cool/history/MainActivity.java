@@ -172,9 +172,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
         bottomNavigationBar
                 .setMode(BottomNavigationBar.MODE_FIXED)
-                .setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC)
-                .setActiveColor("#FF107FFD")
-                .setInActiveColor("#e9e6e6");
+                .setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
+
 
         bottomNavigationBar
                 .addItem(new BottomNavigationItem(R.drawable.ic_timeline, R.string.timeline))

@@ -55,7 +55,7 @@
         android:layout_marginBottom="20dp"
         android:layout_margin="10dp"
         android:text="@string/use_email"
-        android:textColor="@color/history"
+        android:textColor="@color/historyDarkBrown"
         android:textSize="20sp" />
 
     <Button

@@ -49,6 +49,6 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:text="登陆"
-            android:textColor="@color/history"/>
+            android:textColor="@color/historyDarkBrown"/>
     </LinearLayout>
 </RelativeLayout>
