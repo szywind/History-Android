@@ -20,7 +20,7 @@
 
 ### 未完内容...
 2018.05.13
-- listview 是否需要加入sideIndexBar 和 section title
+- ~~listview 是否需要加入sideIndexBar 和 section title~~
 - 簡單的文章寫入頁面
 - 簡單的文章評論頁面
 - 分頁query，利用LC AVQuery的skip和limit方法
