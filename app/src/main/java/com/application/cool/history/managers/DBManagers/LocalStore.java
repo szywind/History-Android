@@ -12,8 +12,8 @@ public class LocalStore {
     public static DaoSession daoSession;
     public static DaoMaster.DevOpenHelper helper;
 
-    public void initDB(Context context) {
-        helper = new DaoMaster.DevOpenHelper(context, "history.sqlite", null);
+    public void initDB(Context context, String dbname) {
+        helper = new DaoMaster.DevOpenHelper(context, dbname, null);
         DaoMaster daoMaster = new DaoMaster(helper.getReadableDatabase());
         daoSession = daoMaster.newSession();
     }

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:descendantFocusability="blocksDescendants"
+    android:background="@color/white"
+    >
+
+    <!--<TextView-->
+        <!--android:id="@+id/line"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1px"-->
+        <!--android:background="@color/headerGray"-->
+        <!--/>-->
+
+    <TextView
+        android:id="@+id/catalogText"
+        android:text="A"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif-medium"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:textColor="@color/black"
+        android:background="@color/headerGray"
+        android:gravity="center_vertical"
+        android:paddingStart="18dp"
+    />
+
+    <!--<TextView-->
+        <!--android:id="@+id/line2"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1px"-->
+        <!--android:background="@color/headerGray"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--/>-->
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        >
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/avatar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/avatar"
+                android:layout_gravity="center_vertical"
+                app:civ_border_width="0dp"
+                app:civ_border_color="@color/black"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/head"
+            android:layout_toStartOf="@+id/switchBlock"
+            android:paddingStart="16dp"
+            android:paddingEnd="10dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:text="麦克斯韦"
+            android:fontFamily="sans-serif"
+            android:layout_gravity="center_vertical" />
+    </LinearLayout>
+</LinearLayout>

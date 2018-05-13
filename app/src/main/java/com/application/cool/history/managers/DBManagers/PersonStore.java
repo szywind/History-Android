@@ -17,7 +17,7 @@ public class PersonStore extends LocalStore {
 
     private static PersonStore sharedInstance = null;
 
-    private PersonStore(Context context){
+    private PersonStore(Context context) {
         initDB(context);
     }
 
@@ -32,7 +32,7 @@ public class PersonStore extends LocalStore {
 
     public void initDB(Context context) {
         if (daoSession == null) {
-            super.initDB(context);
+            super.initDB(context, "person.sqlite");
         }
         personDao = daoSession.getPersonEntityDao();
     }

@@ -37,7 +37,14 @@ public class PersonManager {
     }
 
     public void fetchAllPeopleFromLC(final PersonResponse delegate) {
+        fetchAllPeopleFromLC(delegate, true);
+    }
+
+    public void fetchAllPeopleFromLC(final PersonResponse delegate, boolean sortByPinyin) {
         AVQuery<AVObject> query = new AVQuery<>(LCConstants.PersonKey.className);
+        if (sortByPinyin) {
+            query.orderByAscending(LCConstants.PersonKey.pinyin);
+        }
         query.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> list, AVException e) {
