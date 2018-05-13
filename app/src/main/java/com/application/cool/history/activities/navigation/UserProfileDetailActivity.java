@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.application.cool.history.R;
+import com.application.cool.history.fragment.BookmarkFragment;
 import com.application.cool.history.managers.UserManager;
 import com.application.cool.history.util.GlideApp;
 import com.avos.avoscloud.AVUser;
@@ -24,18 +25,18 @@ public class UserProfileDetailActivity extends AppCompatActivity {
 
     private AVUser user;
 
+    private BookmarkFragment bookmarkFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile_detail);
 
-        name = (TextView) findViewById(R.id.name);
+        name = (TextView) findViewById(R.id.nickname);
         avatar = (ImageView) findViewById(R.id.avatar);
 
-        Bundle bundle = getIntent().getExtras();
-
         //Extract the data
-        user = bundle.getParcelable(INTENT_USER);
+        user = getIntent().getExtras().getParcelable(INTENT_USER);
 
         UserManager userManager = UserManager.getSharedInstance(this);
         name.setText(userManager.getNickname(user));
@@ -43,9 +44,22 @@ public class UserProfileDetailActivity extends AppCompatActivity {
         GlideApp.with(this)
                 .load(userManager.getAvatarURL(user))
                 .circleCrop()
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.placeholder)
+                .placeholder(R.drawable.avatar)
+                .error(R.drawable.avatar)
                 .into(avatar);
+
+        if (bookmarkFragment == null) {
+            Bundle bundle = new Bundle();
+            bookmarkFragment = new BookmarkFragment();
+            bundle.putString(BookmarkFragment.INTENT_USER_INDEX, UserManager.getSharedInstance(this).getUserId(user));
+            bookmarkFragment.setArguments(bundle);
+
+            android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+            android.support.v4.app.FragmentTransaction transaction = fm.beginTransaction();
+
+            transaction.replace(R.id.fragment_container, bookmarkFragment);
+            transaction.commit();
+        }
     }
 }
 
