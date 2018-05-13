@@ -16,22 +16,17 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.application.cool.history.R;
-import com.application.cool.history.activities.encyclopedia.EncyclopediaDetailActivity;
-import com.application.cool.history.activities.navigation.SocialActivity;
 import com.application.cool.history.activities.navigation.UserProfileDetailActivity;
 import com.application.cool.history.adapters.UserListAdapter;
 import com.application.cool.history.constants.Constants;
-import com.application.cool.history.constants.LCConstants;
 import com.application.cool.history.managers.SocialManager;
 import com.application.cool.history.managers.UserManager;
-import com.application.cool.history.models.State;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.shizhefei.fragment.LazyFragment;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Zhenyuan Shen on 5/8/18.
@@ -65,6 +60,11 @@ public class SocialSubFragment extends LazyFragment {
     private UserManager userManager = UserManager.getSharedInstance(getContext());
 
     @Override
+    protected void onResumeLazy() {
+        super.onResumeLazy();
+    }
+
+    @Override
     protected void onCreateViewLazy(final Bundle savedInstanceState) {
         super.onCreateViewLazy(savedInstanceState);
         handler = new Handler(Looper.getMainLooper()) {
@@ -96,7 +96,7 @@ public class SocialSubFragment extends LazyFragment {
 
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setDistanceToTriggerSync(10);
-        swipeRefreshLayout.setColorSchemeResources(R.color.history, R.color.black, R.color.avoscloud_blue);
+        swipeRefreshLayout.setColorSchemeResources(R.color.historyDarkBrown, R.color.black, R.color.avoscloud_blue);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -106,7 +106,7 @@ public class SocialSubFragment extends LazyFragment {
         });
 
         LocalBroadcastManager.getInstance(getContext())
-                .registerReceiver(new MyBroadcastReceiver(), new IntentFilter(Constants.Broadcast.REFRESH_USER_TABLE));
+                .registerReceiver(new MyBroadcastReceiver(), new IntentFilter(Constants.Broadcast.REFRESH_FOLLOWING_USER));
 
     }
 
@@ -123,7 +123,7 @@ public class SocialSubFragment extends LazyFragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent != null && Constants.Broadcast.REFRESH_USER_TABLE.equals(intent.getAction())) {
+            if (intent != null && Constants.Broadcast.REFRESH_FOLLOWING_USER.equals(intent.getAction())) {
                 refreshUI();
             }
         }

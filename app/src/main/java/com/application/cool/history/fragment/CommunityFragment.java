@@ -38,6 +38,12 @@ public class CommunityFragment extends Fragment {
 
 //    private String[] tabTitle = {"关注", "人物", "事件", "地理", "艺术", "科技"};
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,7 +60,7 @@ public class CommunityFragment extends Fragment {
 
         scrollIndicatorView.setScrollBar(new ColorBar(getContext(), 0xFF2196F3, 4));
 
-        viewPager.setOffscreenPageLimit(2);
+        viewPager.setOffscreenPageLimit(0);
 
         UserManager userManager = UserManager.getSharedInstance(getContext());
 

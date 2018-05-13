@@ -142,13 +142,16 @@ public class UserManager implements Constants {
         return getList(user, LCConstants.UserKey.replyList);
     }
     public List<String> getList(AVUser user, String key) {
+        JSONArray jsonArray = user.getJSONArray(key);
+        List<String> list = new ArrayList<>();
 
-//        List foo = user.getList(key);
-//        List<String> list = new ArrayList<>();
-//        for(String elem: (List<String>)user.get(key)) {
-//            list.add(elem);
-//        }
-        List<String> list = (List<String>) user.get(key);
+        for(int i=0; i<jsonArray.length(); i++) {
+            try {
+                list.add(jsonArray.getString(i));
+            } catch (Exception e) {
+
+            }
+        }
         return list;
     }
 
