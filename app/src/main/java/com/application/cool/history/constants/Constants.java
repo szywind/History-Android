@@ -36,7 +36,7 @@ public interface Constants {
      * Local Broadcast
      **********************/
     interface Broadcast {
-        String REFRESH_USER_TABLE = "refresh user table";
+        String REFRESH_FOLLOWING_USER = "refresh user table";
     }
 
     /***********************

@@ -28,7 +28,7 @@
         android:layout_marginRight="40dp"
         android:text="@string/sign_up"
         android:textSize="22sp"
-        android:textColor="@color/history"/>
+        android:textColor="@color/historyDarkBrown"/>
 
     <!-- Name Label -->
     <android.support.design.widget.TextInputLayout
@@ -71,7 +71,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:text="@string/forget_password"
-        android:textColor="@color/history"/>
+        android:textColor="@color/historyDarkBrown"/>
 
     <Button
         android:id="@+id/btn_login"

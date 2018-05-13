@@ -40,7 +40,7 @@
         android:textSize="20sp"
         app:bottomLineHeight="1dp"
         app:bottomLineNormalColor="@color/gravy_light"
-        app:bottomLineSelectedColor="@color/history"
+        app:bottomLineSelectedColor="@color/historyDarkBrown"
         app:figures="6"
         app:selectedBackgroundColor="@color/colorPrimary_alpha33"
         app:verCodeMargin="4dp" />
@@ -55,7 +55,7 @@
         android:layout_marginBottom="20dp"
         android:layout_margin="10dp"
         android:text="@string/not_receive_message"
-        android:textColor="@color/history"
+        android:textColor="@color/historyDarkBrown"
         android:textSize="20sp" />
 
     <Button
