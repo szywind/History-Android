@@ -23,7 +23,6 @@ public class EncyclopediaFragment extends Fragment {
 
     private IndicatorViewPager indicatorViewPager;
 
-    private LayoutInflater inflate;
 
 //    private String[] tabTitle = {"人物", "全部", "事件", "地理", "艺术", "科技"};
 
@@ -46,13 +45,11 @@ public class EncyclopediaFragment extends Fragment {
         // viewPager.setOffscreenPageLimit(0);
 
         indicatorViewPager = new IndicatorViewPager(scrollIndicatorView, viewPager);
-        inflate = LayoutInflater.from(getActivity().getApplicationContext());
-
-
+//        inflate = LayoutInflater.from(getActivity().getApplicationContext());
 
         indicatorViewPager.setAdapter(
-                new BaseFragmentPagerAdapter(getActivity().getSupportFragmentManager(),
-                        inflate, getContext(), Constants.EDataSource.E_RECORD));
+                new BaseFragmentPagerAdapter(getChildFragmentManager(),
+                        inflater, getContext(), Constants.EDataSource.E_RECORD));
 
         return view;
     }

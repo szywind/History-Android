@@ -112,11 +112,6 @@ public class EncyclopediaSubFragment extends LazyFragment implements SideIndexBa
         handler.removeCallbacksAndMessages(null);
     }
 
-    @Override
-    protected void onPauseLazy() {
-        super.onPauseLazy();
-    }
-
     public void refreshUI(){
 
 //        {"人物", "全部", "事件", "地理", "艺术", "科技"};

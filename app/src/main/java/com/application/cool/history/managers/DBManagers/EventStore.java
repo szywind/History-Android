@@ -32,7 +32,7 @@ public class EventStore extends LocalStore {
 
     public void initDB(Context context) {
         if (daoSession == null) {
-            super.initDB(context, "event.sqlite");
+            super.initDB(context);
         }
         eventDao = daoSession.getEventEntityDao();
     }

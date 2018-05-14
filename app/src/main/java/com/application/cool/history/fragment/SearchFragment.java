@@ -27,7 +27,6 @@ import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 public class SearchFragment extends Fragment {
 
     private IndicatorViewPager indicatorViewPager;
-    private LayoutInflater inflate;
     private SearchView searchView;
     private TextView searchHint;
     private LinearLayout searchResultLayout;
@@ -36,14 +35,14 @@ public class SearchFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+//        searchRecomList.setVisibility(View.VISIBLE);
 //        searchResultLayout.setVisibility(View.INVISIBLE);
 //        searchHint.setVisibility(View.INVISIBLE);
-//        searchRecomList.setVisibility(View.VISIBLE);
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_search, container, false);
 
@@ -55,9 +54,9 @@ public class SearchFragment extends Fragment {
         searchResultLayout = (LinearLayout) view.findViewById(R.id.search_result);
         searchRecomList = (ListView) view.findViewById(R.id.search_recommend);
 
+        searchRecomList.setVisibility(View.VISIBLE);
         searchResultLayout.setVisibility(View.INVISIBLE);
         searchHint.setVisibility(View.INVISIBLE);
-        searchRecomList.setVisibility(View.VISIBLE);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -71,22 +70,27 @@ public class SearchFragment extends Fragment {
                 } else {
                     searchRecomList.setVisibility(View.INVISIBLE);
                     searchResultLayout.setVisibility(View.VISIBLE);
+                    searchHint.setVisibility(View.INVISIBLE);
 
                     indicatorViewPager.setAdapter(
-                            new BaseFragmentPagerAdapter(getActivity().getSupportFragmentManager(),
-                                    inflate, getContext(), Constants.EDataSource.E_SEARCH, query));
+                            new BaseFragmentPagerAdapter(getChildFragmentManager(),
+                                    inflater, getContext(), Constants.EDataSource.E_SEARCH, query));
 
-                    searchHint.setVisibility(View.INVISIBLE);
                 }
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                searchRecomList.setVisibility(View.INVISIBLE);
-                searchResultLayout.setVisibility(View.INVISIBLE);
-
-                searchHint.setVisibility(View.VISIBLE);
+                if (newText.isEmpty()) {
+                    searchRecomList.setVisibility(View.VISIBLE);
+                    searchResultLayout.setVisibility(View.INVISIBLE);
+                    searchHint.setVisibility(View.INVISIBLE);
+                } else {
+                    searchRecomList.setVisibility(View.INVISIBLE);
+                    searchResultLayout.setVisibility(View.INVISIBLE);
+                    searchHint.setVisibility(View.VISIBLE);
+                }
 
                 return true;
             }
@@ -127,7 +131,6 @@ public class SearchFragment extends Fragment {
         // viewPager.setOffscreenPageLimit(0);
 
         indicatorViewPager = new IndicatorViewPager(scrollIndicatorView, viewPager);
-        inflate = LayoutInflater.from(getActivity().getApplicationContext());
 
         return view;
     }

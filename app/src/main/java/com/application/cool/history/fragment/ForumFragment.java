@@ -29,7 +29,6 @@ public class ForumFragment extends Fragment {
 
     private IndicatorViewPager indicatorViewPager;
 
-    private LayoutInflater inflate;
 
     private String topicName;
 
@@ -54,14 +53,13 @@ public class ForumFragment extends Fragment {
         // viewPager.setOffscreenPageLimit(0);
 
         indicatorViewPager = new IndicatorViewPager(scrollIndicatorView, viewPager);
-        inflate = LayoutInflater.from(getActivity().getApplicationContext());
 
 
         topicName =  getArguments().getString(INTENT_TOPIC_NAME);
 
         indicatorViewPager.setAdapter(
-                new BaseFragmentPagerAdapter(getActivity().getSupportFragmentManager(),
-                        inflate, getContext(), Constants.EDataSource.E_POST, topicName));
+                new BaseFragmentPagerAdapter(getChildFragmentManager(),
+                        inflater, getContext(), Constants.EDataSource.E_POST, topicName));
 
         return view;
     }

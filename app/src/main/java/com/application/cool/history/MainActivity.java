@@ -8,6 +8,8 @@ import com.application.cool.history.activities.navigation.BookmarkActivity;
 import com.application.cool.history.activities.navigation.SocialActivity;
 import com.application.cool.history.constants.Constants;
 import com.application.cool.history.fragment.CommunityFragment;
+//import com.application.cool.history.fragment.TestFragment;
+import com.application.cool.history.fragment.EncyclopediaFragment;
 import com.application.cool.history.managers.UserManager;
 
 import android.support.annotation.NonNull;
@@ -26,7 +28,6 @@ import android.widget.TextView;
 import com.application.cool.history.activities.account.WelcomeActivity;
 import com.application.cool.history.db.EventEntity;
 import com.application.cool.history.db.PersonEntity;
-import com.application.cool.history.fragment.EncyclopediaFragment;
 import com.application.cool.history.fragment.SearchFragment;
 import com.application.cool.history.fragment.TimelineFragment;
 import com.application.cool.history.util.MessageEvent;
@@ -147,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intent);
                             break;
                         case R.id.nav_personal_information:
-                            intent = intent = new Intent(MainActivity.this, ProfileDetailActivity.class);
+                            intent = new Intent(MainActivity.this, ProfileDetailActivity.class);
                             startActivity(intent);
                     }
                 }
@@ -183,7 +184,9 @@ public class MainActivity extends AppCompatActivity {
                 .initialise();
 
         setDefaultFragment();
+
         setupData();
+
         bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener(){
             @Override
             public void onTabSelected(int position) {
@@ -194,28 +197,28 @@ public class MainActivity extends AppCompatActivity {
                         if (timelineFragment == null) {
                             timelineFragment = new TimelineFragment();
                         }
-                        transaction.replace(R.id.fragment_container, timelineFragment);
+                        transaction.replace(R.id.fragment_container, timelineFragment).addToBackStack(null);;
                         break;
 
                     case 1:
                         if (communityFragment == null) {
                             communityFragment = new CommunityFragment();
                         }
-                        transaction.replace(R.id.fragment_container, communityFragment);
+                        transaction.replace(R.id.fragment_container, communityFragment).addToBackStack(null);;
                         break;
 
                     case 2:
                         if (encyclopediaFragment == null) {
                             encyclopediaFragment = new EncyclopediaFragment();
                         }
-                        transaction.replace(R.id.fragment_container, encyclopediaFragment);
+                        transaction.replace(R.id.fragment_container, encyclopediaFragment).addToBackStack(null);
                         break;
 
                     case 3:
                         if (searchFragment == null) {
                             searchFragment = new SearchFragment();
                         }
-                        transaction.replace(R.id.fragment_container, searchFragment);
+                        transaction.replace(R.id.fragment_container, searchFragment).addToBackStack(null);;
                         break;
 
                     default:
@@ -250,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
     private void setDefaultFragment() {
         if (timelineFragment == null) {
             timelineFragment = new TimelineFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, timelineFragment);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, timelineFragment).addToBackStack(null);;
             getSupportFragmentManager().beginTransaction().commit();
         }
     }
