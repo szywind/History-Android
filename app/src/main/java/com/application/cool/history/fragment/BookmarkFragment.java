@@ -28,8 +28,6 @@ public class BookmarkFragment extends Fragment {
 
     private IndicatorViewPager indicatorViewPager;
 
-    private LayoutInflater inflate;
-
     private String userId;
 
     @Nullable
@@ -52,14 +50,13 @@ public class BookmarkFragment extends Fragment {
 
 
         indicatorViewPager = new IndicatorViewPager(scrollIndicatorView, viewPager);
-        inflate = LayoutInflater.from(getActivity().getApplicationContext());
 
 
         userId =  getArguments().getString(INTENT_USER_INDEX);
 
         indicatorViewPager.setAdapter(
-                new BaseFragmentPagerAdapter(getActivity().getSupportFragmentManager(),
-                        inflate, getContext(), Constants.EDataSource.E_BOOKMARK, userId));
+                new BaseFragmentPagerAdapter(getChildFragmentManager(),
+                        inflater, getContext(), Constants.EDataSource.E_BOOKMARK, userId));
 
         return view;
     }

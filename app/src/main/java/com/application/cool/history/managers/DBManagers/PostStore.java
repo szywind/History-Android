@@ -30,7 +30,7 @@ public class PostStore extends LocalStore {
 
     public void initDB(Context context) {
         if (daoSession == null) {
-            super.initDB(context, "post.sqlite");
+            super.initDB(context);
         }
         postDao = daoSession.getPostEntityDao();
     }

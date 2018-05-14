@@ -34,7 +34,6 @@ public class CommunityFragment extends Fragment {
 
     private IndicatorViewPager indicatorViewPager;
 
-    private LayoutInflater inflate;
 
 //    private String[] tabTitle = {"关注", "人物", "事件", "地理", "艺术", "科技"};
 
@@ -73,9 +72,8 @@ public class CommunityFragment extends Fragment {
         }
 
         indicatorViewPager = new IndicatorViewPager(scrollIndicatorView, viewPager);
-        inflate = LayoutInflater.from(getActivity().getApplicationContext());
-        indicatorViewPager.setAdapter(new BaseFragmentPagerAdapter(getActivity().getSupportFragmentManager(),
-                inflate, getContext(), Constants.EDataSource.E_TOPIC));
+        indicatorViewPager.setAdapter(new BaseFragmentPagerAdapter(getChildFragmentManager(),
+                inflater, getContext(), Constants.EDataSource.E_TOPIC));
 
         return view;
     }

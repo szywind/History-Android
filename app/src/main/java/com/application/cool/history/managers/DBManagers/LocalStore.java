@@ -9,16 +9,16 @@ import com.application.cool.history.db.DaoSession;
  * Created by Zhenyuan Shen on 5/7/18.
  */
 public class LocalStore {
-    public static DaoSession daoSession;
-    public static DaoMaster.DevOpenHelper helper;
+    public DaoSession daoSession;
+    public DaoMaster.DevOpenHelper helper;
 
-    public void initDB(Context context, String dbname) {
-        helper = new DaoMaster.DevOpenHelper(context, dbname, null);
+    public void initDB(Context context) {
+        helper = new DaoMaster.DevOpenHelper(context, "history.sqlite", null);
         DaoMaster daoMaster = new DaoMaster(helper.getReadableDatabase());
         daoSession = daoMaster.newSession();
     }
 
-    public static void closeDatabase()
+    public void closeDatabase()
     {
         daoSession.clear();
         helper.close();
