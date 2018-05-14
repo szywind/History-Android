@@ -35,6 +35,7 @@ public class SearchFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        searchView.clearFocus();
 //        searchRecomList.setVisibility(View.VISIBLE);
 //        searchResultLayout.setVisibility(View.INVISIBLE);
 //        searchHint.setVisibility(View.INVISIBLE);
