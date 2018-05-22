@@ -42,7 +42,8 @@ public class PersonStore extends LocalStore {
     }
 
     public List<Record> fetchAllPeople() {
-        List<PersonEntity> personEntities = personDao.queryBuilder().list();
+        List<PersonEntity> personEntities = personDao.queryBuilder()
+                .orderAsc(PersonEntityDao.Properties.Pinyin).list();
         return Record.getRecordsWithPeople(personEntities);
     }
 

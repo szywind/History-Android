@@ -24,6 +24,7 @@ import com.application.cool.history.models.Record;
 import com.application.cool.history.view.SideIndexBar;
 import com.shizhefei.fragment.LazyFragment;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -150,6 +151,7 @@ public class EncyclopediaSubFragment extends LazyFragment implements SideIndexBa
                 break;
         }
 
+        Collections.sort(records, (a, b) -> a.getPinyin().compareTo(b.getPinyin()));
         adapter = new EncyclopediaAdapter(getContext(),records);
         listView.setAdapter(adapter);
     }

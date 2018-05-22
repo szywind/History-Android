@@ -42,7 +42,8 @@ public class EventStore extends LocalStore {
     }
 
     public List<Record> fetchAllEvents() {
-        List<EventEntity> eventEntities = eventDao.queryBuilder().list();
+        List<EventEntity> eventEntities = eventDao.queryBuilder()
+                .orderAsc(EventEntityDao.Properties.Pinyin).list();
         return Record.getRecordsWithEvents(eventEntities);
     }
 

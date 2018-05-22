@@ -21,6 +21,7 @@ import com.application.cool.history.managers.UserManager;
 import com.application.cool.history.models.Record;
 import com.shizhefei.fragment.LazyFragment;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -145,6 +146,7 @@ public class CommunitySubFragment extends LazyFragment {
                 break;
         }
 
+        Collections.sort(topics, (a, b) -> a.getPinyin().compareTo(b.getPinyin()));
         adapter = new TopicGridAdapter(getContext(), topics);
         gridView.setAdapter(adapter);
     }

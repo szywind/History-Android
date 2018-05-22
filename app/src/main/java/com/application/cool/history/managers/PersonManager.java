@@ -7,6 +7,7 @@ import com.application.cool.history.constants.LCConstants;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.CountCallback;
 import com.avos.avoscloud.FindCallback;
 
 import java.util.List;
@@ -37,23 +38,39 @@ public class PersonManager {
     }
 
     public void fetchAllPeopleFromLC(final PersonResponse delegate) {
-        fetchAllPeopleFromLC(delegate, true);
-    }
-
-    public void fetchAllPeopleFromLC(final PersonResponse delegate, boolean sortByPinyin) {
         AVQuery<AVObject> query = new AVQuery<>(LCConstants.PersonKey.className);
-        if (sortByPinyin) {
-            query.orderByAscending(LCConstants.PersonKey.pinyin);
-        }
-        query.findInBackground(new FindCallback<AVObject>() {
+        query.countInBackground(new CountCallback() {
             @Override
-            public void done(List<AVObject> list, AVException e) {
+            public void done(int number, AVException e) {
                 if (e == null) {
-                    delegate.processFinish(list);
+                    fetchAllPeopleFromLC(number, delegate);
                 } else {
-                    Log.e(TAG,"Fetch All People Error: " + e.toString());
+                    Log.e(TAG, "error" + e.toString());
                 }
             }
         });
+    }
+
+    public void fetchAllPeopleFromLC(int number, final PersonResponse delegate) {
+        int base = 0;
+        int limit = 100;
+        AVQuery<AVObject> query = new AVQuery<>(LCConstants.PersonKey.className);
+
+        query.limit(limit);
+
+        while (base < number) {
+            query.skip(base);
+            query.findInBackground(new FindCallback<AVObject>() {
+                @Override
+                public void done(List<AVObject> list, AVException e) {
+                    if (e == null) {
+                        delegate.processFinish(list);
+                    } else {
+                        Log.e(TAG,"Fetch All People Error: " + e.toString());
+                    }
+                }
+            });
+            base = base + limit;
+        }
     }
 }

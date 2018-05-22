@@ -7,6 +7,7 @@ import com.application.cool.history.constants.LCConstants;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.CountCallback;
 import com.avos.avoscloud.FindCallback;
 
 import java.util.List;
@@ -37,24 +38,38 @@ public class EventManager {
     }
 
     public void fetchAllEventsFromLC(final EventResponse delegate) {
-        fetchAllEventsFromLC(delegate, true);
-    }
-
-
-    public void fetchAllEventsFromLC(final EventResponse delegate, boolean sortByPinyin) {
         AVQuery<AVObject> query = new AVQuery<>(LCConstants.EventKey.className);
-        if (sortByPinyin) {
-            query.orderByAscending(LCConstants.EventKey.pinyin);
-        }
-        query.findInBackground(new FindCallback<AVObject>() {
+        query.countInBackground(new CountCallback() {
             @Override
-            public void done(List<AVObject> list, AVException e) {
+            public void done(int number, AVException e) {
                 if (e == null) {
-                    delegate.processFinish(list);
+                    fetchAllEventsFromLC(number, delegate);
                 } else {
-                    Log.e(TAG,"Fetch All Events Error: " + e.toString());
+                    Log.e(TAG, "error" + e.toString());
                 }
             }
         });
+    }
+
+    public void fetchAllEventsFromLC(int number, final EventResponse delegate) {
+        int base = 0;
+        int limit = 100;
+        AVQuery<AVObject> query = new AVQuery<>(LCConstants.EventKey.className);
+        query.limit(limit);
+
+        while (base < number) {
+            query.skip(base);
+            query.findInBackground(new FindCallback<AVObject>() {
+                @Override
+                public void done(List<AVObject> list, AVException e) {
+                    if (e == null) {
+                        delegate.processFinish(list);
+                    } else {
+                        Log.e(TAG, "Fetch All Events Error: " + e.toString());
+                    }
+                }
+            });
+            base = base + limit;
+        }
     }
 }

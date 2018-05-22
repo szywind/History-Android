@@ -53,8 +53,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
     private BottomNavigationBar bottomNavigationBar;
     private DrawerLayout drawerLayoutMenu;
     private NavigationView navView;

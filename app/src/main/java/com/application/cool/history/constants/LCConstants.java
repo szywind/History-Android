@@ -53,7 +53,7 @@ public interface LCConstants {
         String start = "start";
         String end = "end";
         String dynasty = "dynasty";
-        String dynasty_detail = "dynasty_detail";
+        String dynasty_detail = "dynastyDetail";
         String pinyin = "pinyin";
         String avatarURL = "avatarURL";
         String infoURL = "infoURL";
@@ -72,7 +72,7 @@ public interface LCConstants {
         String start = "start";
         String end = "end";
         String dynasty = "dynasty";
-        String dynasty_detail = "dynasty_detail";
+        String dynasty_detail = "dynastyDetail";
         String pinyin = "pinyin";
         String avatarURL = "avatarURL";
         String infoURL = "infoURL";
