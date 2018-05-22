@@ -40,6 +40,7 @@ public class EventManager {
         fetchAllEventsFromLC(delegate, true);
     }
 
+
     public void fetchAllEventsFromLC(final EventResponse delegate, boolean sortByPinyin) {
         AVQuery<AVObject> query = new AVQuery<>(LCConstants.EventKey.className);
         if (sortByPinyin) {
