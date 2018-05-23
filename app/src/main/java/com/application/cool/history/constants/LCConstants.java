@@ -48,7 +48,7 @@ public interface LCConstants {
     interface PersonKey {
         String className = "Person";
 
-        String name = "name";
+        String name = "nameSimpleCN";
         String type = "type";
         String start = "start";
         String end = "end";
@@ -67,7 +67,7 @@ public interface LCConstants {
     interface EventKey {
         String className = "Event";
 
-        String name = "name";
+        String name = "nameSimpleCN";
         String type = "type";
         String start = "start";
         String end = "end";
