@@ -11,6 +11,7 @@ import com.application.cool.history.models.State;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,10 +24,13 @@ public class LocalDataManager {
 
     private Context context;
 
+    private Boolean isSorted;
+
     private static LocalDataManager sharedInstance = null;
 
     private LocalDataManager(Context context){
         this.context = context;
+        this.isSorted = false;
     }
 
     public List<Record> allPeople = new ArrayList<>();
@@ -59,10 +63,11 @@ public class LocalDataManager {
     }
 
     public void setupEncyclopediaRecords() {
+        isSorted = true;
         allPeople = PersonStore.getSharedInstance(context).fetchAllPeople();
         allEvents = EventStore.getSharedInstance(context).fetchAllEvents();
-        allRecords.addAll(allPeople);
-        allRecords.addAll(allEvents);
+//        allRecords.addAll(allPeople);
+//        allRecords.addAll(allEvents);
 
         for(Record event: allEvents) {
             switch(event.getType()) {
@@ -87,7 +92,7 @@ public class LocalDataManager {
     public void addRecord(EventEntity eventEntity) {
         Record record = new Record(eventEntity);
         allEvents.add(record);
-        allRecords.add(record);
+//        allRecords.add(record);
         switch(record.getType()) {
             case "event":
                 events.add(record);
@@ -109,7 +114,7 @@ public class LocalDataManager {
     public void addRecord(PersonEntity personEntity) {
         Record record = new Record(personEntity);
         allPeople.add(record);
-        allRecords.add(record);
+//        allRecords.add(record);
     }
 
     public List<Record> getFollowingTopics() {
@@ -121,13 +126,27 @@ public class LocalDataManager {
     }
 
     public void clearAll() {
+        isSorted = false;
         allPeople.clear();
-        allRecords.clear();
+//        allRecords.clear();
         allEvents.clear();
         events.clear();
         geo.clear();
         art.clear();
         tech.clear();
+    }
+
+    public void sort() {
+        if (!isSorted) {
+            Collections.sort(allPeople, (a, b) -> a.getPinyin().compareTo(b.getPinyin()));
+//            Collections.sort(allRecords, (a, b) -> a.getPinyin().compareTo(b.getPinyin()));
+            Collections.sort(allEvents, (a, b) -> a.getPinyin().compareTo(b.getPinyin()));
+            Collections.sort(events, (a, b) -> a.getPinyin().compareTo(b.getPinyin()));
+            Collections.sort(geo, (a, b) -> a.getPinyin().compareTo(b.getPinyin()));
+            Collections.sort(art, (a, b) -> a.getPinyin().compareTo(b.getPinyin()));
+            Collections.sort(tech, (a, b) -> a.getPinyin().compareTo(b.getPinyin()));
+            isSorted = true;
+        }
     }
 }
 

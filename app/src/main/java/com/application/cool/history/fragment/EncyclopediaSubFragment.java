@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
@@ -18,13 +16,11 @@ import android.widget.TextView;
 import com.application.cool.history.R;
 import com.application.cool.history.activities.encyclopedia.EncyclopediaDetailActivity;
 import com.application.cool.history.adapters.EncyclopediaAdapter;
-import com.application.cool.history.adapters.RecordListAdapter;
 import com.application.cool.history.managers.LocalDataManager;
 import com.application.cool.history.models.Record;
 import com.application.cool.history.view.SideIndexBar;
 import com.shizhefei.fragment.LazyFragment;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -114,7 +110,7 @@ public class EncyclopediaSubFragment extends LazyFragment implements SideIndexBa
     }
 
     public void refreshUI(){
-
+        LocalDataManager.getSharedInstance(getContext()).sort();
 //        {"人物", "全部", "事件", "地理", "艺术", "科技"};
         switch (tabIndex) {
             case 0:
@@ -151,7 +147,6 @@ public class EncyclopediaSubFragment extends LazyFragment implements SideIndexBa
                 break;
         }
 
-        Collections.sort(records, (a, b) -> a.getPinyin().compareTo(b.getPinyin()));
         adapter = new EncyclopediaAdapter(getContext(),records);
         listView.setAdapter(adapter);
     }
