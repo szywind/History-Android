@@ -86,8 +86,12 @@ public class RegisterContactActivity extends AppCompatActivity {
         } else {
             TelephonyManager phoneMgr = (TelephonyManager) this.getSystemService(
                     Context.TELEPHONY_SERVICE);
-            contactEdit.setText(phoneMgr.getLine1Number().substring(3));
-            enableBtnNext();
+            try {
+                contactEdit.setText(phoneMgr.getLine1Number().substring(3));
+                enableBtnNext();
+            } catch (Exception e) {
+                disableBtnNext();
+            }
         }
 
         editor = getSharedPreferences("user_data", MODE_PRIVATE).edit();
